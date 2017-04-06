@@ -6,7 +6,14 @@ namespace sapHowmuch.Base.TestConsole
 	{
 		private static void Main(string[] args)
 		{
-			Console.WriteLine(SapStream.DICompany.CompanyName);
+			try
+			{
+				Console.WriteLine(SapStream.DICompany.CompanyName);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
 
 			Console.ReadLine();
 		}

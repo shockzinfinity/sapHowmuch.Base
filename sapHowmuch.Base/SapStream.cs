@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Globalization;
+using System.Management;
 using System.Runtime.InteropServices;
 
 namespace sapHowmuch.Base
@@ -10,6 +12,9 @@ namespace sapHowmuch.Base
 		private static SAPbobsCOM.Company _company; // di company
 		private static SAPbouiCOM.Application _application; // ui application
 
+		/// <summary>
+		/// SAP DI Company instance
+		/// </summary>
 		public static SAPbobsCOM.Company DICompany
 		{
 			get
@@ -23,6 +28,8 @@ namespace sapHowmuch.Base
 			}
 		}
 
+		#region various SAP connection methods
+
 		// DI 를 통한 직접 연결
 		private static int ConnectDI()
 		{
@@ -35,21 +42,50 @@ namespace sapHowmuch.Base
 			_company.UserName = ConfigurationManager.AppSettings["sapUserName"];
 			_company.Password = ConfigurationManager.AppSettings["sapPassword"];
 
-			//ConfigurationManager.AppSettings["sapDBType"];
-			//ConfigurationManager.AppSettings["sapDBUserName"];
-			//ConfigurationManager.AppSettings["sapDBPassword"];
-
 			try
 			{
 				retVal = _company.Connect();
+
+				if (retVal == 0)
+				{
+					// if ui api could not find connection string, raise exception
+					// SAP 로그인 화면만 떠도, 연결됨. (cache 때문인가?)
+					// process 체크해서 SAP 클라이언트가 떠 있을 경우는 연결
+					var uiApp = new SAPbouiCOM.Framework.Application();
+					_application = SAPbouiCOM.Framework.Application.SBO_Application;
+
+					if (_application == null)
+					{
+						throw new ArgumentNullException(nameof(_application));
+					}
+				}
+				else
+				{
+					throw new InvalidOperationException($"ErrorCode: {_company.GetLastErrorCode()}, ErrorDescription: {_company.GetLastErrorDescription()}");
+				}
 			}
-			catch (Exception ex)
+			catch
 			{
-				Console.WriteLine(ex.Message);
-				Console.WriteLine(ex.StackTrace);
+				throw;
 			}
 
 			return retVal;
+		}
+
+		private static void CheckProcess()
+		{
+			#region 호출자가 SAP BusinessOne Client인지 검증
+
+			var myId = Process.GetCurrentProcess().Id;
+			var query = string.Format("SELECT ParentProcessId FROM Win32_Process WHERE ProcessId = {0}", myId);
+			var search = new ManagementObjectSearcher("root\\CIMV2", query);
+			var results = search.Get().GetEnumerator();
+			results.MoveNext();
+			var queryObj = results.Current;
+			var parentId = (uint)queryObj["ParentProcessId"];
+			var parent = Process.GetProcessById((int)parentId);
+
+			#endregion 호출자가 SAP BusinessOne Client인지 검증
 		}
 
 		// UI 를 통한 연결
@@ -59,7 +95,7 @@ namespace sapHowmuch.Base
 
 			if (string.IsNullOrWhiteSpace(connectionString))
 			{
-				// DEBUG 일 경우
+				// if DEBUG mode
 				connectionString = "0030002C0030002C00530041005000420044005F00440061007400650076002C0050004C006F006D0056004900490056";
 			}
 
@@ -141,6 +177,8 @@ namespace sapHowmuch.Base
 			return retVal;
 		}
 
+		#endregion various SAP connection methods
+
 		#region IDisposable implementation
 
 		private bool _disposed;
@@ -216,6 +254,6 @@ namespace sapHowmuch.Base
 			this.Dispose(false);
 		}
 
-		#endregion
+		#endregion IDisposable implementation
 	}
 }
