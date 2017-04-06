@@ -10,6 +10,19 @@ namespace sapHowmuch.Base
 		private static SAPbobsCOM.Company _company; // di company
 		private static SAPbouiCOM.Application _application; // ui application
 
+		public static SAPbobsCOM.Company DICompany
+		{
+			get
+			{
+				if (_company == null || !_company.Connected)
+				{
+					ConnectDI();
+				}
+
+				return _company;
+			}
+		}
+
 		// DI 를 통한 직접 연결
 		private static int ConnectDI()
 		{
