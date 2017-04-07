@@ -67,11 +67,11 @@
   <ItemGroup>
     <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Extensions\FuncExtensions.cs" />
-    <Compile Include="ProcessHelper.cs" />
+    <Compile Include="Management\ProcessHelper.cs" />
     <Compile Include="SapStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Win32Process.cs" />
-    <Compile Include="Wmi.cs" />
+    <Compile Include="Management\Win32Process.cs" />
+    <Compile Include="Management\Wmi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
