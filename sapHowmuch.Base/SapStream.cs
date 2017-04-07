@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 
@@ -11,6 +12,7 @@ namespace sapHowmuch.Base
 	{
 		private static SAPbobsCOM.Company _company; // di company
 		private static SAPbouiCOM.Application _application; // ui application
+		private const string _sapUiAppName = "SAP Business One.exe";
 
 		/// <summary>
 		/// SAP DI Company instance
@@ -27,6 +29,16 @@ namespace sapHowmuch.Base
 				return _company;
 			}
 		}
+
+		/// <summary>
+		/// is connected ui app
+		/// </summary>
+		public static bool IsConnectToUI { get { return _application != null; } }
+
+		/// <summary>
+		/// SAP Business One UI API
+		/// </summary>
+		public static SAPbouiCOM.Application UiApp { get { return _application; } }
 
 		#region various SAP connection methods
 
@@ -46,17 +58,25 @@ namespace sapHowmuch.Base
 			{
 				retVal = _company.Connect();
 
+
+
 				if (retVal == 0)
 				{
-					// if ui api could not find connection string, raise exception
-					// SAP 로그인 화면만 떠도, 연결됨. (cache 때문인가?)
-					// process 체크해서 SAP 클라이언트가 떠 있을 경우는 연결
-					var uiApp = new SAPbouiCOM.Framework.Application();
-					_application = SAPbouiCOM.Framework.Application.SBO_Application;
-
-					if (_application == null)
+					if (ProcessHelper.ByName(_sapUiAppName).Count() > 0)
 					{
-						throw new ArgumentNullException(nameof(_application));
+						// if ui api could not find connection string, raise exception
+						// SAP 로그인 화면만 떠도, 연결됨. (cache 때문인가?)
+						var uiApp = new SAPbouiCOM.Framework.Application();
+						_application = SAPbouiCOM.Framework.Application.SBO_Application;
+
+						if (_application == null)
+						{
+							throw new ArgumentNullException(nameof(_application));
+						}
+					}
+					else
+					{
+						Debug.WriteLine("SAP Business One UI is not found.");
 					}
 				}
 				else
@@ -72,7 +92,7 @@ namespace sapHowmuch.Base
 			return retVal;
 		}
 
-		private static void CheckProcess()
+		private static void CheckParentProcess()
 		{
 			#region 호출자가 SAP BusinessOne Client인지 검증
 
