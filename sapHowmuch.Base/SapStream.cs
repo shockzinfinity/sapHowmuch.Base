@@ -58,8 +58,6 @@ namespace sapHowmuch.Base
 			{
 				retVal = _company.Connect();
 
-
-
 				if (retVal == 0)
 				{
 					if (ProcessHelper.ByName(_sapUiAppName).Count() > 0)
@@ -90,22 +88,6 @@ namespace sapHowmuch.Base
 			}
 
 			return retVal;
-		}
-
-		private static void CheckParentProcess()
-		{
-			#region 호출자가 SAP BusinessOne Client인지 검증
-
-			var myId = Process.GetCurrentProcess().Id;
-			var query = string.Format("SELECT ParentProcessId FROM Win32_Process WHERE ProcessId = {0}", myId);
-			var search = new ManagementObjectSearcher("root\\CIMV2", query);
-			var results = search.Get().GetEnumerator();
-			results.MoveNext();
-			var queryObj = results.Current;
-			var parentId = (uint)queryObj["ParentProcessId"];
-			var parent = Process.GetProcessById((int)parentId);
-
-			#endregion 호출자가 SAP BusinessOne Client인지 검증
 		}
 
 		// UI 를 통한 연결
