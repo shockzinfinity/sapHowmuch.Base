@@ -1,9 +1,11 @@
-﻿using System;
+﻿using sapHowmuch.Base.EventArguments;
+using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Management;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 
 namespace sapHowmuch.Base
@@ -12,7 +14,6 @@ namespace sapHowmuch.Base
 	{
 		private static SAPbobsCOM.Company _company; // di company
 		private static SAPbouiCOM.Application _application; // ui application
-		private const string _sapUiAppName = "SAP Business One.exe";
 
 		/// <summary>
 		/// SAP DI Company instance
@@ -60,7 +61,7 @@ namespace sapHowmuch.Base
 
 				if (retVal == 0)
 				{
-					if (ProcessHelper.ByName(_sapUiAppName).Count() > 0)
+					if (ProcessHelper.ByName(Constants.SapUiAppName).Count() > 0)
 					{
 						// if ui api could not find connection string, raise exception
 						// SAP 로그인 화면만 떠도, 연결됨. (cache 때문인가?)
@@ -71,6 +72,8 @@ namespace sapHowmuch.Base
 						{
 							throw new ArgumentNullException(nameof(_application));
 						}
+
+						InitializeSboApplication();
 					}
 					else
 					{
@@ -90,6 +93,68 @@ namespace sapHowmuch.Base
 			return retVal;
 		}
 
+		private static bool InitializeSboApplication()
+		{
+			try
+			{
+				if (_application != null)
+				{
+					// app event 등록
+
+					SapStream.AppEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_AppEventEventHandler, SapEventArgs<SAPbouiCOM.BoAppEventTypes>>(
+						handler =>
+						{
+							SAPbouiCOM._IApplicationEvents_AppEventEventHandler iHandler = (SAPbouiCOM.BoAppEventTypes eventTypes) =>
+							{
+								SapEventArgs<SAPbouiCOM.BoAppEventTypes> appEventArgs = new SapEventArgs<SAPbouiCOM.BoAppEventTypes>(DateTime.Now, string.Empty, eventTypes, false);
+								handler.Invoke(appEventArgs);
+							};
+
+							return iHandler;
+						},
+						handler => _application.AppEvent += handler,
+						handler => _application.AppEvent -= handler);
+
+					SapStream.ItemStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_ItemEventEventHandler, SapEventArgs<SAPbouiCOM.ItemEvent>>(
+						handler =>
+						{
+							SAPbouiCOM._IApplicationEvents_ItemEventEventHandler iHandler = (string formUid, ref SAPbouiCOM.ItemEvent pval, out bool bubble) =>
+							{
+								bubble = true;
+								SapEventArgs<SAPbouiCOM.ItemEvent> itemArgs = new SapEventArgs<SAPbouiCOM.ItemEvent>(DateTime.Now, formUid, pval, bubble);
+								handler.Invoke(itemArgs);
+								bubble = itemArgs.BubbleEvent;
+							};
+
+							return iHandler;
+						},
+						handler => _application.ItemEvent += handler,
+						handler => _application.ItemEvent -= handler);
+
+					SapStream.MenuStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_MenuEventEventHandler, SapEventArgs<SAPbouiCOM.MenuEvent>>(
+						handler =>
+						{
+							SAPbouiCOM._IApplicationEvents_MenuEventEventHandler iHandler = (ref SAPbouiCOM.MenuEvent pVal, out bool BubbleEvent) =>
+							{
+								BubbleEvent = true;
+								SapEventArgs<SAPbouiCOM.MenuEvent> menuArgs = new SapEventArgs<SAPbouiCOM.MenuEvent>(DateTime.Now, string.Empty, pVal, BubbleEvent);
+								handler.Invoke(menuArgs);
+							};
+
+							return iHandler;
+						},
+						handler => _application.MenuEvent += handler,
+						handler => _application.MenuEvent -= handler);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+			return true;
+		}
+
 		// UI 를 통한 연결
 		private static int ConnectUI(string connectionString = "")
 		{
@@ -98,7 +163,7 @@ namespace sapHowmuch.Base
 			if (string.IsNullOrWhiteSpace(connectionString))
 			{
 				// if DEBUG mode
-				connectionString = "0030002C0030002C00530041005000420044005F00440061007400650076002C0050004C006F006D0056004900490056";
+				connectionString = Constants.SapUiDebugConnectionString;
 			}
 
 			var sbGuiApi = new SAPbouiCOM.SboGuiApi();
@@ -179,7 +244,72 @@ namespace sapHowmuch.Base
 			return retVal;
 		}
 
+		#region Connect to DI-Server
+
+		//private static int LastErrorCode;
+		//private static string LastErrorDescription;
+		//private static readonly Node DisObject = new Node();
+		//private static string ConectDIS()
+		//{
+		//	string returnValue = string.Empty;
+		//	var enveloppeLogon = "<env:Envelope xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"><env:Body><dis:Login xmlns:dis=\"http://www.sap.com/SBO/DIS\"><DatabaseServer>{0}</DatabaseServer><DatabaseName>{1}</DatabaseName><DatabaseType>{2}</DatabaseType><CompanyUsername&gt:{3}</CompanyUsername><CompanyPassword>{4}</CompanyPassword><Language>{5}</Language><LicenseServer>{6}</LicenseServer></dis:Login></env:Body></env:Envelope>";
+		//	var xmlString = string.Format(CultureInfo.InvariantCulture,
+		//		enveloppeLogon,
+		//		"192.168.90.118",
+		//		"DB_TestConnection",
+		//		"dst_MSSQL2008",
+		//		"manager",
+		//		"password",
+		//		"ln_English",
+		//		"192.168.90.118:30000");
+		//	var sb = new StringBuilder();
+		//	sb.Append("<?xml version=\"1.0\" ?>").Append(xmlString);
+		//	var soapMessage = sb.ToString();
+		//	returnValue = DisObject.Interact(soapMessage);
+		//	if (0 == LastErrorCode)
+		//	{
+		//		var xmlDocument = new XmlDocument();
+		//		xmlDocument.LoadXml(returnValue);
+		//		var sessionNode = xmlDocument.SelectSingleNode("//*[local-name()='SessionID']");
+		//		if (null != sessionNode)
+		//		{
+		//			returnValue = sessionNode.InnerText;
+		//			Console.WriteLine("Connected to DIS. SessionId: {0}", returnValue);
+		//		}
+		//	}
+		//	return returnValue;
+		//}
+
+		#endregion
+
+		#region Connect to DIS thru B1WS
+
+		//<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:log="LoginService">
+		//	<soapenv:Header/>
+		//	<soapenv:Body>
+		//		<log:Login>
+		//			<log:DatabaseServer>192.168.90.118</log:DatabaseServer>
+		//			<log:DatabaseName>DB_TestConnection</log:DatabaseName>
+		//			<log:DatabaseType>dst_MSSQL2008</log:DatabaseType>
+		//			<log:CompanyUsername>manager</log:CompanyUsername>
+		//			<log:CompanyPassword>Kuldip</log:CompanyPassword>
+		//			<log:Language>ln_English</log:Language>
+		//			<log:LicenseServer>192.168.90.118:30000</log:LicenseServer>
+		//		</log:Login>
+		//	</soapenv:Body>
+		//</soapenv:Envelope>
+
+		#endregion
+
 		#endregion various SAP connection methods
+
+		#region Observables
+
+		public static IObservable<SapEventArgs<SAPbouiCOM.ItemEvent>> ItemStream;
+		public static IObservable<SapEventArgs<SAPbouiCOM.BoAppEventTypes>> AppEventStream;
+		public static IObservable<SapEventArgs<SAPbouiCOM.MenuEvent>> MenuStream;
+
+		#endregion
 
 		#region IDisposable implementation
 
