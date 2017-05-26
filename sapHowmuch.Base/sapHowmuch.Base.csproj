@@ -65,10 +65,18 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\RecordsetFieldAttribute.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="EventArguments\ISapEventArgs.cs" />
+    <Compile Include="EventArguments\SapAppEventArgs.cs" />
     <Compile Include="EventArguments\SapEventArgs.cs" />
+    <Compile Include="EventArguments\SapItemEventArgs.cs" />
+    <Compile Include="EventArguments\SapStatusBarEventArgs.cs" />
     <Compile Include="Extensions\ActionExtensions.cs" />
     <Compile Include="Extensions\FuncExtensions.cs" />
+    <Compile Include="Extensions\MarshalExtensions.cs" />
+    <Compile Include="Extensions\RecordsetExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Management\ProcessHelper.cs" />
     <Compile Include="SapStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
