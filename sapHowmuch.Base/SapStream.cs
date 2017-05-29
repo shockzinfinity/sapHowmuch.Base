@@ -9,15 +9,15 @@ using System.Runtime.InteropServices;
 
 namespace sapHowmuch.Base
 {
-	public sealed class SapStream : IDisposable
+	public sealed class SapStream : ISapStream, IDisposable
 	{
-		private static SAPbobsCOM.Company _company; // di company
-		private static SAPbouiCOM.Application _application; // ui application
+		private SAPbobsCOM.Company _company; // di company
+		private SAPbouiCOM.Application _application; // ui application
 
 		/// <summary>
 		/// SAP DI Company instance
 		/// </summary>
-		public static SAPbobsCOM.Company DICompany
+		public SAPbobsCOM.Company DICompany
 		{
 			get
 			{
@@ -33,35 +33,35 @@ namespace sapHowmuch.Base
 		/// <summary>
 		/// is connected ui app
 		/// </summary>
-		public static bool IsConnectToUI { get { return _application != null; } }
+		public bool IsConnectToUI { get { return _application != null; } }
 
 		/// <summary>
 		/// SAP Business One UI API
 		/// </summary>
-		public static SAPbouiCOM.Application UiApp { get { return _application; } }
+		public SAPbouiCOM.Application UiApp { get { return _application; } }
 
 		#region SAP Business One event stream
 
-		public static IObservable<SapAppEventArgs> AppEventStream;
-		public static IObservable<SapStatusBarEventArgs> StatusBarEventStream;
-		public static IObservable<SapItemEventArgs> ItemEventStream;
-		public static IObservable<SapEventArgs<SAPbouiCOM.MenuEvent>> MenuEventStream;
-		public static IObservable<SapEventArgs<SAPbouiCOM.BusinessObjectInfo>> FormDataEventStream;
-		public static IObservable<SapEventArgs<SAPbouiCOM.LayoutKeyInfo>> LayoutKeyInfoStream;
-		public static IObservable<SapEventArgs<SAPbouiCOM.PrintEventInfo>> PrintEventStream;
-		public static IObservable<SapEventArgs<SAPbouiCOM.ReportDataInfo>> ReportDataInfoEventStream;
-		public static IObservable<SapEventArgs<SAPbouiCOM.ProgressBarEvent>> ProgressBarEventStream;
-		public static IObservable<SapEventArgs<SAPbouiCOM.ContextMenuInfo>> RightClickEventStream;
-		public static IObservable<SapEventArgs<SAPbouiCOM.B1iEvent>> ServerInvokeCompletedEventStream;
-		public static IObservable<SapEventArgs<SAPbouiCOM.UDOEvent>> UDOEventStream;
-		public static IObservable<SapEventArgs<SAPbouiCOM.WidgetData>> WidgetEventStream;
+		public IObservable<SapAppEventArgs> AppEventStream { get; private set; }
+		public IObservable<SapStatusBarEventArgs> StatusBarEventStream { get; private set; }
+		public IObservable<SapItemEventArgs> ItemEventStream { get; private set; }
+		public IObservable<SapEventArgs<SAPbouiCOM.MenuEvent>> MenuEventStream { get; private set; }
+		public IObservable<SapEventArgs<SAPbouiCOM.BusinessObjectInfo>> FormDataEventStream { get; private set; }
+		public IObservable<SapEventArgs<SAPbouiCOM.LayoutKeyInfo>> LayoutKeyInfoStream { get; private set; }
+		public IObservable<SapEventArgs<SAPbouiCOM.PrintEventInfo>> PrintEventStream { get; private set; }
+		public IObservable<SapEventArgs<SAPbouiCOM.ReportDataInfo>> ReportDataInfoEventStream { get; private set; }
+		public IObservable<SapEventArgs<SAPbouiCOM.ProgressBarEvent>> ProgressBarEventStream { get; private set; }
+		public IObservable<SapEventArgs<SAPbouiCOM.ContextMenuInfo>> RightClickEventStream { get; private set; }
+		public IObservable<SapEventArgs<SAPbouiCOM.B1iEvent>> ServerInvokeCompletedEventStream { get; private set; }
+		public IObservable<SapEventArgs<SAPbouiCOM.UDOEvent>> UDOEventStream { get; private set; }
+		public IObservable<SapEventArgs<SAPbouiCOM.WidgetData>> WidgetEventStream { get; private set; }
 
 		#endregion SAP Business One event stream
 
 		#region various SAP connection methods
 
 		// DI 를 통한 직접 연결
-		private static int ConnectDI()
+		private int ConnectDI()
 		{
 			int retVal = -1;
 			_company = new SAPbobsCOM.Company();
@@ -110,7 +110,7 @@ namespace sapHowmuch.Base
 			return retVal;
 		}
 
-		private static bool InitializeSboApplication()
+		private bool InitializeSboApplication()
 		{
 			try
 			{
@@ -118,7 +118,7 @@ namespace sapHowmuch.Base
 				{
 					// app event 등록
 
-					SapStream.AppEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_AppEventEventHandler, SapAppEventArgs>(
+					this.AppEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_AppEventEventHandler, SapAppEventArgs>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_AppEventEventHandler iHandler = (SAPbouiCOM.BoAppEventTypes eventTypes) =>
@@ -132,7 +132,7 @@ namespace sapHowmuch.Base
 						handler => _application.AppEvent += handler,
 						handler => _application.AppEvent -= handler);
 
-					SapStream.ItemEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_ItemEventEventHandler, SapItemEventArgs>(
+					this.ItemEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_ItemEventEventHandler, SapItemEventArgs>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_ItemEventEventHandler iHandler = (string formUid, ref SAPbouiCOM.ItemEvent pval, out bool bubble) =>
@@ -148,7 +148,7 @@ namespace sapHowmuch.Base
 						handler => _application.ItemEvent += handler,
 						handler => _application.ItemEvent -= handler);
 
-					SapStream.StatusBarEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_StatusBarEventEventHandler, SapStatusBarEventArgs>(
+					this.StatusBarEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_StatusBarEventEventHandler, SapStatusBarEventArgs>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_StatusBarEventEventHandler iHandler = (string text, SAPbouiCOM.BoStatusBarMessageType messageType) =>
@@ -162,7 +162,7 @@ namespace sapHowmuch.Base
 						handler => _application.StatusBarEvent += handler,
 						handler => _application.StatusBarEvent -= handler);
 
-					SapStream.FormDataEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_FormDataEventEventHandler, SapEventArgs<SAPbouiCOM.BusinessObjectInfo>>(
+					this.FormDataEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_FormDataEventEventHandler, SapEventArgs<SAPbouiCOM.BusinessObjectInfo>>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_FormDataEventEventHandler iHandler = (ref SAPbouiCOM.BusinessObjectInfo pVal, out bool BubbleEvent) =>
@@ -178,7 +178,7 @@ namespace sapHowmuch.Base
 						handler => _application.FormDataEvent += handler,
 						handler => _application.FormDataEvent -= handler);
 
-					SapStream.LayoutKeyInfoStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_LayoutKeyEventEventHandler, SapEventArgs<SAPbouiCOM.LayoutKeyInfo>>(
+					this.LayoutKeyInfoStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_LayoutKeyEventEventHandler, SapEventArgs<SAPbouiCOM.LayoutKeyInfo>>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_LayoutKeyEventEventHandler iHandler = (ref SAPbouiCOM.LayoutKeyInfo pVal, out bool BubbleEvent) =>
@@ -194,7 +194,7 @@ namespace sapHowmuch.Base
 						handler => _application.LayoutKeyEvent += handler,
 						handler => _application.LayoutKeyEvent -= handler);
 
-					SapStream.MenuEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_MenuEventEventHandler, SapEventArgs<SAPbouiCOM.MenuEvent>>(
+					this.MenuEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_MenuEventEventHandler, SapEventArgs<SAPbouiCOM.MenuEvent>>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_MenuEventEventHandler iHandler = (ref SAPbouiCOM.MenuEvent pVal, out bool BubbleEvent) =>
@@ -215,7 +215,7 @@ namespace sapHowmuch.Base
 						handler => _application.MenuEvent += handler,
 						handler => _application.MenuEvent -= handler);
 
-					SapStream.PrintEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_PrintEventEventHandler, SapEventArgs<SAPbouiCOM.PrintEventInfo>>(
+					this.PrintEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_PrintEventEventHandler, SapEventArgs<SAPbouiCOM.PrintEventInfo>>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_PrintEventEventHandler iHandler = (ref SAPbouiCOM.PrintEventInfo pVal, out bool BubbleEvent) =>
@@ -231,7 +231,7 @@ namespace sapHowmuch.Base
 						handler => _application.PrintEvent += handler,
 						handler => _application.PrintEvent -= handler);
 
-					SapStream.ProgressBarEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_ProgressBarEventEventHandler, SapEventArgs<SAPbouiCOM.ProgressBarEvent>>(
+					this.ProgressBarEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_ProgressBarEventEventHandler, SapEventArgs<SAPbouiCOM.ProgressBarEvent>>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_ProgressBarEventEventHandler iHandler = (ref SAPbouiCOM.ProgressBarEvent pVal, out bool BubbleEvent) =>
@@ -247,7 +247,7 @@ namespace sapHowmuch.Base
 						handler => _application.ProgressBarEvent += handler,
 						handler => _application.ProgressBarEvent -= handler);
 
-					SapStream.ReportDataInfoEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_ReportDataEventEventHandler, SapEventArgs<SAPbouiCOM.ReportDataInfo>>(
+					this.ReportDataInfoEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_ReportDataEventEventHandler, SapEventArgs<SAPbouiCOM.ReportDataInfo>>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_ReportDataEventEventHandler iHandler = (ref SAPbouiCOM.ReportDataInfo pVal, out bool BubbleEvent) =>
@@ -263,7 +263,7 @@ namespace sapHowmuch.Base
 						handler => _application.ReportDataEvent += handler,
 						handler => _application.ReportDataEvent -= handler);
 
-					SapStream.RightClickEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_RightClickEventEventHandler, SapEventArgs<SAPbouiCOM.ContextMenuInfo>>(
+					this.RightClickEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_RightClickEventEventHandler, SapEventArgs<SAPbouiCOM.ContextMenuInfo>>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_RightClickEventEventHandler iHandler = (ref SAPbouiCOM.ContextMenuInfo pVal, out bool BubbleEvent) =>
@@ -279,7 +279,7 @@ namespace sapHowmuch.Base
 						handler => _application.RightClickEvent += handler,
 						handler => _application.RightClickEvent -= handler);
 
-					SapStream.ServerInvokeCompletedEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_ServerInvokeCompletedEventEventHandler, SapEventArgs<SAPbouiCOM.B1iEvent>>(
+					this.ServerInvokeCompletedEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_ServerInvokeCompletedEventEventHandler, SapEventArgs<SAPbouiCOM.B1iEvent>>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_ServerInvokeCompletedEventEventHandler iHandler = (ref SAPbouiCOM.B1iEvent pVal, out bool BubbleEvent) =>
@@ -295,7 +295,7 @@ namespace sapHowmuch.Base
 						handler => _application.ServerInvokeCompletedEvent += handler,
 						handler => _application.ServerInvokeCompletedEvent -= handler);
 
-					SapStream.UDOEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_UDOEventEventHandler, SapEventArgs<SAPbouiCOM.UDOEvent>>(
+					this.UDOEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_UDOEventEventHandler, SapEventArgs<SAPbouiCOM.UDOEvent>>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_UDOEventEventHandler iHandler = (ref SAPbouiCOM.UDOEvent pVal, out bool BubbleEvent) =>
@@ -311,7 +311,7 @@ namespace sapHowmuch.Base
 						handler => _application.UDOEvent += handler,
 						handler => _application.UDOEvent -= handler);
 
-					SapStream.WidgetEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_WidgetEventEventHandler, SapEventArgs<SAPbouiCOM.WidgetData>>(
+					this.WidgetEventStream = Observable.FromEvent<SAPbouiCOM._IApplicationEvents_WidgetEventEventHandler, SapEventArgs<SAPbouiCOM.WidgetData>>(
 						handler =>
 						{
 							SAPbouiCOM._IApplicationEvents_WidgetEventEventHandler iHandler = (ref SAPbouiCOM.WidgetData pVal, out bool BubbleEvent) =>
@@ -329,19 +329,19 @@ namespace sapHowmuch.Base
 				}
 				else
 				{
-					SapStream.AppEventStream = Observable.Empty<SapAppEventArgs>();
-					SapStream.StatusBarEventStream = Observable.Empty<SapStatusBarEventArgs>();
-					SapStream.ItemEventStream = Observable.Empty<SapItemEventArgs>();
-					SapStream.MenuEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.MenuEvent>>();
-					SapStream.FormDataEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.BusinessObjectInfo>>();
-					SapStream.LayoutKeyInfoStream = Observable.Empty<SapEventArgs<SAPbouiCOM.LayoutKeyInfo>>();
-					SapStream.PrintEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.PrintEventInfo>>();
-					SapStream.ReportDataInfoEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.ReportDataInfo>>();
-					SapStream.ProgressBarEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.ProgressBarEvent>>();
-					SapStream.RightClickEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.ContextMenuInfo>>();
-					SapStream.ServerInvokeCompletedEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.B1iEvent>>();
-					SapStream.UDOEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.UDOEvent>>();
-					SapStream.WidgetEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.WidgetData>>();
+					this.AppEventStream = Observable.Empty<SapAppEventArgs>();
+					this.StatusBarEventStream = Observable.Empty<SapStatusBarEventArgs>();
+					this.ItemEventStream = Observable.Empty<SapItemEventArgs>();
+					this.MenuEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.MenuEvent>>();
+					this.FormDataEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.BusinessObjectInfo>>();
+					this.LayoutKeyInfoStream = Observable.Empty<SapEventArgs<SAPbouiCOM.LayoutKeyInfo>>();
+					this.PrintEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.PrintEventInfo>>();
+					this.ReportDataInfoEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.ReportDataInfo>>();
+					this.ProgressBarEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.ProgressBarEvent>>();
+					this.RightClickEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.ContextMenuInfo>>();
+					this.ServerInvokeCompletedEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.B1iEvent>>();
+					this.UDOEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.UDOEvent>>();
+					this.WidgetEventStream = Observable.Empty<SapEventArgs<SAPbouiCOM.WidgetData>>();
 				}
 			}
 			catch (Exception ex)
@@ -353,7 +353,7 @@ namespace sapHowmuch.Base
 		}
 
 		// UI 를 통한 연결
-		private static int ConnectUI(string connectionString = "")
+		private int ConnectUI(string connectionString = "")
 		{
 			int retVal = 0;
 
@@ -384,7 +384,7 @@ namespace sapHowmuch.Base
 			return retVal;
 		}
 
-		private static int ConnectUIDI(string connectionString = "")
+		private int ConnectUIDI(string connectionString = "")
 		{
 			int retVal = ConnectUI(connectionString);
 			if (retVal == 0)
@@ -405,7 +405,7 @@ namespace sapHowmuch.Base
 		}
 
 		// deriving a connection
-		private static int DerivingConnect()
+		private int DerivingConnect()
 		{
 			int uidiConnect = ConnectUIDI();
 			int retVal = 0;

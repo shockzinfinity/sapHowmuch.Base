@@ -1,40 +1,45 @@
-﻿using System;
-using System.Diagnostics;
-using System.Management;
+﻿using Autofac;
+using System;
 
 namespace sapHowmuch.Base.TestConsole
 {
 	internal class Program
 	{
+		private static IContainer _container;
+
 		private static void Main(string[] args)
 		{
 			try
 			{
-				Console.WriteLine(SapStream.DICompany.CompanyName);
-				Console.WriteLine("Is connect to ui app? {0}", SapStream.IsConnectToUI);
-				Console.WriteLine($"Cookie: {SapStream.DICompany.GetContextCookie()}");
+				_container = DependencyConfig.Configure();
 
-				if (SapStream.IsConnectToUI)
+				var sapStream = _container.Resolve<ISapStream>();
+
+				Console.WriteLine(sapStream.DICompany.CompanyName);
+				Console.WriteLine("Is connect to ui app? {0}", sapStream.IsConnectToUI);
+				Console.WriteLine($"Cookie: {sapStream.DICompany.GetContextCookie()}");
+
+				if (sapStream.IsConnectToUI)
 				{
-					Console.WriteLine("IsHostedEnvironment: {0}", SapStream.UiApp.IsHostedEnvironment);
+					Console.WriteLine("IsHostedEnvironment: {0}", sapStream.UiApp.IsHostedEnvironment);
 					// NOTE: Company 에 로그인 되면 MetadataAutoRefresh 가 true 가 됨.
-					Console.WriteLine("MetadataAutoRefresh: {0}", SapStream.UiApp.MetadataAutoRefresh);
+					Console.WriteLine("MetadataAutoRefresh: {0}", sapStream.UiApp.MetadataAutoRefresh);
 
-					if (SapStream.UiApp.MetadataAutoRefresh)
+					if (sapStream.UiApp.MetadataAutoRefresh)
 					{
 						// SAP B1 클라이언트의 초기화면 (회사 연결 전) 에서는  MetadataAutoRefresh 가 false
 						// 회사에 로그인 되면 true 가 됨.
-						SapStream.UiApp.MetadataAutoRefresh = false;
-						Console.WriteLine($"MetadataAutoRefresh after login: {SapStream.UiApp.MetadataAutoRefresh}");
+						sapStream.UiApp.MetadataAutoRefresh = false;
+						Console.WriteLine($"MetadataAutoRefresh after login: {sapStream.UiApp.MetadataAutoRefresh}");
 					}
 
-					SapStream.AppEventStream.Subscribe(ev =>
+					sapStream.AppEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[AppEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 						Console.WriteLine($"EventType: {ev.DetailArg}");
 					});
 
-					SapStream.ItemEventStream.Subscribe(ev =>
+					sapStream.ItemEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[ItemEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 						Console.WriteLine($"{ev.FormUid}, {ev.DetailArg.FormTypeEx}, {ev.DetailArg.ItemUID}, {ev.DetailArg.ColUID}");
@@ -46,55 +51,55 @@ namespace sapHowmuch.Base.TestConsole
 						Console.WriteLine($"Char: {ev.DetailArg.CharPressed} // Modifiers: {ev.DetailArg.Modifiers} // PopUpIndicator: {ev.DetailArg.PopUpIndicator}");
 					});
 
-					SapStream.StatusBarEventStream.Subscribe(ev =>
+					sapStream.StatusBarEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[StatusBarEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 						Console.WriteLine($"{ev.Message}");
 					});
 
-					SapStream.FormDataEventStream.Subscribe(ev =>
+					sapStream.FormDataEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[FormDataEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 						Console.WriteLine($"{ev.DetailArg.EventType}");
 					});
 
-					SapStream.MenuEventStream.Subscribe(ev =>
+					sapStream.MenuEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[MenuEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 						Console.WriteLine($"{ev.DetailArg.BeforeAction}, {ev.DetailArg.MenuUID}, {ev.DetailArg.InnerEvent}");
 					});
 
-					SapStream.PrintEventStream.Subscribe(ev =>
+					sapStream.PrintEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[PrintEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 					});
 
-					SapStream.ProgressBarEventStream.Subscribe(ev =>
+					sapStream.ProgressBarEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[PrgressBarEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 					});
 
-					SapStream.ReportDataInfoEventStream.Subscribe(ev =>
+					sapStream.ReportDataInfoEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[ReportDataInfoEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 					});
 
-					SapStream.RightClickEventStream.Subscribe(ev =>
+					sapStream.RightClickEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[RightClickEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 					});
 
-					SapStream.ServerInvokeCompletedEventStream.Subscribe(ev =>
+					sapStream.ServerInvokeCompletedEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[ServerInvokeCompletedEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 					});
 
-					SapStream.UDOEventStream.Subscribe(ev =>
+					sapStream.UDOEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[UDOEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 					});
 
-					SapStream.WidgetEventStream.Subscribe(ev =>
+					sapStream.WidgetEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[WidgetEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
 					});
