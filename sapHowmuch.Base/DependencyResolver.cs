@@ -11,10 +11,10 @@ namespace sapHowmuch.Base
 
 		public void Setup(IRegisterComponent registerComponent)
 		{
-			registerComponent.Builder.RegisterType<SapStream>()
-				.As<ISapStream>()
-				.PropertiesAutowired()
-				.InstancePerLifetimeScope();
+			//registerComponent.Builder.RegisterType<SapStream>()
+			//	.As<ISapStream>()
+			//	.PropertiesAutowired()
+			//	.InstancePerLifetimeScope();
 		}
 
 		#endregion IComponent implementation

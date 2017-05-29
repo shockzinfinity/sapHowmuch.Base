@@ -34,6 +34,10 @@
       <HintPath>..\packages\Autofac.4.6.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.9\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SAPBusinessOneSDK, Version=1.0.0.1, Culture=neutral, PublicKeyToken=c7c3cb60e45d119f, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -60,7 +64,7 @@
       <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,20 +78,28 @@
     <Compile Include="ComponentLoader.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DependencyResolver.cs" />
+    <Content Include="Documents\NLogReferenceConfig.xml" />
+    <Content Include="Documents\NLogTableSetting.sql" />
     <Compile Include="EventArguments\ISapEventArgs.cs" />
     <Compile Include="EventArguments\SapAppEventArgs.cs" />
     <Compile Include="EventArguments\SapEventArgs.cs" />
     <Compile Include="EventArguments\SapItemEventArgs.cs" />
     <Compile Include="EventArguments\SapStatusBarEventArgs.cs" />
     <Compile Include="Extensions\ActionExtensions.cs" />
+    <Compile Include="Extensions\BusinessObjectInfoExtensions.cs" />
+    <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\FuncExtensions.cs" />
     <Compile Include="Extensions\MarshalExtensions.cs" />
     <Compile Include="Extensions\RecordsetExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
+    <Compile Include="Helpers\ErrorHelper.cs" />
+    <Compile Include="Helpers\sapHowmuchLogger.cs" />
+    <Compile Include="Helpers\SboRecordsetQuery.cs" />
+    <Compile Include="Helpers\STAInvoker.cs" />
     <Compile Include="Interfaces\IComponent.cs" />
     <Compile Include="Interfaces\IRegisterComponent.cs" />
-    <Compile Include="ISapStream.cs" />
     <Compile Include="Management\ProcessHelper.cs" />
+    <Compile Include="SapHowmuchAddonContext.cs" />
     <Compile Include="SapStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Management\Win32Process.cs" />
@@ -96,6 +108,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entity\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
