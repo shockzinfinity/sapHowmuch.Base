@@ -26,7 +26,7 @@ namespace sapHowmuch.Base.Extensions
 						T instance = Activator.CreateInstance(typeof(T), null) as T;
 						var properties = typeof(T).GetPropertiesBySpecific<RecordsetFieldAttribute>();
 
-						// TODO: subtype 에 따른 환경설정 소수점 자리수 적용 필요
+						// TODO: subtype 에 따른 환경설정 소수점 자리수 적용 필요 (절사, 반올림, 올림 등)
 						// db_Alpha(0), db_Memo(1) -> string
 						// db_Numeric(2) -> int
 						// db_Date(3) -> datetime
