@@ -30,8 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="SAPBusinessOneSDK, Version=1.0.0.1, Culture=neutral, PublicKeyToken=c7c3cb60e45d119f, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -66,7 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\RecordsetFieldAttribute.cs" />
+    <Compile Include="ComponentLoader.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="DependencyResolver.cs" />
     <Compile Include="EventArguments\ISapEventArgs.cs" />
     <Compile Include="EventArguments\SapAppEventArgs.cs" />
     <Compile Include="EventArguments\SapEventArgs.cs" />
@@ -77,6 +84,9 @@
     <Compile Include="Extensions\MarshalExtensions.cs" />
     <Compile Include="Extensions\RecordsetExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
+    <Compile Include="Interfaces\IComponent.cs" />
+    <Compile Include="Interfaces\IRegisterComponent.cs" />
+    <Compile Include="ISapStream.cs" />
     <Compile Include="Management\ProcessHelper.cs" />
     <Compile Include="SapStream.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
