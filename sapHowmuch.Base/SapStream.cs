@@ -1,4 +1,5 @@
-﻿using sapHowmuch.Base.EventArguments;
+﻿using sapHowmuch.Base.Constants;
+using sapHowmuch.Base.EventArguments;
 using sapHowmuch.Base.Helpers;
 using System;
 using System.Configuration;
@@ -72,7 +73,7 @@ namespace sapHowmuch.Base
 			{
 				// if connection string is empty, then use debug mode
 				// DEBUG mode
-				connectionString = Constants.SapUiDebugConnectionString;
+				connectionString = sapHowmuchConstants.SapUiDebugConnectionString;
 			}
 			else
 			{
@@ -95,7 +96,6 @@ namespace sapHowmuch.Base
 
 				var connectResponse = _company.Connect();
 				ErrorHelper.HandleErrorWithException(connectResponse, "DI api could not connect");
-
 
 				var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 				sapHowmuchLogger.Info($"{assemblyName} connected");
@@ -153,7 +153,7 @@ namespace sapHowmuch.Base
 
 				if (connectWithUi)
 				{
-					if (ProcessHelper.ByName(Constants.SapUiAppName).Count() > 0)
+					if (ProcessHelper.ByName(sapHowmuchConstants.SapUiAppName).Count() > 0)
 					{
 						// if ui api could not find connection string, raise exception
 						// SAP 로그인 화면만 떠도, 연결됨. (cache 때문인가?)

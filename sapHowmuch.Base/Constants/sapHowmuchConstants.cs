@@ -1,6 +1,8 @@
-﻿namespace sapHowmuch.Base
+﻿#pragma warning disable 1591
+
+namespace sapHowmuch.Base.Constants
 {
-	public static class Constants
+	public static class sapHowmuchConstants
 	{
 		public const string SapUiAppName = "SAP Business One.exe";
 		public const string SapUiDebugConnectionString = "0030002C0030002C00530041005000420044005F00440061007400650076002C0050004C006F006D0056004900490056";

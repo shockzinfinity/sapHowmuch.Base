@@ -33,7 +33,8 @@ namespace sapHowmuch.Base.Helpers
 			System.Windows.Forms.Application.ApplicationExit -= Application_ApplicationExit;
 			System.Windows.Forms.Application.ApplicationExit += Application_ApplicationExit;
 
-			_menuSubscribe.Dispose();
+			if (_menuSubscribe != null)
+				_menuSubscribe.Dispose();
 			_menuSubscribe = SapStream.MenuEventStream.Where(x => !x.DetailArg.BeforeAction).Subscribe(x =>
 			{
 				//if (x.DetailArg.BeforeAction) return;

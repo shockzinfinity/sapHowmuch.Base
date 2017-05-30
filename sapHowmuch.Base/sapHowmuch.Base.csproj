@@ -76,7 +76,11 @@
   <ItemGroup>
     <Compile Include="Attributes\RecordsetFieldAttribute.cs" />
     <Compile Include="ComponentLoader.cs" />
-    <Compile Include="Constants.cs" />
+    <Compile Include="Constants\sapHowmuchConstants.cs" />
+    <Compile Include="Constants\SboDocumentItem.cs" />
+    <Compile Include="Constants\SboForm.cs" />
+    <Compile Include="Constants\SboMenuItem.cs" />
+    <Compile Include="Constants\SboTable.cs" />
     <Compile Include="DependencyResolver.cs" />
     <Content Include="Documents\NLogReferenceConfig.xml" />
     <Content Include="Documents\NLogTableSetting.sql" />
