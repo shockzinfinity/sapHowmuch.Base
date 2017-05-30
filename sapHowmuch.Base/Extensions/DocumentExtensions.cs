@@ -144,20 +144,21 @@ namespace sapHowmuch.Base.Extensions
 		{
 			var lines = existingText.Split(new[] { "\n" }, StringSplitOptions.None);
 			if (lines[lines.Length - 1] != "")
-				existingText += $"\n{newLine}\n";
+				existingText += $"{Environment.NewLine}{newLine}{Environment.NewLine}";
 			else
-				existingText += $"{newLine}\n";
+				existingText += $"{newLine}{Environment.NewLine}";
 
 			return existingText;
 		}
 
-		//public static int? GetDocEntry(this int docNum, string table)
-		//{
-		//	using (var query = new SboRecordsetQuery($"SELECT [DocEntry] FROM [{table}] WHERE [DocNum]={docNum}"))
-		//	{
-		//		if (query.Count == 0) return null;
-		//		return int.Parse(query.Result.First().Item("DocEntry").Value.ToString());
-		//	}
-		//}
+		public static int? GetDocEntry(this int docNum, string table)
+		{
+			using (var query = new SboRecordsetQuery($"SELECT [DocEntry] FROM [{table}] WHERE [DocNum] = {docNum}"))
+			{
+				if (query.Count == 0) return null;
+
+				return int.Parse(query.Result.First().Item("DocEntry").Value.ToString());
+			}
+		}
 	}
 }
