@@ -18,11 +18,11 @@ namespace sapHowmuch.Base.TestWinform
 
 			using (Form.FreezeEx())
 			{
-
+				Form.VisibleEx = true;
 			}
 		}
 
-		public override bool Unique => false;
+		public override bool Unique => true;
 
 		public string MenuItemTitle => "Test sap form";
 
