@@ -14,7 +14,7 @@ namespace sapHowmuch.Base.TestWinform
 					throw new Exception("SAP Business One not connected");
 
 				// 화면 띄우는 로직
-				Test_Form();
+				//Test_Form();
 			}
 			catch (Exception ex)
 			{

@@ -82,6 +82,10 @@
     <Compile Include="Constants\SboMenuItem.cs" />
     <Compile Include="Constants\SboTable.cs" />
     <Compile Include="DependencyResolver.cs" />
+    <Compile Include="Services\ISettingService.cs" />
+    <Compile Include="Services\SettingService.cs" />
+    <Compile Include="Setup\ISetup.cs" />
+    <Compile Include="Setup\SetupManager.cs" />
     <Content Include="Documents\NLogReferenceConfig.xml" />
     <Content Include="Documents\NLogTableSetting.sql" />
     <Compile Include="Dialogs\FileDialogHelper.cs" />
