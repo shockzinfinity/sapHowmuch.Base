@@ -1,5 +1,7 @@
 ﻿using sapHowmuch.Base.Forms;
 using sapHowmuch.Base.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace sapHowmuch.Base.Extensions
 {
@@ -45,10 +47,9 @@ namespace sapHowmuch.Base.Extensions
 			return form.Items.Item(itemId).Specific as SAPbouiCOM.Grid;
 		}
 
-		// TODO: 모든 컨트롤 추가
-
 		public static void AddComboBoxValues(this SAPbouiCOM.ComboBox comboBox, string sql)
 		{
+			// TODO: remove combobox existing validvalues
 			using (var query = new SboRecordsetQuery(sql))
 			{
 				foreach (var combo in query.Result)
@@ -61,6 +62,17 @@ namespace sapHowmuch.Base.Extensions
 		public static Freeze FreezeEx(this SAPbouiCOM.IForm form)
 		{
 			return new Freeze(form);
+		}
+
+		public static IEnumerable<SAPbouiCOM.Form> AsEnumerable(this SAPbouiCOM.Forms forms, Func<SAPbouiCOM.Form, bool> filter = null)
+		{
+			foreach (SAPbouiCOM.Form item in SapStream.UiApp.Forms)
+			{
+				if (filter != null)
+					yield return filter(item) ? item : null; // TODO: 테스트 필요
+				else
+					yield return item;
+			}
 		}
 	}
 }

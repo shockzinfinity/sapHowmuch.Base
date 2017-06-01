@@ -1,10 +1,17 @@
-﻿namespace sapHowmuch.Base.Forms
+﻿using System.Collections.Generic;
+
+namespace sapHowmuch.Base.Forms
 {
 	public interface IFormMenuItem
 	{
-		string MenuItemId { get; }
-		string MenuItemTitle { get; }
-		string ParentMenuItemId { get; }
-		int MenuItemPosition { get; }
+		IEnumerable<FormMenuItem> MenuItems { get; }
+	}
+
+	public class FormMenuItem
+	{
+		public string MenuItemId { get; set; }
+		public string MenuItemTitle { get; set; }
+		public string ParentMenuItemId { get; set; }
+		public int MenuItemPosition { get; set; }
 	}
 }
