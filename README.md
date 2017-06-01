@@ -1,4 +1,6 @@
-# sapHowmuch.Base
-sapHowmuch framework for SAP Business One
+# **sapHowmuch** for SAP Business One
 
-based on ITCO-SBO-Addon-Framework
+This repository is for developing SAP Business One addon.
+
+> based on [ITCO-SBO-Addon-Framework](https://github.com/ITCompaniet/ITCO-SBO-Addon-Framework)
+
