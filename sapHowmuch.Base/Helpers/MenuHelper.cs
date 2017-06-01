@@ -37,6 +37,10 @@ namespace sapHowmuch.Base.Helpers
 
 			if (_menuSubscribe != null)
 				_menuSubscribe.Dispose();
+
+			// TODO: menu subscribe 에 대한 before/after 정책결정 필요
+			// e.g.) 코어쪽의 메뉴 호출 시에 before 에서 bubble event 를 true/false 해야 하는 경우가 생길 수 있음.
+			// 이는 main stream 에서 조정할 필요가 있다.
 			_menuSubscribe = SapStream.MenuEventStream.Where(x => !x.DetailArg.BeforeAction).Subscribe(x =>
 			{
 				//if (x.DetailArg.BeforeAction) return;
@@ -157,14 +161,17 @@ namespace sapHowmuch.Base.Helpers
 			var xmlDoc = new XmlDocument();
 			xmlDoc.Load(fileName);
 
+			// 작업필요
+			// TODO: 여러개의 Menus 가 있을 경우
+			// 이 부분에서 메뉴 아이콘 정책이 필요
 			var node = xmlDoc.SelectSingleNode("/Application/Menus/action/Menu");
 			var imageAttr = node.Attributes.Cast<XmlAttribute>().FirstOrDefault(a => a.Name == "Image");
 
-			// TODO: 리소스 처리
-			//if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
-			//{
-			//	imageAttr.Value = string.Format(imageAttr.Value, System.Windows.Forms.Application.StartupPath + @"\image");
-			//}
+			if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
+			{
+				imageAttr.Value = $"{Environment.CurrentDirectory}\\Resources\\{imageAttr.Value}";
+				node.Attributes.SetNamedItem(imageAttr);
+			}
 
 			var tmpStr = xmlDoc.InnerXml;
 			SapStream.UiApp.LoadBatchActions(ref tmpStr);
@@ -181,21 +188,25 @@ namespace sapHowmuch.Base.Helpers
 				{
 					xmlDoc.Load(xmlStream);
 
+					// TODO: 여러개의 Menus 가 있을 경우
+					// 이 부분에서 메뉴 아이콘 정책이 필요
 					var node = xmlDoc.SelectSingleNode("/Application/Menus/action/Menu");
 					var imageAttr = node.Attributes.Cast<XmlAttribute>().FirstOrDefault(a => a.Name == "Image");
 
 					if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
 					{
-						imageAttr.Value = string.Format("{0}\\Resources\\{1}", Environment.CurrentDirectory, imageAttr.Value);
+						imageAttr.Value = $"{Environment.CurrentDirectory}\\Resources\\{imageAttr.Value}";
 						node.Attributes.SetNamedItem(imageAttr);
 					}
 
 					string menuXmlString = xmlDoc.InnerXml;
 					string toRemove = menuXmlString.Replace("type=\"add\"", "type=\"remove\"");
 					SapStream.UiApp.LoadBatchActions(ref toRemove);
-
 					SapStream.UiApp.LoadBatchActions(ref menuXmlString);
-					//SapStream.UiApp.SetStatusBarMessage(SapStream.UiApp.GetLastBatchResults());
+
+					// TODO: addon menu event 적용
+					// LoadBatchActions 로 메뉴를 등록하게 될 경우, 폼 오픈 이벤트에 대한 별도의 처리가 필요하다.
+					sapHowmuchLogger.Debug(SapStream.UiApp.GetLastBatchResults());
 
 					AddTerminateAppMenu(assembly);
 				}
@@ -223,7 +234,7 @@ namespace sapHowmuch.Base.Helpers
 						SapStream.UiApp.Menus.RemoveEx($"{appNames[appNames.Length - 1]}Stop");
 						Environment.Exit(0);
 					},
-					20);
+					-1)
 			}
 		}
 
