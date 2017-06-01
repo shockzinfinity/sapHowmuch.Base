@@ -1,0 +1,34 @@
+﻿<nlog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<targets>
+		<!-- file targets -->
+		<!--
+		${longdate} : a datetime stamp
+		${uppercase:${level}} : the log level
+		${message} : the custom message you wish to log
+		${aspnet-user-identity} : the website user. If unauthenticated then this will be blank
+		-->
+		<target name="logfile" xsi:type="File" fileName="${basedir}/webapi_${date:format=yyyy-MM-dd}.log" />
+		<target name="eventlog" xsi:type="EventLog" layout="${message}" log="Application" source="Api Services" />
+		<target name="asyncFile" xsi:type="AsyncWrapper">
+			<target xsi:type="File" name="f" fileName="${basedir}/Logs/${shortdate}.log" layout="${longdate} ${uppercase:${level}} ${message}" />
+		</target>
+		<target name="database" xsi:type="Database" keepConnection="true" useTransactions="true" dbProvider="System.Data.SqlClient" ConnectionString="data source=192.168.1.229;initial catalog=sapHowmuchWebApi;integrated security=false;persist security info=True;UserD=sa;Password=sap2017#!)" commandText="INSERT INTO Logs(EventDateTime, EventLevel, MachineName, EventMessage, ErrorSource, ErrorClass,rrorMethod, ErrorMessage, InnerErrorMessage) VALUES (@EventDateTime, @EventLevel, @MachineName, @EventMessage, @ErrorSource, ErrorClass,@ErrorMethod, @ErrorMessage, @InnerErrorMessage)">
+			<!--parameters for the command-->
+			<parameter name="@EventDateTime" layout="${date:s}" />
+			<parameter name="@EventLevel" layout="${level}" />
+			<parameter name="@MachineName" layout="${machinename}" />
+			<parameter name="@EventMessage" layout="${message}" />
+			<parameter name="@ErrorSource" layout="${event-context:item=error-source}" />
+			<parameter name="@ErrorClass" layout="${event-context:item=error-class}" />
+			<parameter name="@ErrorMethod" layout="${event-context:item=error-method}" />
+			<parameter name="@ErrorMessage" layout="${event-context:item=error-message}" />
+			<parameter name="@InnerErrorMessage" layout="${event-context:item=inner-error-message}" />
+		</target>
+		<target xsi:type="NLogViewer" name="viewer" address="udp://127.0.0.1:9999" />
+	</targets>
+	<rules>
+		<!--<logger name="*" minlevel="Trace" writeTo="asyncFile, database, viewer" />-->
+		<!--<logger name="*" minlevel="Trace" writeTo="asyncFile, viewer" />-->
+		<logger name="*" minlevel="Trace" writeTo="viewer" />
+	</rules>
+</nlog>

@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E3389FCC-3064-4FAF-8E6B-51391ED4CF03}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>sapHowmuch.Base</RootNamespace>
+    <AssemblyName>sapHowmuch.Base</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.9\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SAPBusinessOneSDK, Version=1.0.0.1, Culture=neutral, PublicKeyToken=c7c3cb60e45d119f, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Reactive.Core, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net46\System.Reactive.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Interfaces.3.1.1\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Linq.3.1.1\lib\net46\System.Reactive.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.PlatformServices.3.1.1\lib\net46\System.Reactive.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\RecordsetFieldAttribute.cs" />
+    <Compile Include="ComponentLoader.cs" />
+    <Compile Include="Constants\sapHowmuchConstants.cs" />
+    <Compile Include="Constants\SboDocumentItem.cs" />
+    <Compile Include="Constants\SboForm.cs" />
+    <Compile Include="Constants\SboMenuItem.cs" />
+    <Compile Include="Constants\SboTable.cs" />
+    <Compile Include="DependencyResolver.cs" />
+    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Services\ISettingService.cs" />
+    <Compile Include="Services\SettingService.cs" />
+    <Compile Include="Setup\ISetup.cs" />
+    <Compile Include="Setup\SetupManager.cs" />
+    <Content Include="Documents\NLogReferenceConfig.xml" />
+    <Content Include="Documents\NLogTableSetting.sql" />
+    <Compile Include="Dialogs\FileDialogHelper.cs" />
+    <Compile Include="Dialogs\InputHelper.cs" />
+    <Compile Include="Dialogs\Inputs\CheckboxDialogInput.cs" />
+    <Compile Include="Dialogs\Inputs\DateDialogInput.cs" />
+    <Compile Include="Dialogs\Inputs\DecimalDialogInput.cs" />
+    <Compile Include="Dialogs\Inputs\DropdownDialogInput.cs" />
+    <Compile Include="Dialogs\Inputs\FolderDialogInput.cs" />
+    <Compile Include="Dialogs\Inputs\IDialogInput.cs" />
+    <Compile Include="Dialogs\Inputs\IntegerDialogInput.cs" />
+    <Compile Include="Dialogs\Inputs\OpenFileDialogInput.cs" />
+    <Compile Include="Dialogs\Inputs\SaveFileDialogInput.cs" />
+    <Compile Include="Dialogs\Inputs\TextDialogInput.cs" />
+    <Compile Include="EventArguments\ISapEventArgs.cs" />
+    <Compile Include="EventArguments\SapAppEventArgs.cs" />
+    <Compile Include="EventArguments\SapEventArgs.cs" />
+    <Compile Include="EventArguments\SapItemEventArgs.cs" />
+    <Compile Include="EventArguments\SapStatusBarEventArgs.cs" />
+    <Compile Include="Extensions\ActionExtensions.cs" />
+    <Compile Include="Extensions\BusinessObjectInfoExtensions.cs" />
+    <Compile Include="Extensions\BusinessPartnerExtensions.cs" />
+    <Compile Include="Extensions\DataTypeExtensions.cs" />
+    <Compile Include="Extensions\DocumentExtensions.cs" />
+    <Compile Include="Extensions\InputExtensions.cs" />
+    <Compile Include="Extensions\SboFormExtensions.cs" />
+    <Compile Include="Extensions\FuncExtensions.cs" />
+    <Compile Include="Extensions\ItemExtensions.cs" />
+    <Compile Include="Extensions\MarshalExtensions.cs" />
+    <Compile Include="Extensions\RecordsetExtensions.cs" />
+    <Compile Include="Extensions\ReflectionExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TransactionExtensions.cs" />
+    <Compile Include="Extensions\UserQueryExtensions.cs" />
+    <Compile Include="Forms\FormController.cs" />
+    <Compile Include="Forms\Freeze.cs" />
+    <Compile Include="Forms\IFormMenuItem.cs" />
+    <Compile Include="Helpers\DocumentSeriesHelper.cs" />
+    <Compile Include="Helpers\ErrorHelper.cs" />
+    <Compile Include="Helpers\FormHelper.cs" />
+    <Compile Include="Helpers\MenuHelper.cs" />
+    <Compile Include="Helpers\MessageHelper.cs" />
+    <Compile Include="Helpers\sapHowmuchLogger.cs" />
+    <Compile Include="Helpers\SboRecordsetQuery.cs" />
+    <Compile Include="Helpers\SboTransaction.cs" />
+    <Compile Include="Helpers\STAInvoker.cs" />
+    <Compile Include="Helpers\UserDefinedHelper.cs" />
+    <Compile Include="Interfaces\IComponent.cs" />
+    <Compile Include="Interfaces\IRegisterComponent.cs" />
+    <Compile Include="Management\ProcessHelper.cs" />
+    <Compile Include="SapHowmuchAddonContext.cs" />
+    <Compile Include="SapStream.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Management\Win32Process.cs" />
+    <Compile Include="Management\Wmi.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entity\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
