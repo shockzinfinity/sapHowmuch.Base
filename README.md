@@ -1,4 +1,4 @@
 # sapHowmuch.Base
 sapHowmuch framework for SAP Business One
 
-based on 
+based on ITCO-SBO-Addon-Framework
