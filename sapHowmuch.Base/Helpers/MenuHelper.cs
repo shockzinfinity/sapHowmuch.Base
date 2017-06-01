@@ -161,6 +161,7 @@ namespace sapHowmuch.Base.Helpers
 			var xmlDoc = new XmlDocument();
 			xmlDoc.Load(fileName);
 
+			// 작업필요
 			// TODO: 여러개의 Menus 가 있을 경우
 			// 이 부분에서 메뉴 아이콘 정책이 필요
 			var node = xmlDoc.SelectSingleNode("/Application/Menus/action/Menu");
