@@ -8,10 +8,9 @@ using System.Linq;
 
 namespace sapHowmuch.Base.Services
 {
-	// TODO: 자체 시스템 환경설정 스키마 적용 필요
 	public class SettingService : ISettingService
 	{
-		private const string _udtSettings = "sapHowmuch_Settings";
+		private const string _udtSettings = "sapHowmuchSettings";
 		private const string _udfSettingValue = "SettingValue";
 		private bool _setupOk;
 		private static SettingService _instance;
@@ -28,8 +27,8 @@ namespace sapHowmuch.Base.Services
 
 			try
 			{
-				UserDefinedHelper.CreateTable(_udtSettings, "Settings")
-					.CreateUdf(_udfSettingValue, "Value", size: 254);
+				UserDefinedHelper.CreateTable(_udtSettings, "sapHowmuch Addon setting table")
+					.CreateUdf(_udfSettingValue, "Setting Value", size: 254);
 
 				_setupOk = true;
 

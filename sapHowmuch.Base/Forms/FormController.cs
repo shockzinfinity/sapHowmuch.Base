@@ -99,7 +99,7 @@ namespace sapHowmuch.Base.Forms
 		public virtual string FormResource => $"Views.{GetType().Name.Replace("Controller", string.Empty)}.srf";
 		public virtual string FormType => $"{GetType().Name.Replace("Controller", string.Empty)}";
 		public virtual bool Unique => true;
-		public virtual string MenuItemId => $"{FormType}_M"; // TODO: prefix, suffix 수정 필요
+		public virtual string MenuItemId => $"{FormType}_M";
 		public virtual int MenuItemPosition => -1;
 	}
 }

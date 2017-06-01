@@ -18,10 +18,24 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 			}
 		}
 
-		public string MenuItemTitle => "세금계산서 발행";
-		public string ParentMenuItemId => TestConstants.VATRootMenuId;
-		public override string MenuItemId => "VT0021Z";
-		public override int MenuItemPosition => 0;
 		public override bool Unique => true;
+
+		public IEnumerable<FormMenuItem> MenuItems => new[]
+		{
+			new FormMenuItem
+			{
+				MenuItemTitle = "세금계산서 발행",
+				ParentMenuItemId = TestConstants.VATRootMenuId1,
+				MenuItemId = "VT0020Z",
+				MenuItemPosition = 0
+			},
+			new FormMenuItem
+			{
+				MenuItemTitle = "세금계산서 발행+",
+				ParentMenuItemId = TestConstants.VATRootMenuId2,
+				MenuItemId = "VT0021Z",
+				MenuItemPosition = 1
+			}
+		};
 	}
 }
