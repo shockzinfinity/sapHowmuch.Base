@@ -1,4 +1,5 @@
-﻿using sapHowmuch.Base.Helpers;
+﻿using sapHowmuch.Base.Constants;
+using sapHowmuch.Base.Helpers;
 using System;
 using System.Windows.Forms;
 
@@ -10,11 +11,18 @@ namespace sapHowmuch.Base.TestWinform
 		{
 			try
 			{
+				sapHowmuchLogger.Trace("TestWinformContext loading...");
+
 				if (!SapStream.IsUiConnected)
 					throw new Exception("SAP Business One not connected");
 
+				// 추가 메뉴
+				MenuHelper.AddFolder("부가세 관련", TestConstants.VATRootMenuId, SboMenuItem.Finance);
+
 				// 화면 띄우는 로직
 				//Test_Form();
+
+				sapHowmuchLogger.Trace("TestWinformContext loaded.");
 			}
 			catch (Exception ex)
 			{
