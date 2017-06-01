@@ -3,7 +3,7 @@ using sapHowmuch.Base.Extensions;
 using sapHowmuch.Base.Forms;
 using System;
 
-namespace sapHowmuch.Base.TestWinform
+namespace sapHowmuch.Base.TestWinform.Controllers
 {
 	public class TestFormController : FormController, IFormMenuItem
 	{
