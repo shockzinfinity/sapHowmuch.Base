@@ -1,6 +1,7 @@
 ﻿using sapHowmuch.Base.Constants;
 using sapHowmuch.Base.Helpers;
 using System;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace sapHowmuch.Base.TestWinform
@@ -17,17 +18,25 @@ namespace sapHowmuch.Base.TestWinform
 					throw new Exception("SAP Business One not connected");
 
 				// 추가 메뉴
-				MenuHelper.AddFolder("부가세 관련", TestConstants.VATRootMenuId, SboMenuItem.Finance);
+				var addonAssembly = Assembly.GetEntryAssembly();
+				sapHowmuchLogger.Debug($"Entry Assembly: {addonAssembly.GetName()}");
 
-				// 화면 띄우는 로직
-				//Test_Form();
+				// 메뉴로딩테스트
+				MenuHelper.LoadFromXML(addonAssembly);
+
+				// 메뉴 스트럭쳐 구성
+				//MenuHelper.AddFolder("부가세1", TestConstants.VATRootMenuId1, SboMenuItem.Modules);
+				//MenuHelper.AddFolder("부가세2", TestConstants.VATRootMenuId2, SboMenuItem.Modules);
+
+				//MenuHelper.LoadAndAddMenuItemsFromFormControllers(addonAssembly);
 
 				sapHowmuchLogger.Trace("TestWinformContext loaded.");
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show($"Error: {ex.Message}{Environment.NewLine}Exiting...");
-				Application.Exit();
+				//Application.Exit();
+				Environment.Exit(0);
 			}
 		}
 

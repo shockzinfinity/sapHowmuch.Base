@@ -2,6 +2,7 @@
 using sapHowmuch.Base.Extensions;
 using sapHowmuch.Base.Forms;
 using System;
+using System.Collections.Generic;
 
 namespace sapHowmuch.Base.TestWinform.Controllers
 {
@@ -26,6 +27,15 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 
 		public string MenuItemTitle => "Test sap form";
 
-		public string ParentMenuItemId => SboMenuItem.Inventory;
+		public string[] ParentMenuItemId => new string[] { SboMenuItem.Inventory };
+
+		public IEnumerable<FormMenuItem> MenuItems => new[]
+		{
+			new FormMenuItem
+			{
+				MenuItemTitle = "Test sap form",
+				ParentMenuItemId =SboMenuItem.Inventory,
+			}
+		};
 	}
 }

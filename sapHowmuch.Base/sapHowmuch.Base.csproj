@@ -82,6 +82,8 @@
     <Compile Include="Constants\SboMenuItem.cs" />
     <Compile Include="Constants\SboTable.cs" />
     <Compile Include="DependencyResolver.cs" />
+    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Services\ISettingService.cs" />
     <Compile Include="Services\SettingService.cs" />
     <Compile Include="Setup\ISetup.cs" />

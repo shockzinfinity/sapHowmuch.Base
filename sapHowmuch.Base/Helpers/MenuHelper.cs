@@ -1,6 +1,8 @@
-﻿using sapHowmuch.Base.Forms;
+﻿using sapHowmuch.Base.Constants;
+using sapHowmuch.Base.Forms;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
@@ -66,11 +68,11 @@ namespace sapHowmuch.Base.Helpers
 		{
 			foreach (var item in _addonMenuEvents)
 			{
-				// TODO: remove menu items
+				SapStream.UiApp.Menus.RemoveEx(item.MenuId);
 			}
 		}
 
-		public static void AddMenuItemEvent(string title, string menuId, string parentMenuId, Action action, int position = -1, bool threadedAction = false)
+		public static void AddMenuItemEvent(string title, string menuId, string parentMenuId, Action action = null, int position = -1, bool threadedAction = false)
 		{
 			_addonMenuEvents.Add(new AddonMenuEvent
 			{
@@ -152,20 +154,77 @@ namespace sapHowmuch.Base.Helpers
 
 		public static void LoadFromXML(string fileName)
 		{
-			var oXmlDoc = new XmlDocument();
-			oXmlDoc.Load(fileName);
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(fileName);
 
-			var node = oXmlDoc.SelectSingleNode("/Application/Menus/action/Menu");
+			var node = xmlDoc.SelectSingleNode("/Application/Menus/action/Menu");
 			var imageAttr = node.Attributes.Cast<XmlAttribute>().FirstOrDefault(a => a.Name == "Image");
 
+			// TODO: 리소스 처리
 			//if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
 			//{
 			//	imageAttr.Value = string.Format(imageAttr.Value, System.Windows.Forms.Application.StartupPath + @"\image");
 			//}
 
-			var tmpStr = oXmlDoc.InnerXml;
+			var tmpStr = xmlDoc.InnerXml;
 			SapStream.UiApp.LoadBatchActions(ref tmpStr);
 			var result = SapStream.UiApp.GetLastBatchResults();
+		}
+
+		public static void LoadFromXML(Assembly assembly)
+		{
+			var xmlDoc = new XmlDocument();
+
+			using (var xmlStream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.Menu.xml"))
+			{
+				try
+				{
+					xmlDoc.Load(xmlStream);
+
+					var node = xmlDoc.SelectSingleNode("/Application/Menus/action/Menu");
+					var imageAttr = node.Attributes.Cast<XmlAttribute>().FirstOrDefault(a => a.Name == "Image");
+
+					if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
+					{
+						imageAttr.Value = string.Format("{0}\\Resources\\{1}", Environment.CurrentDirectory, imageAttr.Value);
+						node.Attributes.SetNamedItem(imageAttr);
+					}
+
+					string menuXmlString = xmlDoc.InnerXml;
+					string toRemove = menuXmlString.Replace("type=\"add\"", "type=\"remove\"");
+					SapStream.UiApp.LoadBatchActions(ref toRemove);
+
+					SapStream.UiApp.LoadBatchActions(ref menuXmlString);
+					//SapStream.UiApp.SetStatusBarMessage(SapStream.UiApp.GetLastBatchResults());
+
+					AddTerminateAppMenu(assembly);
+				}
+				catch (Exception ex)
+				{
+					sapHowmuchLogger.Error($"Failed to load menu: {ex.Message}");
+					throw;
+				}
+			}
+		}
+
+		[Conditional("DEBUG")]
+		private static void AddTerminateAppMenu(Assembly assembly)
+		{
+			if (SapStream.IsUiConnected)
+			{
+				var appNames = assembly.GetName().Name.Split('.');
+
+				AddMenuItemEvent(
+					$"{appNames[appNames.Length - 1]}종료",
+					$"{appNames[appNames.Length - 1]}Stop",
+					SboMenuItem.Modules,
+					() =>
+					{
+						SapStream.UiApp.Menus.RemoveEx($"{appNames[appNames.Length - 1]}Stop");
+						Environment.Exit(0);
+					},
+					20);
+			}
 		}
 
 		public static void LoadAndAddMenuItemsFromFormControllers(Assembly assembly)
@@ -175,20 +234,24 @@ namespace sapHowmuch.Base.Helpers
 			foreach (var formController in formControllers)
 			{
 				var formMenuItem = Activator.CreateInstance(formController) as IFormMenuItem;
-				var item = new AddonMenuEvent
-				{
-					MenuId = formMenuItem.MenuItemId,
-					ParentMenuId = formMenuItem.ParentMenuItemId,
-					Position = formMenuItem.MenuItemPosition,
-					Title = formMenuItem.MenuItemTitle,
-					Action = () =>
-					{
-						CreateOrStartController(formController);
-					},
-					ThreadedAction = false
-				};
 
-				AddMenuItemEvent(item.Title, item.MenuId, item.ParentMenuId, item.Action, item.Position);
+				foreach (var menuItem in formMenuItem.MenuItems)
+				{
+					var item = new AddonMenuEvent
+					{
+						MenuId = menuItem.MenuItemId,
+						ParentMenuId = menuItem.ParentMenuItemId,
+						Position = menuItem.MenuItemPosition,
+						Title = menuItem.MenuItemTitle,
+						Action = () =>
+						{
+							CreateOrStartController(formController);
+						},
+						ThreadedAction = false
+					};
+
+					AddMenuItemEvent(item.Title, item.MenuId, item.ParentMenuId, item.Action, item.Position);
+				}
 			}
 
 			BindEvents();

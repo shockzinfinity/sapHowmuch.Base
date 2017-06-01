@@ -12,7 +12,8 @@ namespace sapHowmuch.Base
 			try
 			{
 				// setup loading 을 위해...
-				var mainAssembly = Assembly.GetEntryAssembly();
+				// 각 애드온 context 에서 로딩
+				//var mainAssembly = Assembly.GetEntryAssembly();
 
 				SapStream.ConnectByUI(
 					Environment.GetCommandLineArgs().Length > 1 ?
@@ -37,7 +38,8 @@ namespace sapHowmuch.Base
 
 				// TODO: 각종 초기화 (특히 UI 관련(e.g. menu, resource 등))
 
-				MenuHelper.LoadAndAddMenuItemsFromFormControllers(mainAssembly);
+				// 각 애드온 context 에서 로딩
+				//MenuHelper.LoadAndAddMenuItemsFromFormControllers(mainAssembly);
 			}
 			catch (Exception ex)
 			{
