@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace sapHowmuch.Base.Helpers
 {
@@ -72,7 +73,10 @@ namespace sapHowmuch.Base.Helpers
 		{
 			foreach (var item in _addonMenuEvents)
 			{
-				SapStream.UiApp.Menus.RemoveEx(item.MenuId);
+				if (SapStream.UiApp.Menus.Exists(item.MenuId))
+				{
+					SapStream.UiApp.Menus.RemoveEx(item.MenuId);
+				}
 			}
 		}
 
@@ -178,6 +182,9 @@ namespace sapHowmuch.Base.Helpers
 			var result = SapStream.UiApp.GetLastBatchResults();
 		}
 
+		// xml 내의 unique id 가 중복될 경우 메뉴 로딩이 잘 안된다.
+		// 중간에 한번 에러가 나면 그 다음은 무시된다.
+		// 고로 모든 menu 에 대해서 unique id 중복 체크가 필요
 		public static void LoadFromXML(Assembly assembly)
 		{
 			var xmlDoc = new XmlDocument();
@@ -188,24 +195,40 @@ namespace sapHowmuch.Base.Helpers
 				{
 					xmlDoc.Load(xmlStream);
 
-					// TODO: 여러개의 Menus 가 있을 경우
-					// 이 부분에서 메뉴 아이콘 정책이 필요
-					var node = xmlDoc.SelectSingleNode("/Application/Menus/action/Menu");
-					var imageAttr = node.Attributes.Cast<XmlAttribute>().FirstOrDefault(a => a.Name == "Image");
+					var menuNodeList = xmlDoc.GetElementsByTagName("Menu").Cast<XmlNode>();
 
-					if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
+					// unique id 중복체크
+					if (menuNodeList.GroupBy(x => x.Attributes["UniqueID"]).Any(g => g.Count() > 1))
 					{
-						imageAttr.Value = $"{Environment.CurrentDirectory}\\Resources\\{imageAttr.Value}";
-						node.Attributes.SetNamedItem(imageAttr);
+						throw new Exception("duplicate unique id");
 					}
+
+					var formControllers = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(FormController))).ToList();
+
+					foreach (XmlNode node in menuNodeList)
+					{
+						var attrs = node.Attributes.Cast<XmlAttribute>();
+
+						var imageAttr = attrs.FirstOrDefault(a => a.Name == "Image");
+
+						if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
+						{
+							imageAttr.Value = $"{Environment.CurrentDirectory}\\Resources\\{imageAttr.Value}";
+							node.Attributes.SetNamedItem(imageAttr);
+						}
+
+						_addonMenuEvents.Add(GetEventFromAttributes(assembly, attrs));
+					}
+
+					BindEvents();
 
 					string menuXmlString = xmlDoc.InnerXml;
 					string toRemove = menuXmlString.Replace("type=\"add\"", "type=\"remove\"");
-					SapStream.UiApp.LoadBatchActions(ref toRemove);
-					SapStream.UiApp.LoadBatchActions(ref menuXmlString);
 
-					// TODO: addon menu event 적용
-					// LoadBatchActions 로 메뉴를 등록하게 될 경우, 폼 오픈 이벤트에 대한 별도의 처리가 필요하다.
+					SapStream.UiApp.LoadBatchActions(ref toRemove);
+					sapHowmuchLogger.Debug(SapStream.UiApp.GetLastBatchResults());
+
+					SapStream.UiApp.LoadBatchActions(ref menuXmlString);
 					sapHowmuchLogger.Debug(SapStream.UiApp.GetLastBatchResults());
 
 					AddTerminateAppMenu(assembly);
@@ -216,6 +239,34 @@ namespace sapHowmuch.Base.Helpers
 					throw;
 				}
 			}
+		}
+
+		private static AddonMenuEvent GetEventFromAttributes(Assembly entryAssembly, IEnumerable<XmlAttribute> attrs)
+		{
+			var menuId = attrs.FirstOrDefault(a => a.Name == "UniqueID").Value;
+			var parentMenuId = attrs.FirstOrDefault(a => a.Name == "FatherUID").Value;
+			var position = Convert.ToInt32(attrs.FirstOrDefault(a => a.Name == "Position").Value);
+			var title = attrs.FirstOrDefault(a => a.Name == "String").Value;
+
+			Action formAction = null;
+
+			if (attrs.FirstOrDefault(a => a.Name == "FormType") != null)
+			{
+				var formType = entryAssembly.GetType(attrs.FirstOrDefault(a => a.Name == "FormType").Value);
+				formAction = () => CreateOrStartController(formType);
+			}
+
+			var threadedAction = attrs.FirstOrDefault(a => a.Name == "ThreadedAction") == null ? false : Convert.ToBoolean(attrs.FirstOrDefault(a => a.Name == "ThreadedAction").Value);
+
+			return new AddonMenuEvent()
+			{
+				MenuId = menuId,
+				ParentMenuId = parentMenuId,
+				Position = position,
+				Title = title,
+				Action = formAction,
+				ThreadedAction = threadedAction
+			};
 		}
 
 		[Conditional("DEBUG")]
@@ -232,9 +283,10 @@ namespace sapHowmuch.Base.Helpers
 					() =>
 					{
 						SapStream.UiApp.Menus.RemoveEx($"{appNames[appNames.Length - 1]}Stop");
-						Environment.Exit(0);
+						//Environment.Exit(0);
+						System.Windows.Forms.Application.Exit();
 					},
-					-1)
+					-1);
 			}
 		}
 

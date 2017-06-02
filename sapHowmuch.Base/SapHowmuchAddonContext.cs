@@ -22,6 +22,7 @@ namespace sapHowmuch.Base
 
 				sapHowmuchLogger.Trace(string.Format("Given connection string: {0}", Environment.GetCommandLineArgs().Length > 1 ? Environment.GetCommandLineArgs().GetValue(1).ToString() : ""));
 
+				sapHowmuchLogger.Trace($"AppId: {SapStream.UiApp.AppId}");
 				sapHowmuchLogger.Trace($"MetadataAutoRefresh: {SapStream.UiApp.MetadataAutoRefresh.ToString()}");
 				sapHowmuchLogger.Trace($"IsHostedEnvironment: {SapStream.UiApp.IsHostedEnvironment.ToString()}");
 				sapHowmuchLogger.Trace($"Language: {SapStream.UiApp.Language.ToString()}");
