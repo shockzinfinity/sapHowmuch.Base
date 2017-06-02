@@ -80,6 +80,7 @@
     <Compile Include="Constants\SboDocumentItem.cs" />
     <Compile Include="Constants\SboForm.cs" />
     <Compile Include="Constants\SboMenuItem.cs" />
+    <Compile Include="Constants\SboMenuItemTemp.cs" />
     <Compile Include="Constants\SboTable.cs" />
     <Compile Include="DependencyResolver.cs" />
     <Compile Include="Enums\Enums.cs" />
