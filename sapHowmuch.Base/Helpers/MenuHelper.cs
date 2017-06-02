@@ -8,7 +8,6 @@ using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace sapHowmuch.Base.Helpers
 {
@@ -160,31 +159,6 @@ namespace sapHowmuch.Base.Helpers
 			}
 		}
 
-		public static void LoadFromXML(string fileName)
-		{
-			var xmlDoc = new XmlDocument();
-			xmlDoc.Load(fileName);
-
-			// 작업필요
-			// TODO: 여러개의 Menus 가 있을 경우
-			// 이 부분에서 메뉴 아이콘 정책이 필요
-			var node = xmlDoc.SelectSingleNode("/Application/Menus/action/Menu");
-			var imageAttr = node.Attributes.Cast<XmlAttribute>().FirstOrDefault(a => a.Name == "Image");
-
-			if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
-			{
-				imageAttr.Value = $"{Environment.CurrentDirectory}\\Resources\\{imageAttr.Value}";
-				node.Attributes.SetNamedItem(imageAttr);
-			}
-
-			var tmpStr = xmlDoc.InnerXml;
-			SapStream.UiApp.LoadBatchActions(ref tmpStr);
-			var result = SapStream.UiApp.GetLastBatchResults();
-		}
-
-		// xml 내의 unique id 가 중복될 경우 메뉴 로딩이 잘 안된다.
-		// 중간에 한번 에러가 나면 그 다음은 무시된다.
-		// 고로 모든 menu 에 대해서 unique id 중복 체크가 필요
 		public static void LoadFromXML(Assembly assembly)
 		{
 			var xmlDoc = new XmlDocument();
@@ -197,7 +171,7 @@ namespace sapHowmuch.Base.Helpers
 
 					var menuNodeList = xmlDoc.GetElementsByTagName("Menu").Cast<XmlNode>();
 
-					// unique id 중복체크
+					// menu.xml 내의 unique id 중복체크
 					if (menuNodeList.GroupBy(x => x.Attributes["UniqueID"]).Any(g => g.Count() > 1))
 					{
 						throw new Exception("duplicate unique id");
@@ -288,36 +262,6 @@ namespace sapHowmuch.Base.Helpers
 					},
 					-1);
 			}
-		}
-
-		public static void LoadAndAddMenuItemsFromFormControllers(Assembly assembly)
-		{
-			var formControllers = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(FormController)) && t.GetInterfaces().Contains(typeof(IFormMenuItem))).ToList();
-
-			foreach (var formController in formControllers)
-			{
-				var formMenuItem = Activator.CreateInstance(formController) as IFormMenuItem;
-
-				foreach (var menuItem in formMenuItem.MenuItems)
-				{
-					var item = new AddonMenuEvent
-					{
-						MenuId = menuItem.MenuItemId,
-						ParentMenuId = menuItem.ParentMenuItemId,
-						Position = menuItem.MenuItemPosition,
-						Title = menuItem.MenuItemTitle,
-						Action = () =>
-						{
-							CreateOrStartController(formController);
-						},
-						ThreadedAction = false
-					};
-
-					AddMenuItemEvent(item.Title, item.MenuId, item.ParentMenuId, item.Action, item.Position);
-				}
-			}
-
-			BindEvents();
 		}
 
 		private static readonly List<FormController> _formControllerInstances = new List<FormController>();

@@ -8,7 +8,5 @@ namespace sapHowmuch.Base.TestWinform
 {
 	public static class TestConstants
 	{
-		public const string VATRootMenuId1 = "VAT_1_M";
-		public const string VATRootMenuId2 = "VAT_2_M";
 	}
 }
