@@ -3,6 +3,7 @@ using sapHowmuch.Base.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
@@ -13,6 +14,7 @@ namespace sapHowmuch.Base.Helpers
 {
 	public static class MenuHelper
 	{
+		private static readonly List<FormController> _formControllerInstances = new List<FormController>();
 		private static readonly List<AddonMenuEvent> _addonMenuEvents = new List<AddonMenuEvent>();
 		private static bool _isInitialized;
 		private static IDisposable _menuSubscribe;
@@ -187,7 +189,8 @@ namespace sapHowmuch.Base.Helpers
 
 						if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
 						{
-							imageAttr.Value = $"{Environment.CurrentDirectory}\\Resources\\{imageAttr.Value}";
+							//imageAttr.Value = $"{Environment.CurrentDirectory}\\Resources\\{imageAttr.Value}";
+							imageAttr.Value = Path.Combine(Environment.CurrentDirectory, "Resources", imageAttr.Value);
 							node.Attributes.SetNamedItem(imageAttr);
 						}
 
@@ -217,6 +220,8 @@ namespace sapHowmuch.Base.Helpers
 
 		private static AddonMenuEvent GetEventFromAttributes(Assembly entryAssembly, IEnumerable<XmlAttribute> attrs)
 		{
+			// TODO: menu type 이 화면인 경우만 등록하도록 변경 필요
+
 			var menuId = attrs.FirstOrDefault(a => a.Name == "UniqueID").Value;
 			var parentMenuId = attrs.FirstOrDefault(a => a.Name == "FatherUID").Value;
 			var position = Convert.ToInt32(attrs.FirstOrDefault(a => a.Name == "Position").Value);
@@ -228,6 +233,10 @@ namespace sapHowmuch.Base.Helpers
 			{
 				var formType = entryAssembly.GetType(attrs.FirstOrDefault(a => a.Name == "FormType").Value);
 				formAction = () => CreateOrStartController(formType);
+			}
+			else
+			{
+				// TODO: form type 어트리뷰트가 존재하지 않을 경우의 처리
 			}
 
 			var threadedAction = attrs.FirstOrDefault(a => a.Name == "ThreadedAction") == null ? false : Convert.ToBoolean(attrs.FirstOrDefault(a => a.Name == "ThreadedAction").Value);
@@ -264,10 +273,11 @@ namespace sapHowmuch.Base.Helpers
 			}
 		}
 
-		private static readonly List<FormController> _formControllerInstances = new List<FormController>();
-
 		private static void CreateOrStartController(Type formControllerType)
 		{
+			if (formControllerType == null)
+				throw new ArgumentNullException(nameof(formControllerType));
+
 			// clean up disposed form controllers
 			_formControllerInstances.RemoveAll(i => i.Form == null);
 			GC.Collect();

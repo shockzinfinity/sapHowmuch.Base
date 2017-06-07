@@ -8,7 +8,7 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 {
 	public class TestFormController : FormController
 	{
-		public override void FormCreated()
+		protected override void FormCreated()
 		{
 			var comboboxItem = Form.Items.Add("comboT01", SAPbouiCOM.BoFormItemTypes.it_COMBO_BOX);
 			comboboxItem.Visible = true;
@@ -24,6 +24,5 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 		}
 
 		public override bool Unique => true;
-		public string MenuItemTitle => "Test sap form";
 	}
 }

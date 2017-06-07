@@ -39,7 +39,7 @@ namespace sapHowmuch.Base.Forms
 			sapHowmuchLogger.Debug("Called FormController.Destruct");
 		}
 
-		public void Start()
+		public virtual void Start()
 		{
 			if (Form != null)
 			{
@@ -83,12 +83,17 @@ namespace sapHowmuch.Base.Forms
 			Form = null;
 		}
 
-		public virtual void FormCreated()
+		protected virtual void FormCreated()
 		{
 		}
 
-		public virtual void BindFormEvents()
+		protected virtual void BindFormEvents()
 		{
+		}
+
+		protected virtual void OnFormClosed()
+		{
+
 		}
 
 		/// <summary>
@@ -96,8 +101,9 @@ namespace sapHowmuch.Base.Forms
 		/// TODO: b1s 파일 지원
 		/// </summary>
 		public virtual string FormResource => $"Views.{GetType().Name.Replace("Controller", string.Empty)}.srf";
-
 		public virtual string FormType => $"{GetType().Name.Replace("Controller", string.Empty)}";
 		public virtual bool Unique => true;
+
+		// TODO: UniqueId, Count, Type injection?
 	}
 }
