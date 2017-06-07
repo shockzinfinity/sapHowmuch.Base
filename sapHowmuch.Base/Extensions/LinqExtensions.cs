@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sapHowmuch.Base.TestWinform
+namespace sapHowmuch.Base.Extensions
 {
-	public static class TestConstants
+	public static class LinqExtensions
 	{
 	}
 }
