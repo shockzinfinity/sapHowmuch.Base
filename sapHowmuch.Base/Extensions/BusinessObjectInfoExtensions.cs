@@ -18,6 +18,11 @@ namespace sapHowmuch.Base.Extensions
 			return businessObject.Object.Search(businessObject.BoObjectType.GetTableName(), $"[DocNum] = {docNum}");
 		}
 
+		public static bool GetByDocEntry<T>(this BusinessObject<T> businessObject, int docEntry) where T : SAPbobsCOM.Documents
+		{
+			return businessObject.Object.Search(businessObject.BoObjectType.GetTableName(), $"[DocEntry] = {docEntry}");
+		}
+
 		public static BusinessObject<T> GetBusinessObject<T>(this SAPbobsCOM.Company company, SAPbobsCOM.BoObjectTypes boObjectTypes)
 		{
 			return new BusinessObject<T>(company, boObjectTypes);
