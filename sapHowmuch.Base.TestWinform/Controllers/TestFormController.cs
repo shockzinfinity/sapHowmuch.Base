@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace sapHowmuch.Base.TestWinform.Controllers
 {
-	public class TestFormController : FormController, IFormMenuItem
+	public class TestFormController : FormController
 	{
 		public override void FormCreated()
 		{
@@ -24,18 +24,6 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 		}
 
 		public override bool Unique => true;
-
 		public string MenuItemTitle => "Test sap form";
-
-		public string[] ParentMenuItemId => new string[] { SboMenuItem.Inventory };
-
-		public IEnumerable<FormMenuItem> MenuItems => new[]
-		{
-			new FormMenuItem
-			{
-				MenuItemTitle = "Test sap form",
-				ParentMenuItemId =SboMenuItem.Inventory,
-			}
-		};
 	}
 }

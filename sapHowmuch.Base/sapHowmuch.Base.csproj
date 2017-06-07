@@ -80,10 +80,12 @@
     <Compile Include="Constants\SboDocumentItem.cs" />
     <Compile Include="Constants\SboForm.cs" />
     <Compile Include="Constants\SboMenuItem.cs" />
+    <Compile Include="Constants\SboMenuItemTemp.cs" />
     <Compile Include="Constants\SboTable.cs" />
     <Compile Include="DependencyResolver.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Services\ISettingService.cs" />
     <Compile Include="Services\SettingService.cs" />
     <Compile Include="Setup\ISetup.cs" />
@@ -124,7 +126,6 @@
     <Compile Include="Extensions\UserQueryExtensions.cs" />
     <Compile Include="Forms\FormController.cs" />
     <Compile Include="Forms\Freeze.cs" />
-    <Compile Include="Forms\IFormMenuItem.cs" />
     <Compile Include="Helpers\DocumentSeriesHelper.cs" />
     <Compile Include="Helpers\ErrorHelper.cs" />
     <Compile Include="Helpers\FormHelper.cs" />

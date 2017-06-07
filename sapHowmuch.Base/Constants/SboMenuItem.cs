@@ -1,5 +1,7 @@
 ﻿#pragma warning disable 1591
 
+using System.ComponentModel;
+
 namespace sapHowmuch.Base.Constants
 {
 	public class SboMenuItem
@@ -36,5 +38,9 @@ namespace sapHowmuch.Base.Constants
 		/// 재고 관리
 		/// </summary>
 		public const string Inventory = "3072";
+		/// <summary>
+		/// 운영관리 > 설정
+		/// </summary>
+		public const string Setup = "43525";
 	}
 }
