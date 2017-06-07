@@ -21,14 +21,8 @@ namespace sapHowmuch.Base.TestWinform
 				var addonAssembly = Assembly.GetEntryAssembly();
 				sapHowmuchLogger.Debug($"Entry Assembly: {addonAssembly.GetName()}");
 
-				// 메뉴로딩테스트
+				// 메뉴로딩
 				MenuHelper.LoadFromXML(addonAssembly);
-
-				// 메뉴 스트럭쳐 구성
-				//MenuHelper.AddFolder("부가세1", TestConstants.VATRootMenuId1, SboMenuItem.Modules);
-				//MenuHelper.AddFolder("부가세2", TestConstants.VATRootMenuId2, SboMenuItem.Modules);
-
-				//MenuHelper.LoadAndAddMenuItemsFromFormControllers(addonAssembly);
 
 				sapHowmuchLogger.Trace("TestWinformContext loaded.");
 			}

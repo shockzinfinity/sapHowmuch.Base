@@ -1,5 +1,6 @@
 ﻿using sapHowmuch.Base.Constants;
 using sapHowmuch.Base.EventArguments;
+using sapHowmuch.Base.Extensions;
 using sapHowmuch.Base.Helpers;
 using System;
 using System.Configuration;
@@ -45,6 +46,10 @@ namespace sapHowmuch.Base
 		/// SAP Business One UI API
 		/// </summary>
 		public static SAPbouiCOM.Application UiApp { get { return _application; } }
+
+		#region public methods
+
+		#endregion
 
 		#region SAP Business One event stream
 

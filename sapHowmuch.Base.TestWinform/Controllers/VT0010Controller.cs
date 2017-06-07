@@ -5,7 +5,7 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 {
 	public class VT0010Controller : FormController
 	{
-		public override void FormCreated()
+		protected override void FormCreated()
 		{
 			using (Form.FreezeEx())
 			{
