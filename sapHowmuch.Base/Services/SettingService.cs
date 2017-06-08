@@ -10,7 +10,7 @@ namespace sapHowmuch.Base.Services
 {
 	public class SettingService : ISettingService
 	{
-		private const string _udtSettings = "sapHowmuchSettings";
+		private const string _udtSettings = "ADGLOBAL";
 		private const string _udfSettingValue = "SettingValue";
 		private bool _setupOk;
 		private static SettingService _instance;

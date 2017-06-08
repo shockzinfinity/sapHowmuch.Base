@@ -36,14 +36,13 @@ namespace sapHowmuch.Base.TestWinform
 
 		private void Test_Form()
 		{
+			// form 직접 생성
 			var form = FormHelper.CreateFormFromResource("Views.TestForm.srf", "fType1", "fId1");
+			form.VisibleEx = true;
 
-			form.Visible = true;
-
-
+			// form 직접 생성
 			var form2 = FormHelper.CreateFormFromResource("Views.TestForm.srf", "fType1", "fId3");
-
-			form2.Visible = true;
+			form2.VisibleEx = true;
 		}
 	}
 }

@@ -12,7 +12,5 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 				Form.VisibleEx = true;
 			}
 		}
-
-		public override bool Unique => false;
 	}
 }

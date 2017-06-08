@@ -28,6 +28,10 @@ namespace sapHowmuch.Base.Forms
 			}
 		}
 
+		public int? TypeCount { get { return _form?.TypeCount; } }
+
+		public string TypeEx { get { return _form?.TypeEx; } }
+
 		public FormController(bool autoStart = false)
 		{
 			if (autoStart)
@@ -79,6 +83,7 @@ namespace sapHowmuch.Base.Forms
 
 		public void Close()
 		{
+			// TODO: dispose 정책 필요
 			Form.Close();
 			Form = null;
 		}
@@ -93,7 +98,6 @@ namespace sapHowmuch.Base.Forms
 
 		protected virtual void OnFormClosed()
 		{
-
 		}
 
 		/// <summary>
@@ -105,5 +109,8 @@ namespace sapHowmuch.Base.Forms
 		public virtual bool Unique => true;
 
 		// TODO: UniqueId, Count, Type injection?
+
+		public long TypeCount { get; set; } // TODO: getter, setter 액세스 한정자 수정 필요
+		public long Count { get; set; }
 	}
 }

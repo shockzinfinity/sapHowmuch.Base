@@ -49,7 +49,15 @@ namespace sapHowmuch.Base.Extensions
 
 		public static void AddComboBoxValues(this SAPbouiCOM.ComboBox comboBox, string sql)
 		{
-			// TODO: remove combobox existing validvalues
+			if (comboBox.ValidValues.Count > 0)
+			{
+				var count = comboBox.ValidValues.Count;
+				for (int i = count - 1; i >= 0; i--)
+				{
+					comboBox.ValidValues.Remove(i, SAPbouiCOM.BoSearchKey.psk_Index);
+				}
+			}
+
 			using (var query = new SboRecordsetQuery(sql))
 			{
 				foreach (var combo in query.Result)
