@@ -1,7 +1,10 @@
-﻿using sapHowmuch.Base.Helpers;
+﻿using sapHowmuch.Base.Constants;
+using sapHowmuch.Base.Helpers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 
 namespace sapHowmuch.Base.Extensions
 {
@@ -54,6 +57,9 @@ namespace sapHowmuch.Base.Extensions
 
 		public static bool Search(this SAPbobsCOM.IDocuments document, string table, string where)
 		{
+			if (string.IsNullOrWhiteSpace(table))
+				throw new ArgumentNullException(nameof(table));
+
 			var recordSet = SapStream.DICompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset) as SAPbobsCOM.Recordset;
 			recordSet.DoQuery($"SELECT * FROM [{table}] WHERE {where}");
 			document.Browser.Recordset = recordSet;
@@ -121,18 +127,9 @@ namespace sapHowmuch.Base.Extensions
 
 		public static string GetTableName(this SAPbobsCOM.BoObjectTypes boObjectType)
 		{
-			switch (boObjectType)
-			{
-				// TODO: 테이블명 상수화
-				case SAPbobsCOM.BoObjectTypes.oBusinessPartners: return "OCRD";
-				case SAPbobsCOM.BoObjectTypes.oItems: return "OITM";
-				case SAPbobsCOM.BoObjectTypes.oInvoices: return "OINV";
-				case SAPbobsCOM.BoObjectTypes.oDeliveryNotes: return "ODLN";
-				case SAPbobsCOM.BoObjectTypes.oOrders: return "ORDR";
-			}
+			var tableConstant = typeof(SboTable).GetFields().FirstOrDefault(x => x.GetCustomAttribute<DescriptionAttribute>().Description == ((int)boObjectType).ToString());
 
-			// TODO: 테이블 추가 필요
-			throw new NotImplementedException($"I dont know the table for {boObjectType} yet :(");
+			return tableConstant?.GetRawConstantValue().ToString();
 		}
 
 		public static void AddComment(this SAPbobsCOM.IDocuments documents, string comment)

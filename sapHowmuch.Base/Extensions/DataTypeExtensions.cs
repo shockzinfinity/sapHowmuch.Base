@@ -7,12 +7,10 @@ namespace sapHowmuch.Base.Extensions
 	{
 		public static DateTime? ToDate(this SAPbouiCOM.UserDataSource datasource)
 		{
-			if (string.IsNullOrWhiteSpace(datasource.ValueEx))
+			if (string.IsNullOrWhiteSpace(datasource.ValueEx.Trim()))
 				return null;
 
-			return DateTime.ParseExact(datasource.ValueEx, "yyyyMMdd", CultureInfo.InvariantCulture);
+			return DateTime.ParseExact(datasource.ValueEx.Trim(), "yyyyMMdd", CultureInfo.InvariantCulture);
 		}
-
-		// TODO: 다른 데이터 타입 추가 필요
 	}
 }

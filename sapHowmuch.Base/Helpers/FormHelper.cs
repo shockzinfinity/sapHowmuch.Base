@@ -1,5 +1,7 @@
-﻿using System;
+﻿using sapHowmuch.Base.Extensions;
+using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace sapHowmuch.Base.Helpers
@@ -49,7 +51,7 @@ namespace sapHowmuch.Base.Helpers
 
 				using (var textStreamReader = new StreamReader(stream))
 				{
-					formXml = textStreamReader.ReadToEnd();
+					formXml = textStreamReader.ReadToEnd(); // srf 로딩시점
 				}
 
 				var creationPackage = SapStream.UiApp.CreateObject(SAPbouiCOM.BoCreatableObjectType.cot_FormCreationParams) as SAPbouiCOM.FormCreationParams;
@@ -59,7 +61,22 @@ namespace sapHowmuch.Base.Helpers
 				creationPackage.XmlData = formXml;
 
 				if (formId != null)
+				{
 					creationPackage.UniqueID = formId;
+				}
+				else
+				{
+					if (SapStream.UiApp.Forms.AsEnumerable().Any(x => x.TypeEx == formType))
+					{
+						var maxCount = SapStream.UiApp.Forms.AsEnumerable().Where(x => x.TypeEx == formType).Max(x => x.TypeCount);
+						var currentCount = maxCount + 1;
+						creationPackage.UniqueID = string.Format($"{formType}_{currentCount}");
+					}
+					else
+					{
+						creationPackage.UniqueID = string.Format($"{formType}_1");
+					}
+				}
 
 				var form = SapStream.UiApp.Forms.AddEx(creationPackage);
 

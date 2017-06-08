@@ -28,6 +28,10 @@ namespace sapHowmuch.Base.Forms
 			}
 		}
 
+		public int? TypeCount { get { return _form?.TypeCount; } }
+
+		public string TypeEx { get { return _form?.TypeEx; } }
+
 		public FormController(bool autoStart = false)
 		{
 			if (autoStart)
@@ -39,7 +43,7 @@ namespace sapHowmuch.Base.Forms
 			sapHowmuchLogger.Debug("Called FormController.Destruct");
 		}
 
-		public void Start()
+		public virtual void Start()
 		{
 			if (Form != null)
 			{
@@ -51,7 +55,7 @@ namespace sapHowmuch.Base.Forms
 			{
 				var assembly = GetType().Assembly;
 				Form = FormHelper.CreateFormFromResource(FormResource, FormType, null, assembly);
-				sapHowmuchLogger.Debug($"Form created: Type = {Form.Type}, UID = {Form.UniqueID}");
+				sapHowmuchLogger.Debug($"Form created: Type = {Form.TypeEx}, UID = {Form.UniqueID}");
 
 				try
 				{
@@ -79,15 +83,20 @@ namespace sapHowmuch.Base.Forms
 
 		public void Close()
 		{
+			// TODO: dispose 정책 필요
 			Form.Close();
 			Form = null;
 		}
 
-		public virtual void FormCreated()
+		protected virtual void FormCreated()
 		{
 		}
 
-		public virtual void BindFormEvents()
+		protected virtual void BindFormEvents()
+		{
+		}
+
+		protected virtual void OnFormClosed()
 		{
 		}
 

@@ -3,6 +3,7 @@ using sapHowmuch.Base.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
@@ -13,6 +14,7 @@ namespace sapHowmuch.Base.Helpers
 {
 	public static class MenuHelper
 	{
+		private static readonly List<FormController> _formControllerInstances = new List<FormController>();
 		private static readonly List<AddonMenuEvent> _addonMenuEvents = new List<AddonMenuEvent>();
 		private static bool _isInitialized;
 		private static IDisposable _menuSubscribe;
@@ -48,7 +50,11 @@ namespace sapHowmuch.Base.Helpers
 				var menuId = x.DetailArg.MenuUID;
 				var menuEvent = _addonMenuEvents.FirstOrDefault(e => e.MenuId == menuId);
 
-				if (menuEvent == null) return;
+				if (menuEvent == null || menuEvent.Action == null)
+				{
+					sapHowmuchLogger.Error($"MenuId: '{menuId}' menuEvent or action are missing.");
+					return;
+				}
 
 				if (menuEvent.ThreadedAction)
 				{
@@ -171,8 +177,8 @@ namespace sapHowmuch.Base.Helpers
 
 					var menuNodeList = xmlDoc.GetElementsByTagName("Menu").Cast<XmlNode>();
 
-					// menu.xml 내의 unique id 중복체크
-					if (menuNodeList.GroupBy(x => x.Attributes["UniqueID"]).Any(g => g.Count() > 1))
+					// check if unique id is duplicated in menu.xml
+					if (menuNodeList.GroupBy(x => x.Attributes[sapHowmuchConstants.UniqueIdAttr]).Any(g => g.Count() > 1))
 					{
 						throw new Exception("duplicate unique id");
 					}
@@ -183,15 +189,27 @@ namespace sapHowmuch.Base.Helpers
 					{
 						var attrs = node.Attributes.Cast<XmlAttribute>();
 
-						var imageAttr = attrs.FirstOrDefault(a => a.Name == "Image");
+						var imageAttr = attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.ImageAttr);
 
 						if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
 						{
-							imageAttr.Value = $"{Environment.CurrentDirectory}\\Resources\\{imageAttr.Value}";
+							imageAttr.Value = Path.Combine(Environment.CurrentDirectory, "Resources", imageAttr.Value);
 							node.Attributes.SetNamedItem(imageAttr);
 						}
 
-						_addonMenuEvents.Add(GetEventFromAttributes(assembly, attrs));
+						var menuTypeAttr = attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.MenuTypeAttr);
+						var formTypeAttr = attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.FormTypeAttr);
+
+						if (menuTypeAttr.Value == ((int)SAPbouiCOM.BoMenuType.mt_STRING).ToString() &&
+							formTypeAttr != null &&
+							!string.IsNullOrWhiteSpace(formTypeAttr.Value))
+						{
+							_addonMenuEvents.Add(GetEventFromAttributes(assembly, attrs));
+						}
+						else
+						{
+							continue;
+						}
 					}
 
 					BindEvents();
@@ -217,20 +235,28 @@ namespace sapHowmuch.Base.Helpers
 
 		private static AddonMenuEvent GetEventFromAttributes(Assembly entryAssembly, IEnumerable<XmlAttribute> attrs)
 		{
-			var menuId = attrs.FirstOrDefault(a => a.Name == "UniqueID").Value;
-			var parentMenuId = attrs.FirstOrDefault(a => a.Name == "FatherUID").Value;
-			var position = Convert.ToInt32(attrs.FirstOrDefault(a => a.Name == "Position").Value);
-			var title = attrs.FirstOrDefault(a => a.Name == "String").Value;
+			var menuId = attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.UniqueIdAttr).Value;
+			var parentMenuId = attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.MenuTypeAttr).Value;
+			var position = Convert.ToInt32(attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.PositionAttr).Value);
+			var title = attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.TitleAttr).Value;
 
 			Action formAction = null;
 
-			if (attrs.FirstOrDefault(a => a.Name == "FormType") != null)
+			if (attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.FormTypeAttr) != null)
 			{
-				var formType = entryAssembly.GetType(attrs.FirstOrDefault(a => a.Name == "FormType").Value);
-				formAction = () => CreateOrStartController(formType);
+				var formType = entryAssembly.GetTypes().SingleOrDefault(t => t.Name == attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.FormTypeAttr).Value && t.BaseType == typeof(FormController));
+
+				if (formType != null)
+				{
+					formAction = () => CreateOrStartController(formType);
+				}
+				else
+				{
+					sapHowmuchLogger.Error($"FormType: '{attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.FormTypeAttr).Value}' is missing");
+				}
 			}
 
-			var threadedAction = attrs.FirstOrDefault(a => a.Name == "ThreadedAction") == null ? false : Convert.ToBoolean(attrs.FirstOrDefault(a => a.Name == "ThreadedAction").Value);
+			var threadedAction = attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.ThreadedActionAttr) == null ? false : Convert.ToBoolean(attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.ThreadedActionAttr).Value);
 
 			return new AddonMenuEvent()
 			{
@@ -256,18 +282,20 @@ namespace sapHowmuch.Base.Helpers
 					SboMenuItem.Modules,
 					() =>
 					{
+						// TODO: 현재 로딩된 form instance dispose 전체
 						SapStream.UiApp.Menus.RemoveEx($"{appNames[appNames.Length - 1]}Stop");
 						//Environment.Exit(0);
 						System.Windows.Forms.Application.Exit();
 					},
-					-1);
+					-1); // last position
 			}
 		}
 
-		private static readonly List<FormController> _formControllerInstances = new List<FormController>();
-
 		private static void CreateOrStartController(Type formControllerType)
 		{
+			if (formControllerType == null)
+				throw new ArgumentNullException(nameof(formControllerType));
+
 			// clean up disposed form controllers
 			_formControllerInstances.RemoveAll(i => i.Form == null);
 			GC.Collect();
