@@ -23,7 +23,6 @@ namespace sapHowmuch.Base.TestWinform
 
 				// 메뉴로딩
 				MenuHelper.LoadFromXML(addonAssembly);
-
 				sapHowmuchLogger.Trace("TestWinformContext loaded.");
 			}
 			catch (Exception ex)

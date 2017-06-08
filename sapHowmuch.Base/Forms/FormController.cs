@@ -3,7 +3,7 @@ using System;
 
 namespace sapHowmuch.Base.Forms
 {
-	public abstract class FormController
+	public abstract partial class FormController
 	{
 		private SAPbouiCOM.IForm _form;
 
@@ -31,6 +31,8 @@ namespace sapHowmuch.Base.Forms
 		public int? TypeCount { get { return _form?.TypeCount; } }
 
 		public string TypeEx { get { return _form?.TypeEx; } }
+
+		public string UniqueId { get { return _form?.UniqueID; } }
 
 		public FormController(bool autoStart = false)
 		{
@@ -68,7 +70,7 @@ namespace sapHowmuch.Base.Forms
 
 				try
 				{
-					BindFormEvents();
+					SubscribeToStream();
 				}
 				catch (Exception ex)
 				{
@@ -92,17 +94,13 @@ namespace sapHowmuch.Base.Forms
 		{
 		}
 
-		protected virtual void BindFormEvents()
-		{
-		}
-
 		protected virtual void OnFormClosed()
 		{
 		}
 
 		/// <summary>
 		/// view resource
-		/// TODO: b1s 파일 지원
+		/// TODO: b1f 파일 지원
 		/// </summary>
 		public virtual string FormResource => $"Views.{GetType().Name.Replace("Controller", string.Empty)}.srf";
 
