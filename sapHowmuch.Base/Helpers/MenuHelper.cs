@@ -177,7 +177,7 @@ namespace sapHowmuch.Base.Helpers
 
 					var menuNodeList = xmlDoc.GetElementsByTagName("Menu").Cast<XmlNode>();
 
-					// menu.xml 내의 unique id 중복체크
+					// check if unique id is duplicated in menu.xml
 					if (menuNodeList.GroupBy(x => x.Attributes[sapHowmuchConstants.UniqueIdAttr]).Any(g => g.Count() > 1))
 					{
 						throw new Exception("duplicate unique id");
@@ -193,12 +193,10 @@ namespace sapHowmuch.Base.Helpers
 
 						if (imageAttr != null && !string.IsNullOrWhiteSpace(imageAttr.Value))
 						{
-							//imageAttr.Value = $"{Environment.CurrentDirectory}\\Resources\\{imageAttr.Value}";
 							imageAttr.Value = Path.Combine(Environment.CurrentDirectory, "Resources", imageAttr.Value);
 							node.Attributes.SetNamedItem(imageAttr);
 						}
 
-						// menu 만 등록되도록
 						var menuTypeAttr = attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.MenuTypeAttr);
 						var formTypeAttr = attrs.FirstOrDefault(a => a.Name == sapHowmuchConstants.FormTypeAttr);
 
@@ -284,6 +282,7 @@ namespace sapHowmuch.Base.Helpers
 					SboMenuItem.Modules,
 					() =>
 					{
+						// TODO: 현재 로딩된 form instance dispose 전체
 						SapStream.UiApp.Menus.RemoveEx($"{appNames[appNames.Length - 1]}Stop");
 						//Environment.Exit(0);
 						System.Windows.Forms.Application.Exit();

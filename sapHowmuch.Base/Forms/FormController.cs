@@ -55,7 +55,7 @@ namespace sapHowmuch.Base.Forms
 			{
 				var assembly = GetType().Assembly;
 				Form = FormHelper.CreateFormFromResource(FormResource, FormType, null, assembly);
-				sapHowmuchLogger.Debug($"Form created: Type = {Form.Type}, UID = {Form.UniqueID}");
+				sapHowmuchLogger.Debug($"Form created: Type = {Form.TypeEx}, UID = {Form.UniqueID}");
 
 				try
 				{
@@ -105,12 +105,8 @@ namespace sapHowmuch.Base.Forms
 		/// TODO: b1s 파일 지원
 		/// </summary>
 		public virtual string FormResource => $"Views.{GetType().Name.Replace("Controller", string.Empty)}.srf";
+
 		public virtual string FormType => $"{GetType().Name.Replace("Controller", string.Empty)}";
 		public virtual bool Unique => true;
-
-		// TODO: UniqueId, Count, Type injection?
-
-		public long TypeCount { get; set; } // TODO: getter, setter 액세스 한정자 수정 필요
-		public long Count { get; set; }
 	}
 }

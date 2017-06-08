@@ -1,5 +1,7 @@
-﻿using System;
+﻿using sapHowmuch.Base.Extensions;
+using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace sapHowmuch.Base.Helpers
@@ -19,9 +21,6 @@ namespace sapHowmuch.Base.Helpers
 			if (assembly == null)
 				assembly = Assembly.GetCallingAssembly();
 
-			// formId 를 가지고 호출 하는 경우, 이는 고유한 id 로 폼을 생성하겠다는 의미
-			// TypeCount 는 항상 1이어야 하며
-			// TypeEx 는 해당 controller 의 type 으로 가도록 한다.
 			if (formId != null)
 			{
 				try
@@ -39,10 +38,6 @@ namespace sapHowmuch.Base.Helpers
 
 			try
 			{
-				// 고유 id 없이 폼을 만들어서 실행하는 경우
-				// 1. srf 의 지정된 UniqueID, Type(FormType) 을 creationPackage 에 할당해서 폼을 생성시킨다.
-				// 2. 위의 두 
-
 				string formXml;
 
 				resourceName = string.Concat(assembly.GetName().Name, ".", resourceName);
@@ -71,8 +66,16 @@ namespace sapHowmuch.Base.Helpers
 				}
 				else
 				{
-					SapStream.UiApp.Forms.get
-					// TODO: 현재 sap stream 의 forms 에서 해당 typeex 의 폼을 찾은 이후, count 상의 최고 값을 찾고, +1 해서 부여...
+					if (SapStream.UiApp.Forms.AsEnumerable().Any(x => x.TypeEx == formType))
+					{
+						var maxCount = SapStream.UiApp.Forms.AsEnumerable().Where(x => x.TypeEx == formType).Max(x => x.TypeCount);
+						var currentCount = maxCount + 1;
+						creationPackage.UniqueID = string.Format($"{formType}_{currentCount}");
+					}
+					else
+					{
+						creationPackage.UniqueID = string.Format($"{formType}_1");
+					}
 				}
 
 				var form = SapStream.UiApp.Forms.AddEx(creationPackage);
