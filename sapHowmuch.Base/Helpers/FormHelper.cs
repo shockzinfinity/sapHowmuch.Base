@@ -52,14 +52,23 @@ namespace sapHowmuch.Base.Helpers
 
 				using (var textStreamReader = new StreamReader(stream))
 				{
-					formXml = textStreamReader.ReadToEnd(); // srf 로딩시점
+					formXml = textStreamReader.ReadToEnd();
 				}
 
 				var creationPackage = SapStream.UiApp.CreateObject(SAPbouiCOM.BoCreatableObjectType.cot_FormCreationParams) as SAPbouiCOM.FormCreationParams;
 
+				// NOTE: creationPackage 의 formType 의 정보가 우선시 된다.
+				// creationPackage.FormType 을 지정하지 않으면 srf 의 form type 으로 셋팅 된다.
+				// 고로, FormType 은 FormController 에서 지정하도록 하고, srf에서는 지정하지 않도록 한다.
 				creationPackage.FormType = formType;
-				creationPackage.BorderStyle = SAPbouiCOM.BoFormBorderStyle.fbs_Fixed;
 				creationPackage.XmlData = formXml;
+
+				// TODO: 폼 초기화 정책에 대한 결정 필요
+				// TODO: 유저필드 창에 대한 정책 결정 필요
+				// TODO: 모달 테스트
+				// TODO: 시스템 및 UDO 화면 정책 필요
+				//creationPackage.Modality = SAPbouiCOM.BoFormModality.fm_Modal;
+				//creationPackage.ObjectType = "";
 
 				if (formId != null)
 				{

@@ -101,7 +101,6 @@ namespace sapHowmuch.Base.Forms
 
 		/// <summary>
 		/// view resource
-		/// TODO: b1f 파일 지원
 		/// </summary>
 		public virtual string FormResource => $"Views.{GetType().Name.Replace("Controller", string.Empty)}.srf";
 
