@@ -24,7 +24,7 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 			{
 				Debug.WriteLine($"EventType: {ev.DetailArg.EventType.ToString()}");
 				Debug.WriteLine($"FiredTime: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
-				Debug.WriteLine($"Form UniqueId: {ev.FormUid}");
+				Debug.WriteLine($"Form UniqueId: {ev.DetailArg.FormUID}");
 				Debug.WriteLine($"FormTypeEx: {ev.DetailArg.FormTypeEx}");
 				Debug.WriteLine($"Item UniqueId: {ev.DetailArg.ItemUID}");
 				Debug.WriteLine(Environment.NewLine);

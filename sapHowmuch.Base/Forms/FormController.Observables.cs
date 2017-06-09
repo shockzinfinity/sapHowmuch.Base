@@ -11,7 +11,7 @@ namespace sapHowmuch.Base.Forms
 
 		private void MakeFormStream()
 		{
-			ItemEventStream = SapStream.ItemEventStream.Where(e => e.FormUid == this.UniqueId);
+			ItemEventStream = SapStream.ItemEventStream.Where(e => e.DetailArg.FormUID == this.UniqueId);
 		}
 	}
 }
