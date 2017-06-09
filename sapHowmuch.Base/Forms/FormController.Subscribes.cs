@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using sapHowmuch.Base.EventArguments;
 
 namespace sapHowmuch.Base.Forms
 {
@@ -25,6 +26,17 @@ namespace sapHowmuch.Base.Forms
 					Debug.WriteLine(ev.DetailArg.EventType.ToString());
 				});
 		}
+
+		private void MakeFormStream()
+		{
+			ItemEventStream = SapStream.ItemEventStream.Where(e => e.FormUid == this.UniqueId);
+		}
+
+		#endregion
+
+		#region observables
+
+		protected IObservable<SapItemEventArgs> ItemEventStream { get; set; }
 
 		#endregion
 	}

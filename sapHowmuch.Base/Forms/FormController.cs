@@ -61,20 +61,21 @@ namespace sapHowmuch.Base.Forms
 
 				try
 				{
+					MakeFormStream();
+					//SubscribeToStream();
+				}
+				catch (Exception ex)
+				{
+					SapStream.UiApp.MessageBox($"BindFormEvents Error: {ex.Message}");
+				}
+
+				try
+				{
 					FormCreated();
 				}
 				catch (Exception ex)
 				{
 					SapStream.UiApp.MessageBox($"FormCreated Error: {ex.Message}");
-				}
-
-				try
-				{
-					SubscribeToStream();
-				}
-				catch (Exception ex)
-				{
-					SapStream.UiApp.MessageBox($"BindFormEvents Error: {ex.Message}");
 				}
 			}
 			catch (Exception ex)
