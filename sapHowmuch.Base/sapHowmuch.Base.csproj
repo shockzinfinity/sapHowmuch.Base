@@ -86,7 +86,9 @@
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
-    <Compile Include="Forms\FormController.Subscribes.cs">
+    <Compile Include="Extensions\SboDIExtensions.cs" />
+    <Compile Include="Extensions\SboUIExtensions.cs" />
+    <Compile Include="Forms\FormController.Observables.cs">
       <DependentUpon>FormController.cs</DependentUpon>
     </Compile>
     <Compile Include="SapStream.Observable.cs">

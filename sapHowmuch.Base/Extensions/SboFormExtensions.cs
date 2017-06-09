@@ -72,14 +72,11 @@ namespace sapHowmuch.Base.Extensions
 			return new Freeze(form);
 		}
 
-		public static IEnumerable<SAPbouiCOM.Form> AsEnumerable(this SAPbouiCOM.Forms forms, Func<SAPbouiCOM.Form, bool> filter = null)
+		public static IEnumerable<SAPbouiCOM.Form> AsEnumerable(this SAPbouiCOM.Forms forms)
 		{
 			foreach (SAPbouiCOM.Form item in SapStream.UiApp.Forms)
 			{
-				if (filter != null)
-					yield return filter(item) ? item : null; // TODO: 테스트 필요
-				else
-					yield return item;
+				yield return item;
 			}
 		}
 	}

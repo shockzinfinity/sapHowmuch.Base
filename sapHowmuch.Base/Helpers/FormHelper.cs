@@ -10,6 +10,7 @@ namespace sapHowmuch.Base.Helpers
 	{
 		/// <summary>
 		/// create SAP Business One form from internal resource
+		/// if form is opened using specific unique id, formId parameter must be provided.
 		/// </summary>
 		/// <param name="resourceName"></param>
 		/// <param name="formType"></param>

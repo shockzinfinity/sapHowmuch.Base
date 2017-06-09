@@ -22,11 +22,11 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 		{
 			ItemEventStream.Subscribe(ev =>
 			{
-				Debug.WriteLine(ev.DetailArg.EventType.ToString());
-				Debug.WriteLine(ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
-				Debug.WriteLine(ev.FormUid);
-				Debug.WriteLine(ev.DetailArg.FormTypeEx);
-				Debug.WriteLine(ev.DetailArg.ItemUID);
+				Debug.WriteLine($"EventType: {ev.DetailArg.EventType.ToString()}");
+				Debug.WriteLine($"FiredTime: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
+				Debug.WriteLine($"Form UniqueId: {ev.FormUid}");
+				Debug.WriteLine($"FormTypeEx: {ev.DetailArg.FormTypeEx}");
+				Debug.WriteLine($"Item UniqueId: {ev.DetailArg.ItemUID}");
 				Debug.WriteLine(Environment.NewLine);
 			});
 		}
