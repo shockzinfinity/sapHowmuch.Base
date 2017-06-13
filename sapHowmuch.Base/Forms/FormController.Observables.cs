@@ -7,6 +7,7 @@ namespace sapHowmuch.Base.Forms
 {
 	partial class FormController
 	{
+		// TODO: 나머지 이벤트 스트림 추가
 		protected IObservable<SapItemEventArgs> ItemEventStream { get; set; }
 
 		private void MakeFormStream()

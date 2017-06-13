@@ -14,14 +14,14 @@ namespace sapHowmuch.Base.Constants
 
 		#region menu attribute constants
 
-		public const string FormTypeAttr = "FormType";
-		public const string UniqueIdAttr = "UniqueID";
-		public const string FatherUIDAttr = "FatherUID";
-		public const string PositionAttr = "Position";
-		public const string TitleAttr = "String";
+		public const string MenuFormTypeAttr = "FormType";
+		public const string MenuUniqueIdAttr = "UniqueID";
+		public const string MenuFatherUIDAttr = "FatherUID";
+		public const string MenuPositionAttr = "Position";
+		public const string MenuTitleAttr = "String";
 		public const string MenuTypeAttr = "Type";
-		public const string ThreadedActionAttr = "ThreadedAction";
-		public const string ImageAttr = "Image";
+		public const string MenuThreadedActionAttr = "ThreadedAction";
+		public const string MenuImageAttr = "Image";
 
 		#endregion
 	}

@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\RecordsetFieldAttribute.cs" />
+    <Compile Include="Attributes\SrfControlAttribute.cs" />
     <Compile Include="ComponentLoader.cs" />
     <Compile Include="Constants\sapHowmuchConstants.cs" />
     <Compile Include="Constants\SboDocumentItem.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="DependencyResolver.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\FormControllerExtensions.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Extensions\SboDIExtensions.cs" />
     <Compile Include="Extensions\SboUIExtensions.cs" />

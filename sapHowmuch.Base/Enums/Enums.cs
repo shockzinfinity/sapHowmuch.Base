@@ -25,4 +25,33 @@ namespace sapHowmuch.Base.Enums
 		Second,
 		MiliSecond
 	}
+
+	/// <summary>
+	/// UI Control type of SAPbouiCOM
+	/// </summary>
+	public enum SrfControlType
+	{
+		None = 0,
+		Button = 1,
+		StaticText,
+		EditText,
+		Folder,
+		Rectangle,
+		ActiveX,
+		PaneComboBox,
+		ComboBox,
+		LinkedButton,
+		PictureBox,
+		ExtendedEditText,
+		CheckBox,
+		OptionBtn,
+		Matrix,
+		Grid,
+		ButtonCombo,
+		WebBrowser,
+		DBDataSource,
+		UserDataSource,
+		DataTable,
+		ChooseFromList
+	}
 }

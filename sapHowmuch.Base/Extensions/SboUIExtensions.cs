@@ -12,5 +12,13 @@ namespace sapHowmuch.Base.Extensions
 		//{
 		//	form.DataSources.DataTables.GetEnumerator
 		//}
+
+		public static IEnumerable<SAPbouiCOM.MenuItem> AsEnumerable(this SAPbouiCOM.Menus menus)
+		{
+			foreach (SAPbouiCOM.MenuItem item in SapStream.UiApp.Menus)
+			{
+				yield return item;
+			}
+		}
 	}
 }

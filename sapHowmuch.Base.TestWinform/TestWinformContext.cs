@@ -1,5 +1,4 @@
-﻿using sapHowmuch.Base.Constants;
-using sapHowmuch.Base.Helpers;
+﻿using sapHowmuch.Base.Helpers;
 using sapHowmuch.Base.Setup;
 using System;
 using System.Reflection;
@@ -29,6 +28,13 @@ namespace sapHowmuch.Base.TestWinform
 				// setting
 				SetupManager.RunSetup(new TestSetup());
 				sapHowmuchLogger.Trace("setup completed");
+
+				// misc setting
+				if (SapStream.UiApp.MetadataAutoRefresh)
+				{
+					SapStream.UiApp.MetadataAutoRefresh = false;
+					sapHowmuchLogger.Trace("Metadata auto refresh off");
+				}
 			}
 			catch (Exception ex)
 			{
