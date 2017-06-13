@@ -1,5 +1,5 @@
-﻿using sapHowmuch.Base.Constants;
-using sapHowmuch.Base.Helpers;
+﻿using sapHowmuch.Base.Helpers;
+using sapHowmuch.Base.Setup;
 using System;
 using System.Reflection;
 using System.Windows.Forms;
@@ -23,8 +23,18 @@ namespace sapHowmuch.Base.TestWinform
 
 				// 메뉴로딩
 				MenuHelper.LoadFromXML(addonAssembly);
-
 				sapHowmuchLogger.Trace("TestWinformContext loaded.");
+
+				// setting
+				SetupManager.RunSetup(new TestSetup());
+				sapHowmuchLogger.Trace("setup completed");
+
+				// misc setting
+				if (SapStream.UiApp.MetadataAutoRefresh)
+				{
+					SapStream.UiApp.MetadataAutoRefresh = false;
+					sapHowmuchLogger.Trace("Metadata auto refresh off");
+				}
 			}
 			catch (Exception ex)
 			{

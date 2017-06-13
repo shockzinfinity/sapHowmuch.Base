@@ -1,4 +1,5 @@
-﻿using sapHowmuch.Base.Dialogs;
+﻿using sapHowmuch.Base.Constants;
+using sapHowmuch.Base.Dialogs;
 using sapHowmuch.Base.Dialogs.Inputs;
 using sapHowmuch.Base.Helpers;
 using System;
@@ -10,8 +11,6 @@ namespace sapHowmuch.Base.Services
 {
 	public class SettingService : ISettingService
 	{
-		private const string _udtSettings = "ADGLOBAL";
-		private const string _udfSettingValue = "SettingValue";
 		private bool _setupOk;
 		private static SettingService _instance;
 		public static SettingService Instance => _instance ?? (_instance = new SettingService());
@@ -27,8 +26,8 @@ namespace sapHowmuch.Base.Services
 
 			try
 			{
-				UserDefinedHelper.CreateTable(_udtSettings, "sapHowmuch Addon setting table")
-					.CreateUdf(_udfSettingValue, "Setting Value", size: 254);
+				UserDefinedHelper.CreateTable(sapHowmuchConstants.SettingTableName, sapHowmuchConstants.SettingTableDescription)
+					.CreateUdf(sapHowmuchConstants.SettingFieldName, sapHowmuchConstants.SettingFieldDescription, size: 254);
 
 				_setupOk = true;
 
@@ -51,7 +50,7 @@ namespace sapHowmuch.Base.Services
 			if (!string.IsNullOrWhiteSpace(userCode))
 				sqlKey = $"{sqlKey}[{userCode}]";
 
-			var sql = $"SELECT [U_{_udfSettingValue}], [Name] FROM [@{_udtSettings}] WHERE [Code] = '{sqlKey}'";
+			var sql = $"SELECT [U_{sapHowmuchConstants.SettingFieldName}], [Name] FROM [@{sapHowmuchConstants.SettingTableName}] WHERE [Code] = '{sqlKey}'";
 
 			using (var query = new SboRecordsetQuery(sql))
 			{
@@ -65,7 +64,7 @@ namespace sapHowmuch.Base.Services
 		private static string GetSettingTitle(string key)
 		{
 			var sqlKey = key.Trim().ToLowerInvariant();
-			var sql = $"SELECT [Name] FROM [@{_udtSettings}] WHERE [Code] = '{sqlKey}'";
+			var sql = $"SELECT [Name] FROM [@{sapHowmuchConstants.SettingTableName}] WHERE [Code] = '{sqlKey}'";
 
 			using (var query = new SboRecordsetQuery(sql))
 			{
@@ -223,7 +222,7 @@ namespace sapHowmuch.Base.Services
 			if (sqlKey.Length > 30)
 				throw new Exception($"Sql Key '{sqlKey}' for setting is too long (max 30, actual {sqlKey.Length})");
 
-			var sql = $"SELECT [U_{_udfSettingValue}], [Name] FROM [@{_udtSettings}] WHERE [Code] = '{sqlKey}'";
+			var sql = $"SELECT [U_{sapHowmuchConstants.SettingFieldName}], [Name] FROM [@{sapHowmuchConstants.SettingTableName}] WHERE [Code] = '{sqlKey}'";
 			bool exists;
 
 			using (var query = new SboRecordsetQuery(sql))
@@ -238,7 +237,7 @@ namespace sapHowmuch.Base.Services
 
 			if (exists)
 			{
-				sql = $"UPDATE [@{_udtSettings}] SET [U_{_udfSettingValue}] = {sqlValue} WHERE [Code] = '{sqlKey}'";
+				sql = $"UPDATE [@{sapHowmuchConstants.SettingTableName}] SET [U_{sapHowmuchConstants.SettingFieldName}] = {sqlValue} WHERE [Code] = '{sqlKey}'";
 			}
 			else
 			{
@@ -251,7 +250,7 @@ namespace sapHowmuch.Base.Services
 				if (name.Length > 30)
 					name = name.Substring(0, 30); // max length 30
 
-				sql = $"INSERT INTO [@{_udtSettings}] ([Code], [Name], [U_{_udfSettingValue}]) VALUES ('{sqlKey}', '{name}', {sqlValue})";
+				sql = $"INSERT INTO [@{sapHowmuchConstants.SettingTableName}] ([Code], [Name], [U_{sapHowmuchConstants.SettingFieldName}]) VALUES ('{sqlKey}', '{name}', {sqlValue})";
 			}
 
 			SboRecordset.NonQuery(sql);

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace sapHowmuch.Base.Enums
+﻿namespace sapHowmuch.Base.Enums
 {
 	/// <summary>
 	/// Hash Type enum
@@ -24,5 +18,34 @@ namespace sapHowmuch.Base.Enums
 		Minute,
 		Second,
 		MiliSecond
+	}
+
+	/// <summary>
+	/// UI Control type of SAPbouiCOM
+	/// </summary>
+	public enum SrfControlType
+	{
+		None = 0,
+		Button = 1,
+		StaticText,
+		EditText,
+		Folder,
+		Rectangle,
+		ActiveX,
+		PaneComboBox,
+		ComboBox,
+		LinkedButton,
+		PictureBox,
+		ExtendedEditText,
+		CheckBox,
+		OptionBtn,
+		Matrix,
+		Grid,
+		ButtonCombo,
+		WebBrowser,
+		DBDataSource,
+		UserDataSource,
+		DataTable,
+		ChooseFromList
 	}
 }

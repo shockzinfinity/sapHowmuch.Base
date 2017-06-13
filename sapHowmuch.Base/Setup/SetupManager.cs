@@ -25,9 +25,11 @@ namespace sapHowmuch.Base.Setup
 			var key = $"setup.lv.{setupclassName}";
 
 			if (key.Length > 30)
+			{
 				sapHowmuchLogger.Warn($"Setup class '{setupclassName}' Name is too long (max 30, actual {setupclassName.Length}");
 
-			key = key.Substring(0, 30);
+				key = key.Substring(0, 30);
+			}
 
 			var lastVersionInstalled = SettingService.Instance.GetSettingByKey(key, 0);
 

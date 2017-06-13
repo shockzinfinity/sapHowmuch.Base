@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace sapHowmuch.Base.Constants
+﻿namespace sapHowmuch.Base.Constants
 {
-	class SboMenuItemTemp
+	internal class SboMenuItemTemp
 	{
 	}
 }
+
 //Administration = "3328"
 //ChooseCompany = "3329"
 //ExchangeRatesAndIndexes = "3333"
@@ -66,7 +61,7 @@ namespace sapHowmuch.Base.Constants
 //AddressFormats = "8460"
 //CustomerGroups = "10753"
 //VendorGroups = "10754"
-//BusinessPartnerProperties = "10755" 
+//BusinessPartnerProperties = "10755"
 //BusinessPartnerPriorities = "10765"
 //DunningLevels = "10766"
 //DunningTerms = "10769"
@@ -217,7 +212,7 @@ namespace sapHowmuch.Base.Constants
 //APDownPaymentInvoice = "2317"
 //APInvoice = "2308"
 //APCreditMemo = "2309"
-//APReserveInvoice = "2314" 
+//APReserveInvoice = "2314"
 //LandedCosts = "2310"
 //DocumentPrinting = "2312"
 //PurchasingReports = "43534"
@@ -470,4 +465,3 @@ namespace sapHowmuch.Base.Constants
 //PhoneBook = "3599"
 //LegalLists = "43559"
 //LegalLists = "3604"
-

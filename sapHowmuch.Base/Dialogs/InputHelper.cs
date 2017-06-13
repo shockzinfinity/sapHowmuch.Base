@@ -109,7 +109,7 @@ namespace sapHowmuch.Base.Dialogs
 				_formWait.Set();
 			};
 
-			var itemEventSubscribes = SapStream.ItemEventStream.Where(e => e.FormUid == _form.UniqueID && e.DetailArg.FormTypeEx == FormType && !e.DetailArg.BeforeAction && e.DetailArg.EventType == SAPbouiCOM.BoEventTypes.et_FORM_UNLOAD).Subscribe(x =>
+			var itemEventSubscribes = SapStream.ItemEventStream.Where(e => e.DetailArg.FormUID == _form.UniqueID && e.DetailArg.FormTypeEx == FormType && !e.DetailArg.BeforeAction && e.DetailArg.EventType == SAPbouiCOM.BoEventTypes.et_FORM_UNLOAD).Subscribe(x =>
 		   {
 			   _canceled = true;
 			   _formWait.Set();
