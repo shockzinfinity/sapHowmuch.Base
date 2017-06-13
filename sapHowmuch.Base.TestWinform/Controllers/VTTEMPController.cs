@@ -26,8 +26,6 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 
 		public override bool Unique => false;
 
-
-
 		#region derived class dispose implementation
 
 		private bool _disposed = false;
