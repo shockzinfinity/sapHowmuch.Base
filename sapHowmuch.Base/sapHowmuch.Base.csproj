@@ -76,6 +76,8 @@
   <ItemGroup>
     <Compile Include="Attributes\RecordsetFieldAttribute.cs" />
     <Compile Include="Attributes\SrfControlAttribute.cs" />
+    <Compile Include="ChangeTracker\ChangeTrackerManager.cs" />
+    <Compile Include="ChangeTracker\ChangeTrackerSetup.cs" />
     <Compile Include="ComponentLoader.cs" />
     <Compile Include="Constants\sapHowmuchConstants.cs" />
     <Compile Include="Constants\SboDocumentItem.cs" />
@@ -100,6 +102,7 @@
     <Compile Include="Services\SettingService.cs" />
     <Compile Include="Setup\ISetup.cs" />
     <Compile Include="Setup\SetupManager.cs" />
+    <None Include="ChangeTracker\SBO_SP_PostTransactionNotice_Modify.sql" />
     <Content Include="Documents\NLogReferenceConfig.xml" />
     <Content Include="Documents\NLogTableSetting.sql" />
     <Compile Include="Dialogs\FileDialogHelper.cs" />

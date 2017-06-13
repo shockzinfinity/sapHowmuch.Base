@@ -1,4 +1,5 @@
-﻿using sapHowmuch.Base.Helpers;
+﻿using sapHowmuch.Base.ChangeTracker;
+using sapHowmuch.Base.Helpers;
 using sapHowmuch.Base.Setup;
 using System;
 using System.Reflection;
@@ -28,6 +29,10 @@ namespace sapHowmuch.Base.TestWinform
 				// setting
 				SetupManager.RunSetup(new TestSetup());
 				sapHowmuchLogger.Trace("setup completed");
+
+				// change tracker
+				// required SBO_SP_PostTransactionNotification
+				ChangeTrackerManager.RunSetup();
 
 				// misc setting
 				if (SapStream.UiApp.MetadataAutoRefresh)
