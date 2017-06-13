@@ -1,12 +1,16 @@
-﻿using sapHowmuch.Base.Helpers;
+﻿using sapHowmuch.Base.Extensions;
+using sapHowmuch.Base.Helpers;
 using System;
 
 namespace sapHowmuch.Base.Forms
 {
-	public abstract class FormController
+	public abstract partial class FormController : IDisposable
 	{
 		private SAPbouiCOM.IForm _form;
 
+		/// <summary>
+		/// SAP Business One UI API form object
+		/// </summary>
 		public SAPbouiCOM.IForm Form
 		{
 			get
@@ -28,9 +32,35 @@ namespace sapHowmuch.Base.Forms
 			}
 		}
 
-		public int? TypeCount { get { return _form?.TypeCount; } }
+		/// <summary>
+		/// SAP Business One UI API type count getter
+		/// </summary>
+		public int? SboTypeCount { get { return _form?.TypeCount; } }
 
-		public string TypeEx { get { return _form?.TypeEx; } }
+		/// <summary>
+		/// SAP Business One UI API type value getter
+		/// </summary>
+		public string SboTypeEx { get { return _form?.TypeEx; } }
+
+		/// <summary>
+		/// SAP Business One UI API unique id getter
+		/// </summary>
+		public string UniqueId { get { return _form?.UniqueID; } }
+
+		/// <summary>
+		/// view resource
+		/// </summary>
+		public virtual string FormResource => $"Views.{GetType().Name.Replace("Controller", string.Empty)}.srf";
+
+		/// <summary>
+		/// Form Type
+		/// </summary>
+		public virtual string FormType => $"{GetType().Name.Replace("Controller", string.Empty)}";
+
+		/// <summary>
+		/// Is Unique in SAP Business One UI API Forms
+		/// </summary>
+		public virtual bool Unique => true;
 
 		public FormController(bool autoStart = false)
 		{
@@ -38,12 +68,7 @@ namespace sapHowmuch.Base.Forms
 				Start();
 		}
 
-		~FormController()
-		{
-			sapHowmuchLogger.Debug("Called FormController.Destruct");
-		}
-
-		public virtual void Start()
+		public void Start()
 		{
 			if (Form != null)
 			{
@@ -59,20 +84,23 @@ namespace sapHowmuch.Base.Forms
 
 				try
 				{
-					FormCreated();
+					// srf 컨트롤 할당
+					this.AssignSrfControlTo();
+					// event stream
+					MakeFormStream();
 				}
 				catch (Exception ex)
 				{
-					SapStream.UiApp.MessageBox($"FormCreated Error: {ex.Message}");
+					SapStream.UiApp.MessageBox($"Form initializing Error: {ex.Message}");
 				}
 
 				try
 				{
-					BindFormEvents();
+					OnFormCreate();
 				}
 				catch (Exception ex)
 				{
-					SapStream.UiApp.MessageBox($"BindFormEvents Error: {ex.Message}");
+					SapStream.UiApp.MessageBox($"FormCreated Error: {ex.Message}");
 				}
 			}
 			catch (Exception ex)
@@ -81,32 +109,53 @@ namespace sapHowmuch.Base.Forms
 			}
 		}
 
+		protected virtual void OnFormCreate()
+		{
+		}
+
 		public void Close()
 		{
-			// TODO: dispose 정책 필요
-			Form.Close();
-			Form = null;
+			this.DisposeSrfControlFrom();
+			this.Form.Close();
+			this.Form.ReleaseComObject();
+			this.Form = null;
 		}
 
-		protected virtual void FormCreated()
+		#region IDisposable implementation
+
+		private bool _disposed = false;
+
+		public void Dispose()
 		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
-		protected virtual void BindFormEvents()
+		protected virtual void Dispose(bool disposing)
 		{
+			// TODO: dispose 테스트 필요
+			// 각 메서드 내부에서 사용한 COM object 에 대한 명시적인 메모리 해제가 과연 의미가 있는가?
+			if (_disposed) return;
+
+			if (disposing)
+			{
+				// free any other manaaged objects here.
+			}
+
+			// free any unmanaged objects here.
+			// specify srf control placeholder
+
+			sapHowmuchLogger.Debug("Called FormController.Dispose");
+
+			_disposed = true;
 		}
 
-		protected virtual void OnFormClosed()
+		~FormController()
 		{
+			sapHowmuchLogger.Debug("Called FormController.Destruct");
+			Dispose(false);
 		}
 
-		/// <summary>
-		/// view resource
-		/// TODO: b1s 파일 지원
-		/// </summary>
-		public virtual string FormResource => $"Views.{GetType().Name.Replace("Controller", string.Empty)}.srf";
-
-		public virtual string FormType => $"{GetType().Name.Replace("Controller", string.Empty)}";
-		public virtual bool Unique => true;
+		#endregion IDisposable implementation
 	}
 }

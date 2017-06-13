@@ -46,7 +46,7 @@ namespace sapHowmuch.Base.TestConsole
 					SapStream.ItemEventStream.Subscribe(ev =>
 					{
 						Console.WriteLine($"[ItemEvent] {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
-						Console.WriteLine($"{ev.FormUid}, {ev.DetailArg.FormTypeEx}, {ev.DetailArg.ItemUID}, {ev.DetailArg.ColUID}");
+						Console.WriteLine($"{ev.DetailArg.FormUID}, {ev.DetailArg.FormTypeEx}, {ev.DetailArg.ItemUID}, {ev.DetailArg.ColUID}");
 						Console.WriteLine($"Mode: {ev.DetailArg.FormMode}");
 						Console.WriteLine($"EventType: {ev.DetailArg.EventType} // {ev.DetailArg.BeforeAction} // {ev.DetailArg.ActionSuccess}");
 						Console.WriteLine($"ItemChanged: {ev.DetailArg.ItemChanged}");

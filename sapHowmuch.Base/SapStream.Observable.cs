@@ -1,6 +1,9 @@
 ﻿using SAPbouiCOM;
 using sapHowmuch.Base.EventArguments;
+using sapHowmuch.Base.Helpers;
 using System;
+using System.Configuration;
+using System.Diagnostics;
 using System.Reactive.Linq;
 
 namespace sapHowmuch.Base
@@ -59,7 +62,7 @@ namespace sapHowmuch.Base
 							_IApplicationEvents_ItemEventEventHandler iHandler = (string formUid, ref ItemEvent pval, out bool bubble) =>
 							{
 								bubble = true;
-								SapItemEventArgs itemArgs = new SapItemEventArgs(DateTime.Now, formUid, pval, bubble);
+								SapItemEventArgs itemArgs = new SapItemEventArgs(DateTime.Now, pval, bubble);
 								handler.Invoke(itemArgs);
 								bubble = itemArgs.BubbleEvent;
 							};
@@ -247,6 +250,8 @@ namespace sapHowmuch.Base
 						},
 						handler => _application.WidgetEvent += handler,
 						handler => _application.WidgetEvent -= handler);
+
+					TraceEvent();
 				}
 				else
 				{
@@ -274,5 +279,25 @@ namespace sapHowmuch.Base
 		}
 
 		#endregion initialize methods
+
+		#region Trace Event
+
+		[Conditional("DEBUG")]
+		private static void TraceEvent()
+		{
+			if (!Convert.ToBoolean(ConfigurationManager.AppSettings["IsTraceSapEvent"])) return;
+
+			AppEventStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace($"{ev.EventFiredTime.ToString("yyyy - MM - dd HH: mm:ss.fff")}\t{ev.DetailArg.ToString()}");
+			});
+
+			ItemEventStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace(ev.ToString());
+			});
+		}
+
+		#endregion Trace Event
 	}
 }

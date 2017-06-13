@@ -1,5 +1,4 @@
-﻿using Autofac;
-using sapHowmuch.Base.Interfaces;
+﻿using sapHowmuch.Base.Interfaces;
 using System.ComponentModel.Composition;
 
 namespace sapHowmuch.Base
