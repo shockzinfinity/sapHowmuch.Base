@@ -1,6 +1,6 @@
 ﻿#pragma warning disable 1591
 
-namespace sapHowmuch.Base.Constants
+namespace sapHowmuch.Base
 {
 	public static class sapHowmuchConstants
 	{
@@ -24,5 +24,13 @@ namespace sapHowmuch.Base.Constants
 		public const string MenuImageAttr = "Image";
 
 		#endregion menu attribute constants
+
+		#region Change Tracker constants
+
+		public const string CT_UdtName = "SAPHOWMUCH_CHANGETRACKER";
+		public const string CT_UdfKey = "SHM_CT_Key";
+		public const string CT_UdfObj = "SHM_CT_Obj";
+
+		#endregion
 	}
 }

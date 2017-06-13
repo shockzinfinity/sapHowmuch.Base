@@ -11,6 +11,7 @@ namespace sapHowmuch.Base.TestWinform
 
 		public void Run()
 		{
+			// for test
 			UserDefinedHelper.CreateTable("SHM_TestTbl1", "test table")
 				.CreateUdf("test_col1", "test column 1", SAPbobsCOM.BoFieldTypes.db_Alpha, 30)
 				.CreateUdf("test_col2", "test column 2", SAPbobsCOM.BoFieldTypes.db_Numeric, 10)
