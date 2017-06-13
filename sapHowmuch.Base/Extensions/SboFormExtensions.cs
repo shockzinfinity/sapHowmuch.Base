@@ -50,6 +50,7 @@ namespace sapHowmuch.Base.Extensions
 		{
 			if (comboBox.ValidValues.Count > 0)
 			{
+				// TODO: 테스트 필요
 				var count = comboBox.ValidValues.Count;
 				for (int i = count - 1; i >= 0; i--)
 				{
@@ -73,7 +74,7 @@ namespace sapHowmuch.Base.Extensions
 
 		public static IEnumerable<SAPbouiCOM.Form> AsEnumerable(this SAPbouiCOM.Forms forms)
 		{
-			foreach (SAPbouiCOM.Form item in SapStream.UiApp.Forms)
+			foreach (SAPbouiCOM.Form item in forms)
 			{
 				yield return item;
 			}

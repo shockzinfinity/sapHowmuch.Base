@@ -246,7 +246,7 @@ namespace sapHowmuch.Base.Helpers
 			{
 				if (SapStream.UiApp.Menus.Exists(item))
 				{
-					if (SapStream.UiApp.Menus.Item(item).SubMenus.Count > 0)
+					if (SapStream.UiApp.Menus.Item(item).SubMenus != null && SapStream.UiApp.Menus.Item(item).SubMenus.Count > 0)
 					{
 						// remove child menus
 						var subMenus = SapStream.UiApp.Menus.Item(item).SubMenus.AsEnumerable().Select(m => m.UID);
@@ -255,7 +255,14 @@ namespace sapHowmuch.Base.Helpers
 					}
 					else
 					{
-						SapStream.UiApp.Menus.RemoveEx(item);
+						try
+						{
+							SapStream.UiApp.Menus.RemoveEx(item);
+						}
+						catch (Exception ex)
+						{
+							sapHowmuchLogger.Error($"Failed to delete with '{item}' menu item. {ex.Message}");
+						}
 					}
 				}
 			}
