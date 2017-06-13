@@ -11,7 +11,7 @@ namespace sapHowmuch.Base.Extensions
 
 		public static IEnumerable<SAPbouiCOM.MenuItem> AsEnumerable(this SAPbouiCOM.Menus menus)
 		{
-			foreach (SAPbouiCOM.MenuItem item in SapStream.UiApp.Menus)
+			foreach (SAPbouiCOM.MenuItem item in menus)
 			{
 				yield return item;
 			}

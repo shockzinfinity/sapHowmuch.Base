@@ -102,7 +102,7 @@
     <Compile Include="Services\SettingService.cs" />
     <Compile Include="Setup\ISetup.cs" />
     <Compile Include="Setup\SetupManager.cs" />
-    <None Include="ChangeTracker\SBO_SP_PostTransactionNotification_Modify.sql" />
+    <None Include="ChangeTracker\SBO_SP_PostTransactionNotice_Modify.sql" />
     <Content Include="Documents\NLogReferenceConfig.xml" />
     <Content Include="Documents\NLogTableSetting.sql" />
     <Compile Include="Dialogs\FileDialogHelper.cs" />

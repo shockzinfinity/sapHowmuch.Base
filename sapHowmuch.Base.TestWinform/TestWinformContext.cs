@@ -32,7 +32,7 @@ namespace sapHowmuch.Base.TestWinform
 
 				// change tracker
 				// required SBO_SP_PostTransactionNotification
-				//ChangeTrackerManager.RunSetup();
+				ChangeTrackerManager.RunSetup();
 
 				// misc setting
 				if (SapStream.UiApp.MetadataAutoRefresh)
