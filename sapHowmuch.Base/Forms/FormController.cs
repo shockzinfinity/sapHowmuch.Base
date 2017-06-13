@@ -150,13 +150,12 @@ namespace sapHowmuch.Base.Forms
 			_disposed = true;
 		}
 
-
 		~FormController()
 		{
 			sapHowmuchLogger.Debug("Called FormController.Destruct");
 			Dispose(false);
 		}
 
-		#endregion
+		#endregion IDisposable implementation
 	}
 }

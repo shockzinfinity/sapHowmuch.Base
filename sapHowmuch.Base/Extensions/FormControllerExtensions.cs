@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace sapHowmuch.Base.Extensions
 {
@@ -174,7 +173,7 @@ namespace sapHowmuch.Base.Extensions
 						break;
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				sapHowmuchLogger.Error($"Assigning '{attribute.UniqueId}' has failed {ex.Message}");
 				//throw ex; // ignore?

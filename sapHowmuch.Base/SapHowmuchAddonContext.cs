@@ -1,6 +1,5 @@
 ﻿using sapHowmuch.Base.Helpers;
 using System;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace sapHowmuch.Base

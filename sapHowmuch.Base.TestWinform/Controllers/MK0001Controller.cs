@@ -53,7 +53,7 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 			Dispose(false);
 		}
 
-		#endregion
+		#endregion derived class dispose implementation
 
 		#region control placeholders
 

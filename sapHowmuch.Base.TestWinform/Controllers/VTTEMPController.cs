@@ -3,12 +3,6 @@ using sapHowmuch.Base.Enums;
 using sapHowmuch.Base.Extensions;
 using sapHowmuch.Base.Forms;
 using sapHowmuch.Base.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace sapHowmuch.Base.TestWinform.Controllers
 {
@@ -32,9 +26,7 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 
 		public override bool Unique => false;
 
-		#region custom method test
 
-		#endregion
 
 		#region derived class dispose implementation
 
@@ -64,7 +56,7 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 			Dispose(false);
 		}
 
-		#endregion
+		#endregion derived class dispose implementation
 
 		#region placeholders
 
@@ -77,6 +69,6 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 		[SrfControl("Item_2", SrfControlType.Grid)]
 		private SAPbouiCOM.Grid _thirdGrid;
 
-		#endregion
+		#endregion placeholders
 	}
 }

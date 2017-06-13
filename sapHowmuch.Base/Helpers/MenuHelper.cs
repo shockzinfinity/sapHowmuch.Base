@@ -248,7 +248,7 @@ namespace sapHowmuch.Base.Helpers
 				{
 					if (SapStream.UiApp.Menus.Item(item).SubMenus.Count > 0)
 					{
-						// sub menu 제거
+						// remove child menus
 						var subMenus = SapStream.UiApp.Menus.Item(item).SubMenus.AsEnumerable().Select(m => m.UID);
 
 						RemoveMenuItems(subMenus);
@@ -337,18 +337,6 @@ namespace sapHowmuch.Base.Helpers
 			// clean up disposed form controllers
 			_formControllerInstances.RemoveAll(i => i.Form == null);
 			//GC.Collect(); // 명시적인 호출이 위험할 수 있음 -> Dispose 로 변경 필요
-
-			//if (_formControllerInstances.Any(f => f.Form == null))
-			//{
-			//	var disposeTargets = _formControllerInstances.Where(f => f.Form == null).ToList();
-
-			//	foreach (var item in disposeTargets)
-			//	{
-			//		item.Close();
-			//		item.Dispose();
-			//		_formControllerInstances.Remove(item);
-			//	}
-			//}
 
 			var formController = _formControllerInstances.FirstOrDefault(i => i.GetType() == formControllerType && i.Unique);
 			if (formController == null)

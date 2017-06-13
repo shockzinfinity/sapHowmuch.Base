@@ -298,6 +298,6 @@ namespace sapHowmuch.Base
 			});
 		}
 
-		#endregion
+		#endregion Trace Event
 	}
 }

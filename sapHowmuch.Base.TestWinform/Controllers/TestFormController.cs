@@ -1,9 +1,6 @@
-﻿using sapHowmuch.Base.Constants;
-using sapHowmuch.Base.Extensions;
+﻿using sapHowmuch.Base.Extensions;
 using sapHowmuch.Base.Forms;
 using sapHowmuch.Base.Helpers;
-using System;
-using System.Collections.Generic;
 
 namespace sapHowmuch.Base.TestWinform.Controllers
 {
@@ -54,6 +51,6 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 			Dispose(false);
 		}
 
-		#endregion
+		#endregion derived class dispose implementation
 	}
 }

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Reactive.Linq;
-using sapHowmuch.Base.EventArguments;
-using sapHowmuch.Base.Extensions;
+﻿using sapHowmuch.Base.Extensions;
 using sapHowmuch.Base.Forms;
-using System.Diagnostics;
 using sapHowmuch.Base.Helpers;
+using System;
+using System.Diagnostics;
+using System.Reactive.Linq;
 
 namespace sapHowmuch.Base.TestWinform.Controllers
 {
@@ -60,6 +59,6 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 			Dispose(false);
 		}
 
-		#endregion
+		#endregion derived class dispose implementation
 	}
 }

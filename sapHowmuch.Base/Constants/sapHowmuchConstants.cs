@@ -23,6 +23,6 @@ namespace sapHowmuch.Base.Constants
 		public const string MenuThreadedActionAttr = "ThreadedAction";
 		public const string MenuImageAttr = "Image";
 
-		#endregion
+		#endregion menu attribute constants
 	}
 }
