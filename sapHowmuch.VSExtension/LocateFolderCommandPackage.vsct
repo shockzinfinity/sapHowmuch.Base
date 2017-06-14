@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<Extern href="stdidcmd.h" />
+	<Extern href="vsshlids.h" />
+	<Commands package="guidLocateFolderCommandPackage">
+		<Groups>
+			<Group guid="guidLocateFolderCommandPackageCmdSet" id="MyMenuGroup" priority="0x0200">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
+			</Group>
+		</Groups>
+		<Buttons>
+			<Button guid="guidLocateFolderCommandPackageCmdSet" id="LocateFolderCommandId" priority="0x0100" type="Button">
+				<Parent guid="guidLocateFolderCommandPackageCmdSet" id="MyMenuGroup" />
+				<Icon guid="guidImages" id="bmpPic1" />
+				<Strings>
+					<ButtonText>Open in File Explorer</ButtonText>
+				</Strings>
+			</Button>
+		</Buttons>
+		<Bitmaps>
+			<Bitmap guid="guidImages" href="Resources\LocateFolderCommand.png" usedList="bmpPic1" />
+		</Bitmaps>
+	</Commands>
+	<Symbols>
+		<GuidSymbol name="guidLocateFolderCommandPackage" value="{5f5407ea-6ad0-4075-85b4-c4fe3d9c8d97}" />
+		<GuidSymbol name="guidLocateFolderCommandPackageCmdSet" value="{f6d5675a-6ea6-461f-9e1f-7563cd6044a0}">
+			<IDSymbol name="MyMenuGroup" value="0x1020" />
+			<IDSymbol name="LocateFolderCommandId" value="0x0100" />
+		</GuidSymbol>
+		<GuidSymbol name="guidImages" value="{c585f51f-cb2f-46a7-89e9-4c7d6c63e4bf}">
+			<IDSymbol name="bmpPic1" value="1" />
+		</GuidSymbol>
+	</Symbols>
+</CommandTable>
