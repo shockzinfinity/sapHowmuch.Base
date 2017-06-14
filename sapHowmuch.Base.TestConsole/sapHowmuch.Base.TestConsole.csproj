@@ -71,6 +71,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Documents\SharedAssembly.cs">
+      <Link>Properties\SharedAssembly.cs</Link>
+    </Compile>
     <Compile Include="DependencyConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
