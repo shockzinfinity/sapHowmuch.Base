@@ -6,6 +6,7 @@ Test project is tested on SAP Business One 9.2 PL07.
 
 ## Prerequisites
 
+* .NET Framework (4.6.1)
 * SAP Business One SDK
 * Reactive Extensions
 * Winforms
@@ -17,4 +18,6 @@ Test project is tested on SAP Business One 9.2 PL07.
 * ASP.NET WebAPI 2
 * VSIX
 
-> based on [ITCO-SBO-Addon-Framework](https://github.com/ITCompaniet/ITCO-SBO-Addon-Framework)
+## Reference
+
+* Reference repository: [ITCO-SBO-Addon-Framework](https://github.com/ITCompaniet/ITCO-SBO-Addon-Framework)
