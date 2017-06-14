@@ -81,6 +81,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Documents\SharedAssembly.cs">
+      <Link>Properties\SharedAssembly.cs</Link>
+    </Compile>
     <Compile Include="Controllers\MK0001Controller.cs" />
     <Compile Include="Controllers\VT0010Controller.cs" />
     <Compile Include="Controllers\VT0021Controller.cs" />

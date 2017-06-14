@@ -31,6 +31,6 @@ namespace sapHowmuch.Base
 		public const string CT_UdfKey = "SHM_CT_Key";
 		public const string CT_UdfObj = "SHM_CT_Obj";
 
-		#endregion
+		#endregion Change Tracker constants
 	}
 }

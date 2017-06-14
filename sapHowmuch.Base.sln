@@ -9,6 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.Base.TestConsole
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.Base.TestWinform", "sapHowmuch.Base.TestWinform\sapHowmuch.Base.TestWinform.csproj", "{2F944400-34D7-49EE-B259-3E430F25A926}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{F879A765-B232-42E1-BBC2-55CECCDBA454}"
+	ProjectSection(SolutionItems) = preProject
+		Documents\NLogReferenceConfig.xml = Documents\NLogReferenceConfig.xml
+		Documents\NLogTableSetting.sql = Documents\NLogTableSetting.sql
+		Documents\SharedAssembly.cs = Documents\SharedAssembly.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.VSExtension", "sapHowmuch.VSExtension\sapHowmuch.VSExtension.csproj", "{0129C1C6-E948-4BEB-9085-798C0657C244}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +36,10 @@ Global
 		{2F944400-34D7-49EE-B259-3E430F25A926}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F944400-34D7-49EE-B259-3E430F25A926}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F944400-34D7-49EE-B259-3E430F25A926}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0129C1C6-E948-4BEB-9085-798C0657C244}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0129C1C6-E948-4BEB-9085-798C0657C244}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0129C1C6-E948-4BEB-9085-798C0657C244}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0129C1C6-E948-4BEB-9085-798C0657C244}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

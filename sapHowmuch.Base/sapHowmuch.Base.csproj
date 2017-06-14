@@ -74,6 +74,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Documents\SharedAssembly.cs">
+      <Link>Properties\SharedAssembly.cs</Link>
+    </Compile>
     <Compile Include="Attributes\RecordsetFieldAttribute.cs" />
     <Compile Include="Attributes\SrfControlAttribute.cs" />
     <Compile Include="ChangeTracker\ChangeTrackerManager.cs" />
@@ -103,8 +106,6 @@
     <Compile Include="Setup\ISetup.cs" />
     <Compile Include="Setup\SetupManager.cs" />
     <None Include="ChangeTracker\SBO_SP_PostTransactionNotice_Modify.sql" />
-    <Content Include="Documents\NLogReferenceConfig.xml" />
-    <Content Include="Documents\NLogTableSetting.sql" />
     <Compile Include="Dialogs\FileDialogHelper.cs" />
     <Compile Include="Dialogs\InputHelper.cs" />
     <Compile Include="Dialogs\Inputs\CheckboxDialogInput.cs" />
