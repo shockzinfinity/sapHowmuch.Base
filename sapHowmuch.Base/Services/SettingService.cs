@@ -218,10 +218,11 @@ namespace sapHowmuch.Base.Services
 			if (userCode != null)
 				sqlKey = $"{key}[{userCode}]";
 
-			if (sqlKey.Length > 30)
-				throw new Exception($"Sql Key '{sqlKey}' for setting is too long (max 30, actual {sqlKey.Length})");
+			if (sqlKey.Length > 50) // Object type = none ; default [Code] size : 50
+				throw new Exception($"Sql Key '{sqlKey}' for setting is too long (max 50, actual {sqlKey.Length})");
 
 			var sql = $"SELECT [U_{sapHowmuchConstants.SettingFieldName}], [Name] FROM [@{sapHowmuchConstants.SettingTableName}] WHERE [Code] = '{sqlKey}'";
+
 			bool exists;
 
 			using (var query = new SboRecordsetQuery(sql))
@@ -246,8 +247,8 @@ namespace sapHowmuch.Base.Services
 				if (string.IsNullOrWhiteSpace(name))
 					name = sqlKey;
 
-				if (name.Length > 30)
-					name = name.Substring(0, 30); // max length 30
+				if (name.Length > 100) // Object type = none ; default [Name] size : 100
+					name = name.Substring(0, 100);
 
 				sql = $"INSERT INTO [@{sapHowmuchConstants.SettingTableName}] ([Code], [Name], [U_{sapHowmuchConstants.SettingFieldName}]) VALUES ('{sqlKey}', '{name}', {sqlValue})";
 			}

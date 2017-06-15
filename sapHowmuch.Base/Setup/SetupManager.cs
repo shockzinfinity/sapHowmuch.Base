@@ -22,13 +22,13 @@ namespace sapHowmuch.Base.Setup
 		{
 			var setup = setupInstance.GetType();
 			var setupclassName = setup.Name.Replace("Setup", string.Empty);
-			var key = $"setup.lv.{setupclassName}";
+			var key = $"setup.{setupclassName}";
 
-			if (key.Length > 30)
+			if (key.Length > 100)
 			{
-				sapHowmuchLogger.Warn($"Setup class '{setupclassName}' Name is too long (max 30, actual {setupclassName.Length}");
+				sapHowmuchLogger.Warn($"Setup class '{setupclassName}' Name is too long (max 100, actual {setupclassName.Length}");
 
-				key = key.Substring(0, 30);
+				key = key.Substring(0, 100);
 			}
 
 			var lastVersionInstalled = SettingService.Instance.GetSettingByKey(key, 0);

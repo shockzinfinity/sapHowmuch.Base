@@ -31,7 +31,7 @@ namespace sapHowmuch.Base.TestWinform
 				sapHowmuchLogger.Trace("setup completed");
 
 				// change tracker
-				// required SBO_SP_PostTransactionNotification
+				// required SBO_SP_PostTransactionNotice.sql
 				ChangeTrackerManager.RunSetup();
 
 				// misc setting
