@@ -48,4 +48,11 @@
 		DataTable,
 		ChooseFromList
 	}
+
+	public enum AddonFileType
+	{
+		InstallFile,
+		ReportFile,
+		ExcelFile
+	}
 }

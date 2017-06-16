@@ -98,6 +98,9 @@
     <Compile Include="Forms\FormController.Observables.cs">
       <DependentUpon>FormController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DynamicInvoke.cs" />
+    <Compile Include="Installer\InstallAPIWrapper.cs" />
+    <Compile Include="Management\DynamicInvoke.cs" />
     <Compile Include="SapStream.Observable.cs">
       <DependentUpon>SapStream.cs</DependentUpon>
     </Compile>

@@ -1,0 +1,26 @@
+
+command line style
+
+AddOnRegDataGen.exe <xml info> <installerVersion> <installer> <uninstaller> <addon exe>
+
+xml info
+
+<AddOnInfo
+	partnernmsp="shockz"
+	contdata="shockz"
+	addonname="temp"
+	addongroup="M"
+	esttime="300"
+	instparams=""
+	uncmdarg=""
+	unesttime="180"
+	partnername="shockz"
+	silentinst="N"
+	silentugd="N"
+	silentuninst="N"
+	ugdcmdargs=""
+	ugdesttime="180"
+	platform="X" // X: x64, N: x86
+	clienttype="A" // A: both, B: Browser, W: Desktop
+/> 
+

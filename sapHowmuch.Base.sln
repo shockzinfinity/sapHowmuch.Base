@@ -11,12 +11,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.Base.TestWinform
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{F879A765-B232-42E1-BBC2-55CECCDBA454}"
 	ProjectSection(SolutionItems) = preProject
+		AddOnRegDataGen.txt = AddOnRegDataGen.txt
 		Documents\NLogReferenceConfig.xml = Documents\NLogReferenceConfig.xml
 		Documents\NLogTableSetting.sql = Documents\NLogTableSetting.sql
 		Documents\SharedAssembly.cs = Documents\SharedAssembly.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.VSExtension", "sapHowmuch.VSExtension\sapHowmuch.VSExtension.csproj", "{0129C1C6-E948-4BEB-9085-798C0657C244}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.Base.TestWinformInstaller", "sapHowmuch.Base.TestWinformInstaller\sapHowmuch.Base.TestWinformInstaller.csproj", "{6BBE0C32-52C6-4C55-A2FE-73C1BA1B2FCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +43,10 @@ Global
 		{0129C1C6-E948-4BEB-9085-798C0657C244}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0129C1C6-E948-4BEB-9085-798C0657C244}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0129C1C6-E948-4BEB-9085-798C0657C244}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BBE0C32-52C6-4C55-A2FE-73C1BA1B2FCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BBE0C32-52C6-4C55-A2FE-73C1BA1B2FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BBE0C32-52C6-4C55-A2FE-73C1BA1B2FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BBE0C32-52C6-4C55-A2FE-73C1BA1B2FCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
