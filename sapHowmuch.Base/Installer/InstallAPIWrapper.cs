@@ -14,7 +14,7 @@ namespace sapHowmuch.Base.Installer
 
 		public delegate int DInstApiStringBool(string str, bool b);
 
-		private static DInstApiParameterLess endInstall;
+		private static DInstApiStringBool endInstall;
 		private static DInstApiParameterLess restartNeeded;
 		private static DInstApiParameterLess endUninstall;
 		private static DInstApiString setAddOnFolder;
@@ -49,7 +49,7 @@ namespace sapHowmuch.Base.Installer
 		private static extern bool SetDllDirectory(string lpPathName);
 
 		[DllImport("AddOnInstallAPI.dll", EntryPoint = "EndInstall")]
-		public static extern int EndInstall32();
+		public static extern int EndInstall32(string info, bool installSuccess);
 
 		[DllImport("AddOnInstallAPI.dll", EntryPoint = "SetAddOnFolder")]
 		public static extern int SetAddOnFolder32(string srrPath);
@@ -61,7 +61,7 @@ namespace sapHowmuch.Base.Installer
 		public static extern int EndUninstall32();
 
 		[DllImport("AddOnInstallAPI_x64.dll", EntryPoint = "EndInstall")]
-		public static extern int EndInstall64();
+		public static extern int EndInstall64(string info, bool installSuccess);
 
 		[DllImport("AddOnInstallAPI_x64.dll", EntryPoint = "SetAddOnFolder")]
 		public static extern int SetAddOnFolder64(string srrPath);
@@ -82,9 +82,10 @@ namespace sapHowmuch.Base.Installer
 			return setAddOnFolder(path);
 		}
 
-		public static int EndInstall()
+		public static int EndInstall(string info, bool installSuccess)
 		{
-			return endInstall();
+			// 0 for success, -1 and -2 for error.
+			return endInstall(info, installSuccess);
 		}
 
 		public static int EndUninstall()

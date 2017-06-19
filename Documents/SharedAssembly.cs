@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyCompany("IQuest")]
-[assembly: AssemblyProduct("sapHowmuchWebApi")]
+[assembly: AssemblyCompany("sapHowmuch")]
+[assembly: AssemblyProduct("sapHowmuchAddon")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("sapHowmuch")]
 [assembly: AssemblyCulture("")]

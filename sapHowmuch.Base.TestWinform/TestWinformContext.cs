@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace sapHowmuch.Base.TestWinform
 {
-	internal class TestWinformContext : SapHowmuchAddonContext
+	public class TestWinformContext : SapHowmuchAddonContext
 	{
 		public TestWinformContext() : base()
 		{

@@ -55,4 +55,23 @@
 		ReportFile,
 		ExcelFile
 	}
+
+	public class AddonClientType
+	{
+		public static string Windows = "W";
+		public static string All = "A";
+		public static string Browser = "B";
+	}
+
+	public class AddonGroupType
+	{
+		public static string Mandatory = "C";
+		public static string NoMandatory = "M";
+	}
+
+	public class AddonPlatform
+	{
+		public static string x86 = "N";
+		public static string x64 = "X";
+	}
 }

@@ -20,7 +20,7 @@ xml info
 	silentuninst="N"
 	ugdcmdargs=""
 	ugdesttime="180"
-	platform="X" // X: x64, N: x86
+	platform="X" // N: x86, X: x64
 	clienttype="A" // A: both, B: Browser, W: Desktop
 /> 
 

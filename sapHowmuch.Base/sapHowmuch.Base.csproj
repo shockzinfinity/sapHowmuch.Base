@@ -99,6 +99,7 @@
       <DependentUpon>FormController.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DynamicInvoke.cs" />
+    <Compile Include="Installer\AddonInfo.cs" />
     <Compile Include="Installer\InstallAPIWrapper.cs" />
     <Compile Include="Management\DynamicInvoke.cs" />
     <Compile Include="SapStream.Observable.cs">
