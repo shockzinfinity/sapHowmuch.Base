@@ -433,7 +433,7 @@
 //LocateReconciliationRowinBankStatementsbyExactAmount = "45079"
 //ExternalReconciliationbyDueDate = "45102"
 //ExternalReconciliationbyExactSum = "45104"
-//ExternalReconciliationbySum(FC) = "45106"
+//ExternalReconciliationbySumFC = "45106"
 //ExternalReconciliationbyTransNumber = "45108"
 //Inventory = "14080"
 //ItemsList = "14081"

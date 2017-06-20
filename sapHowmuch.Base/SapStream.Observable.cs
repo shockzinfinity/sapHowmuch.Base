@@ -289,12 +289,17 @@ namespace sapHowmuch.Base
 
 			AppEventStream.Subscribe(ev =>
 			{
-				sapHowmuchLogger.Trace($"{ev.EventFiredTime.ToString("yyyy - MM - dd HH: mm:ss.fff")}\t{ev.DetailArg.ToString()}");
+				sapHowmuchLogger.Trace($"AppEvent: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}\t{ev.DetailArg.ToString()}");
 			});
 
 			ItemEventStream.Subscribe(ev =>
 			{
-				sapHowmuchLogger.Trace(ev.ToString());
+				sapHowmuchLogger.Trace($"ItemEvent: {ev.ToString()}");
+			});
+
+			MenuEventStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace($"MenuEvent: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")} | {ev.BubbleEvent} | {ev.DetailArg.MenuUID} | {ev.DetailArg.BeforeAction} | {ev.DetailArg.InnerEvent}");
 			});
 		}
 

@@ -84,6 +84,7 @@
     <Compile Include="..\Documents\SharedAssembly.cs">
       <Link>Properties\SharedAssembly.cs</Link>
     </Compile>
+    <Compile Include="Controllers\MK0401Controller.cs" />
     <Compile Include="Controllers\MK0001Controller.cs" />
     <Compile Include="Controllers\VT0010Controller.cs" />
     <Compile Include="Controllers\VT0021Controller.cs" />
@@ -122,6 +123,7 @@
     <EmbeddedResource Include="Views\VT0021.srf" />
     <EmbeddedResource Include="Views\VTTEMP.srf" />
     <EmbeddedResource Include="Views\MK0001.srf" />
+    <EmbeddedResource Include="Views\MK0401.srf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

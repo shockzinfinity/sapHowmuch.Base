@@ -42,9 +42,6 @@ namespace sapHowmuch.Base.Helpers
 			if (_menuSubscribe != null)
 				_menuSubscribe.Dispose();
 
-			// TODO: menu subscribe 에 대한 before/after 정책결정 필요
-			// e.g.) 코어쪽의 메뉴 호출 시에 before 에서 bubble event 를 true/false 해야 하는 경우가 생길 수 있음.
-			// 이는 main stream 에서 조정할 필요가 있다.
 			_menuSubscribe = SapStream.MenuEventStream.Where(x => !x.DetailArg.BeforeAction).Subscribe(x =>
 			{
 				//if (x.DetailArg.BeforeAction) return;
@@ -54,7 +51,7 @@ namespace sapHowmuch.Base.Helpers
 
 				if (menuEvent == null || menuEvent.Action == null)
 				{
-					sapHowmuchLogger.Error($"MenuId: '{menuId}' menuEvent or action are missing.");
+					//sapHowmuchLogger.Error($"MenuId: '{menuId}' menuEvent or action are missing.");
 					return;
 				}
 

@@ -48,5 +48,35 @@ namespace sapHowmuch.Base.Constants
 		/// 운영관리 > 설정
 		/// </summary>
 		public const string Setup = "43525";
+
+
+		#region data handling toolbar menu items
+
+		public const string Data = "1280";
+		public const string DataFind = "1281";
+		public const string DataAdd = "1282";
+		public const string DataRemove = "1283";
+		public const string DataCancel = "1284";
+		public const string DataRecover = "1285";
+		public const string DataDuplicate = "1287";
+		public const string DataNextRecord = "1288";
+		public const string DataPrevRecord = "1289";
+		public const string DataFirstRecord = "1290";
+		public const string DataLastRecord = "1291";
+		public const string DataAddRow = "1292";
+		public const string DataDeleteRow = "1293";
+		public const string DataReplicateRow = "1294";
+		public const string DataCopyFromUpper = "1295";
+		public const string DataCopyFromBottom = "1296";
+		public const string DataCloseRow = "1299";
+		public const string DataReplicateLocation = "1301";
+		public const string DataRefresh = "1304";
+		public const string DataTableOrdering = "4869";
+		public const string DataTableFiltering = "4870";
+		public const string DataGroupingJournal = "5932";
+		public const string DataAdvanced = "43572";
+
+		#endregion
+
 	}
 }

@@ -11,5 +11,10 @@ namespace sapHowmuch.Base.Extensions
 				yield return (SAPbobsCOM.Field)item;
 			}
 		}
+
+		public static SAPbobsCOM.Recordset GetRecordset(this SAPbobsCOM.Company company)
+		{
+			return company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset) as SAPbobsCOM.Recordset;
+		}
 	}
 }

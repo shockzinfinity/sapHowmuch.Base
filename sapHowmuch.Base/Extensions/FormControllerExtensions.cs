@@ -169,7 +169,7 @@ namespace sapHowmuch.Base.Extensions
 						break;
 
 					case SrfControlType.ChooseFromList:
-						field.SetValue(controller, (controller.Form.Items.Item(attribute.UniqueId).Specific as SAPbouiCOM.ChooseFromList));
+						field.SetValue(controller, controller.Form.ChooseFromLists.Item(attribute.UniqueId));
 						break;
 				}
 			}

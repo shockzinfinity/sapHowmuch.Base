@@ -14,41 +14,24 @@ namespace sapHowmuch.Base.EventArguments
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.Append(EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
-			sb.Append(" | ");
-			sb.Append(BubbleEvent);
-			sb.Append(" | ");
-			sb.Append(DetailArg.BeforeAction);
-			sb.Append(" | ");
-			sb.Append(DetailArg.ActionSuccess);
-			sb.Append(" | ");
-			sb.Append(DetailArg.EventType);
-			sb.Append(" | ");
-			sb.Append(DetailArg.FormMode);
-			sb.Append(" | ");
-			sb.Append(DetailArg.FormUID);
-			sb.Append(" | ");
-			sb.Append(DetailArg.FormTypeEx);
-			sb.Append(" | ");
-			sb.Append(DetailArg.FormTypeCount);
-			sb.Append(" | ");
-			sb.Append(DetailArg.FormUID);
-			sb.Append(" | ");
-			sb.Append(DetailArg.ItemUID);
-			sb.Append(" | ");
-			sb.Append(DetailArg.ColUID);
-			sb.Append(" | ");
-			sb.Append(DetailArg.Row);
-			sb.Append(" | ");
-			sb.Append(DetailArg.CharPressed);
-			sb.Append(" | ");
-			sb.Append(DetailArg.Modifiers);
-			sb.Append(" | ");
-			sb.Append(DetailArg.ItemChanged);
-			sb.Append(" | ");
-			sb.Append(DetailArg.InnerEvent);
-			sb.Append(" | ");
-			sb.Append(DetailArg.PopUpIndicator);
+			sb.Append(EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")).Append(" | ")
+			.Append(BubbleEvent).Append(" | ")
+			.Append(DetailArg.BeforeAction).Append(" | ")
+			.Append(DetailArg.ActionSuccess).Append(" | ")
+			.Append(DetailArg.EventType).Append(" | ")
+			.Append(DetailArg.FormMode).Append(" | ")
+			.Append(DetailArg.FormUID).Append(" | ")
+			.Append(DetailArg.FormTypeEx).Append(" | ")
+			.Append(DetailArg.FormTypeCount).Append(" | ")
+			.Append(DetailArg.FormUID).Append(" | ")
+			.Append(DetailArg.ItemUID).Append(" | ")
+			.Append(DetailArg.ColUID).Append(" | ")
+			.Append(DetailArg.Row).Append(" | ")
+			.Append(DetailArg.CharPressed).Append(" | ")
+			.Append(DetailArg.Modifiers).Append(" | ")
+			.Append(DetailArg.ItemChanged).Append(" | ")
+			.Append(DetailArg.InnerEvent).Append(" | ")
+			.Append(DetailArg.PopUpIndicator);
 
 			return sb.ToString();
 		}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using sapHowmuch.Base.Helpers;
+using System.Collections.Generic;
 
 namespace sapHowmuch.Base.Extensions
 {
@@ -53,6 +54,58 @@ namespace sapHowmuch.Base.Extensions
 			foreach (SAPbouiCOM.MenuItem item in menus)
 			{
 				yield return item;
+			}
+		}
+
+		public static IEnumerable<SAPbouiCOM.Item> AsEnumerable(this SAPbouiCOM.Items items)
+		{
+			foreach (SAPbouiCOM.Item item in items)
+			{
+				yield return item;
+			}
+		}
+
+		public static bool Clear(this SAPbouiCOM.ValidValues values)
+		{
+			try
+			{
+				for (int i = values.Count - 1; i >= 1; i--)
+				{
+					values.Remove(i, SAPbouiCOM.BoSearchKey.psk_Index);
+				}
+
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public static bool Query(this SAPbouiCOM.ValidValues values, string query, bool addWhole = false, string wholeValue = "")
+		{
+			try
+			{
+				if (addWhole)
+					values.Add(wholeValue, sapHowmuchConstants.ComboboxWholeDescription);
+
+				using (var comboQuery = new SboRecordsetQuery(query))
+				{
+					if (comboQuery.Count == 0)
+						return false;
+
+					// just use first, second column
+					foreach (var item in comboQuery.Result)
+					{
+						values.Add(item.Item(0).Value.ToString(), item.Item(1).Value.ToString());
+					}
+				}
+
+				return true;
+			}
+			catch
+			{
+				return false;
 			}
 		}
 	}

@@ -58,38 +58,6 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 		#region control placeholders
 
 		// TODO: code snippet 으로 변경 필요
-		[SrfControl("Item_27", SrfControlType.EditText)]
-		private SAPbouiCOM.EditText _txtFrom;
-
-		[SrfControl("Item_28", SrfControlType.EditText)]
-		private SAPbouiCOM.EditText _txtTo;
-
-		[SrfControl("Item_2", SrfControlType.EditText)]
-		private SAPbouiCOM.EditText _txtFACode;
-
-		[SrfControl("Item_8", SrfControlType.EditText)]
-		private SAPbouiCOM.EditText _txtFAName;
-
-		[SrfControl("Item_12", SrfControlType.ComboBox)]
-		private SAPbouiCOM.ComboBox _cmbExpense;
-
-		[SrfControl("Item_30", SrfControlType.EditText)]
-		private SAPbouiCOM.EditText _txtAcctCode;
-
-		[SrfControl("Item_31", SrfControlType.EditText)]
-		private SAPbouiCOM.EditText _txtAcctName;
-
-		[SrfControl("Item_18", SrfControlType.Button)]
-		private SAPbouiCOM.Button _btnSearch;
-
-		[SrfControl("2", SrfControlType.Button)]
-		private SAPbouiCOM.Button _btnCancel;
-
-		[SrfControl("Item_1", SrfControlType.Matrix)]
-		private SAPbouiCOM.Matrix _matSummary;
-
-		[SrfControl("Item_4", SrfControlType.Matrix)]
-		private SAPbouiCOM.Matrix _matDetail;
 
 		#endregion control placeholders
 	}
