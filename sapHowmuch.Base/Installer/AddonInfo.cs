@@ -2,10 +2,13 @@
 using System;
 using System.Reflection;
 using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace sapHowmuch.Base.Installer
 {
-	public abstract class AddonInfo : IAddonInfo
+	[XmlRoot("AddOnInfo")]
+	public abstract class AddonInfo : IAddonInfo, IXmlSerializable
 	{
 		#region IAddonInfo implementation
 
@@ -17,8 +20,7 @@ namespace sapHowmuch.Base.Installer
 
 		public abstract string AddonName { get; }
 
-		// '.' is ignored.
-		public abstract int AddonVersion { get; }
+		public abstract string AddonVersion { get; }
 
 		// disable mandatory feature, modify in SBO client
 		public string AddonGroup { get { return AddonGroupType.NoMandatory; } }
@@ -31,13 +33,17 @@ namespace sapHowmuch.Base.Installer
 
 		public virtual string InstallCommandArgs { get; }
 
-		public string SlientInstall { get { return "N"; } }
+		public string SilentInstall { get { return "N"; } }
 
 		public virtual int EstimatedUnInstallTime { get; }
 
 		public virtual string UnInstallCommandArgs { get { return "/u"; } }
 
-		public string SlientUninstall { get { return "N"; } }
+		public string SilentUninstall { get { return "N"; } }
+
+		public string EstimatedUpgradeTime { get; }
+		public string UpgradeCommandArgs { get; }
+		public string SilentUpgrade { get { return "N"; } }
 
 		public abstract string InstallPath { get; set; }
 
@@ -45,14 +51,34 @@ namespace sapHowmuch.Base.Installer
 
 		#endregion IAddonInfo implementation
 
-		protected virtual XmlDocument ToXml()
+		public XmlSchema GetSchema()
+		{
+			return null;
+		}
+
+		public void ReadXml(XmlReader reader)
 		{
 			throw new NotImplementedException();
 		}
 
-		protected virtual string ToJson()
+		public void WriteXml(XmlWriter writer)
 		{
-			throw new NotImplementedException();
+			writer.WriteAttributeString("partnername", PartnerName);
+			writer.WriteAttributeString("partnernmsp", PartnerNamespace);
+			writer.WriteAttributeString("contdata", PartnerContact);
+			writer.WriteAttributeString("addonname", AddonName);
+			writer.WriteAttributeString("addongroup", AddonGroup);
+			writer.WriteAttributeString("clienttype", ClientType);
+			writer.WriteAttributeString("platform", Platform);
+			writer.WriteAttributeString("esttime", EstimatedInstallTime.ToString());
+			writer.WriteAttributeString("instparams", InstallCommandArgs);
+			writer.WriteAttributeString("silentinst", SilentInstall);
+			writer.WriteAttributeString("unesttime", EstimatedUnInstallTime.ToString());
+			writer.WriteAttributeString("uncmdarg", UnInstallCommandArgs);
+			writer.WriteAttributeString("silentuninst", SilentUninstall);
+			writer.WriteAttributeString("ugdesttime", EstimatedUpgradeTime);
+			writer.WriteAttributeString("ugdcmdargs", UpgradeCommandArgs);
+			writer.WriteAttributeString("silentugd", SilentUpgrade);
 		}
 	}
 
@@ -67,7 +93,7 @@ namespace sapHowmuch.Base.Installer
 		// addon info
 		string AddonName { get; }
 
-		int AddonVersion { get; }
+		string AddonVersion { get; }
 		string AddonGroup { get; }
 		string ClientType { get; }
 		string Platform { get; }
@@ -76,18 +102,21 @@ namespace sapHowmuch.Base.Installer
 		int EstimatedInstallTime { get; }
 
 		string InstallCommandArgs { get; }
-		string SlientInstall { get; } // will not use
+		string SilentInstall { get; } // will not use
 
 		// uninstall info
 		int EstimatedUnInstallTime { get; }
 
 		string UnInstallCommandArgs { get; }
-		string SlientUninstall { get; } // will not use
+		string SilentUninstall { get; } // will not use
 
-		// will not use upgrade feature
+		string EstimatedUpgradeTime { get; }
+		string UpgradeCommandArgs { get; }
+		string SilentUpgrade { get; }
 
 		// parameter from SBO client
 		string InstallPath { get; }
+
 		string DllPath { get; }
 	}
 }

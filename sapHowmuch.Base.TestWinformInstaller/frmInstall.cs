@@ -1,19 +1,16 @@
-﻿using Microsoft.Win32;
-using sapHowmuch.Base.Enums;
+﻿using sapHowmuch.Base.Enums;
 using sapHowmuch.Base.Helpers;
 using sapHowmuch.Base.Installer;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace sapHowmuch.Base.TestWinformInstaller
 {
@@ -21,11 +18,16 @@ namespace sapHowmuch.Base.TestWinformInstaller
 	{
 		public const int WM_NCLBUTTONDOWN = 0xA1;
 		public const int HT_CAPTION = 0x2;
+
 		[DllImport("user32.dll")]
 		public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
 		[DllImport("user32.dll")]
 		public static extern bool ReleaseCapture();
+
 		private AddonInfo _addonInfo;
+		private int _resourcesCount;
+		private int _percent;
 
 		public frmInstall()
 		{
@@ -35,8 +37,13 @@ namespace sapHowmuch.Base.TestWinformInstaller
 		protected override void OnLoad(EventArgs e)
 		{
 			var addonInfoType = Assembly.GetExecutingAssembly().GetTypes().FirstOrDefault(a => !a.IsInterface && a.BaseType == typeof(AddonInfo));
-			var _addonInfo = Activator.CreateInstance(addonInfoType) as AddonInfo;
+			_addonInfo = Activator.CreateInstance(addonInfoType) as AddonInfo;
 			var commandArgs = Environment.GetCommandLineArgs();
+
+			lblAddonVersion.Text = _addonInfo.AddonVersion.ToString();
+			lblAddonName.Text = _addonInfo.AddonName;
+			lblDescription.Text = _addonInfo.PartnerContact;
+			lblInstallPath.Text = _addonInfo.InstallPath;
 
 			try
 			{
@@ -47,21 +54,63 @@ namespace sapHowmuch.Base.TestWinformInstaller
 						Uninstall();
 						Application.Exit();
 					}
+					else if (commandArgs[1] == "/g")
+					{
+						var knownTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.BaseType == typeof(AddonInfo)).ToArray();
+						var settings = new XmlWriterSettings
+						{
+							Indent = true,
+							OmitXmlDeclaration = false,
+							Encoding = Encoding.GetEncoding("UTF-16")
+						};
+
+						var namespaces = new XmlSerializerNamespaces();
+						namespaces.Add(string.Empty, string.Empty);
+
+						XmlSerializer serializer = new XmlSerializer(typeof(AddonInfo), knownTypes);
+
+						using (var xmlWriter = XmlWriter.Create($@"{Environment.CurrentDirectory}\{_addonInfo.AddonName}.xml", settings))
+						{
+							serializer.Serialize(xmlWriter, _addonInfo, namespaces);
+						}
+
+						#region ard file generating
+
+						Process addondatagen = new Process();
+						addondatagen.StartInfo.FileName = sapHowmuchConstants.AddOnRegDataGenPath;
+						addondatagen.StartInfo.WorkingDirectory = Environment.CurrentDirectory;
+						addondatagen.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+						// "AddOnInfo.xml" "Version" "Installer.exe" "Installer.exe" "AddOnExecutable"
+						addondatagen.StartInfo.Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\"");
+
+						addondatagen.Start();
+
+						// addon name 에 따른 ard 파일 생성
+						// TODO: 빌드 이후 이벤트에 /g 로 해서 실행
+
+						#endregion ard file generating
+
+						Application.Exit();
+					}
 
 					var elements = commandArgs[1].Split(new char[] { char.Parse("|") });
 					_addonInfo.InstallPath = elements[0];
-					_addonInfo.DllPath = elements[1];
-					// TODO: check && logging
-					_addonInfo.DllPath = _addonInfo.DllPath.Remove((_addonInfo.DllPath.Length - 19), 19);
+
+					// AddOnInstallAPI path
+					// TODO: 문자열 안자르고 그냥 넣었을 때, installapi 동작하는지 여부 체크
+					var pathIndex = elements[1].LastIndexOf("\\") + 1;
+					_addonInfo.DllPath = elements[1].Remove(pathIndex, elements[1].Length - pathIndex);
 				}
 				else
 				{
 					// TODO: 설치실패 처리 및 로깅
+					sapHowmuchLogger.Error("Failed to install");
 					Application.Exit();
 				}
 			}
 			catch (Exception ex)
 			{
+				sapHowmuchLogger.Error($"Failed to install - {ex.Message}");
 				MessageBox.Show(ex.Message);
 				Application.Exit();
 			}
@@ -71,33 +120,46 @@ namespace sapHowmuch.Base.TestWinformInstaller
 		{
 			try
 			{
+				_percent = 0;
+
 				if (_addonInfo != null)
 				{
+					ProgressBarDisplay(string.Format("{0} 애드온 설치를 위해 SAP-얼마에요에 연결중입니다.", _addonInfo.AddonName), false);
+
 					InstallAPIWrapper.Init(_addonInfo.DllPath);
 					Environment.CurrentDirectory = _addonInfo.DllPath;
 
+					ProgressBarDisplay(string.Format("설치 폴더를 확인중입니다..", new object[0]), false);
 					if (!Directory.Exists(_addonInfo.InstallPath))
 					{
 						Directory.CreateDirectory(_addonInfo.InstallPath);
 					}
 
 					// extract files
-					var assembly = Assembly.GetEntryAssembly();
+					var assembly = Assembly.GetExecutingAssembly();
 
 					ExtractFile(assembly, _addonInfo.InstallPath);
 
-					// TODO: restart 체크
-					//InstallAPIWrapper.RestartNeeded();
+					if (chkRestart.Checked)
+					{
+						ProgressBarDisplay(string.Format("{0} 애드온을 시작하기 위해 SAP-얼마에요을 재시작합니다.", _addonInfo.AddonName), false);
+						InstallAPIWrapper.RestartNeeded();
+					}
 
+					ProgressBarDisplay(string.Format(@"{0} 애드온 설치가 완료되었습니다.", _addonInfo.AddonName), true);
 					InstallAPIWrapper.EndInstall("installation completed", true);
 				}
 				else
 				{
-					throw new Exception("incorrct addon info");
+					throw new ArgumentNullException(nameof(_addonInfo));
 				}
 			}
 			catch (Exception ex)
 			{
+				ProgressBarDisplay("설치중 에러로 인해 설치를 중단하였습니다", true);
+
+				btnInstall.UseWaitCursor = false;
+				chkRestart.Enabled = true;
 				sapHowmuchLogger.Error($"Install failed {Environment.NewLine}{ex.Message}");
 				throw ex;
 			}
@@ -110,7 +172,7 @@ namespace sapHowmuch.Base.TestWinformInstaller
 				if (_addonInfo != null)
 				{
 					InstallAPIWrapper.Init(_addonInfo.DllPath);
-					var fileList = Assembly.GetEntryAssembly().GetManifestResourceNames();
+					var fileList = Assembly.GetExecutingAssembly().GetManifestResourceNames();
 
 					foreach (var file in fileList)
 					{
@@ -178,6 +240,7 @@ namespace sapHowmuch.Base.TestWinformInstaller
 			try
 			{
 				string[] fileList = assembly.GetManifestResourceNames();
+				_resourcesCount = fileList.Length;
 
 				foreach (var file in fileList)
 				{
@@ -213,6 +276,8 @@ namespace sapHowmuch.Base.TestWinformInstaller
 						targetPath = string.Format(@"{0}\{1}\{2}", installPath, AddonFileType.ExcelFile.ToString(), fileName);
 					}
 
+					ProgressBarDisplay(string.Format("{0} 파일을 설치중입니다.", fileName), false);
+
 					using (var stream = assembly.GetManifestResourceStream(file))
 					{
 						if (File.Exists(sourcePath))
@@ -245,6 +310,56 @@ namespace sapHowmuch.Base.TestWinformInstaller
 			{
 				sapHowmuchLogger.Error($"Error while copying: {ex.Message}");
 				Application.Exit();
+			}
+		}
+
+		private void ProgressBarDisplay(string message, bool isFinal = false)
+		{
+			// TODO: Rx 로 변경
+			try
+			{
+				int weight = 100 / _resourcesCount;
+
+				_percent = _percent + weight;
+
+				lblMessage.Text = message;
+
+				if (isFinal)
+				{
+					pbarStatus.Value = 100;
+				}
+				else
+				{
+					pbarStatus.Value = _percent;
+				}
+
+				// TODO: remove do events
+				Application.DoEvents();
+			}
+			catch (Exception ex)
+			{
+				sapHowmuchLogger.Error(ex.Message);
+			}
+		}
+
+		private void frmInstall_MouseDown(object sender, MouseEventArgs e)
+		{
+			// TODO: Rx 로 변경
+			if (e.Button == MouseButtons.Left)
+			{
+				ReleaseCapture();
+				SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+			}
+		}
+
+		private void btnInstall_Click(object sender, EventArgs e)
+		{
+			// TODO: Rx 로 변경
+			if (btnInstall.UseWaitCursor == false)
+			{
+				btnInstall.UseWaitCursor = true;
+				chkRestart.Enabled = false;
+				Install();
 			}
 		}
 	}

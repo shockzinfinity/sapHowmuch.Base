@@ -32,5 +32,11 @@ namespace sapHowmuch.Base
 		public const string CT_UdfObj = "SHM_CT_Obj";
 
 		#endregion Change Tracker constants
+
+		#region for Installer
+
+		public const string AddOnRegDataGenPath = @"C:\Program Files (x86)\SAP\SAP Business One SDK\Tools\AddOnRegDataGen\AddOnRegDataGen.exe";
+
+		#endregion
 	}
 }

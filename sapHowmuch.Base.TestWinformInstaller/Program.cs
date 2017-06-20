@@ -14,10 +14,6 @@ namespace sapHowmuch.Base.TestWinformInstaller
 		[STAThread]
 		static void Main()
 		{
-			// TODO: 빌드시에 addon info xml generating
-
-			// TODO: 빌드시에 addon registration file generating
-
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new frmInstall());

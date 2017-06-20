@@ -6,7 +6,7 @@ namespace sapHowmuch.Base.Dialogs.Inputs
 	{
 		private bool _defaultValue;
 		private readonly string _id;
-		private bool _required;
+		private bool _required = false;
 		private string _title;
 		private SAPbouiCOM.Item _item;
 		private SAPbouiCOM.CheckBox _checkbox;
