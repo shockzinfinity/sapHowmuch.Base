@@ -1,5 +1,6 @@
 ﻿#pragma warning disable 1591
 
+using System;
 using System.ComponentModel;
 
 namespace sapHowmuch.Base.Constants
@@ -69,6 +70,12 @@ namespace sapHowmuch.Base.Constants
 		[Description("23")]
 		public const string Quotations = "OQUT";
 
+		[Description("28")]
+		public const string JournalVouchers = "OBTD";
+
+		[Description("30")]
+		public const string JournalEntries = "OJDT";
+
 		[Description("40")]
 		public const string PaymentTerm = "OCTG";
 
@@ -83,6 +90,10 @@ namespace sapHowmuch.Base.Constants
 
 		[Description("60")]
 		public const string InventoryGenExit = "OIGE";
+
+		[Obsolete]
+		[Description("68")]
+		public const string WorkOrders = "OWKO";
 
 		[Description("112")]
 		public const string Drafts = "ODRF";
@@ -101,6 +112,9 @@ namespace sapHowmuch.Base.Constants
 
 		[Description("166")]
 		public const string CorrectionInvoiceReversal = "OCSV";
+
+		[Description("202")]
+		public const string ProductionOrder = "OWOR";
 
 		[Description("203")]
 		public const string DownPayments = "ODPI";
@@ -121,8 +135,6 @@ namespace sapHowmuch.Base.Constants
 
 // TODO: 테이블 검색 및 추가 필요
 //oIncomingPayments = 24,
-//oJournalVouchers = 28,
-//oJournalEntries = 30,
 //oStockTakings = 31,
 //oContacts = 33,
 //oCreditCards = 36,
@@ -140,7 +152,6 @@ namespace sapHowmuch.Base.Constants
 //oCommissionGroups = 65,
 //oProductTrees = 66,
 //oStockTransfer = 67,
-//oWorkOrders = 68,
 //oCreditPaymentMethods = 70,
 //oCreditCardPayments = 71,
 //oAlternateCatNum = 73,
@@ -188,7 +199,6 @@ namespace sapHowmuch.Base.Constants
 //oSalesForecast = 198,
 //oTerritories = 200,
 //oIndustries = 201,
-//oProductionOrders = 202,
 //oPackagesTypes = 205,
 //oUserObjectsMD = 206,
 //oTeams = 211,

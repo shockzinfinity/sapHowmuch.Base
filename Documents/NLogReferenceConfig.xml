@@ -28,7 +28,7 @@
 					keepConnection="true"
 					useTransactions="true"
 					dbProvider="System.Data.SqlClient"
-					ConnectionString="data source=192.168.1.229;initial catalog=sapHowmuchWebApi;integrated security=false;persist security info=True;UserD=sa;Password="
+					ConnectionString="data source=192.168.1.229;initial catalog=sapHowmuchWebApi;integrated security=false;persist security info=True;UserD=;Password=;"
 					commandText="INSERT INTO [system_logging]([log_application], [log_date], [log_level], [log_logger], [log_message], [log_machine_name], [log_user_name], [log_call_site], [log_thread], [log_exception], [log_stacktrace]) VALUES (@log_application, @log_date, @log_level, @log_logger, @log_message, @log_machine_name, @log_user_name, @log_call_site, @log_thread, @log_exception, @log_stacktrace)">
 			<!--parameters for the command-->
 			<parameter name="@log_application" layout="${appName}" />

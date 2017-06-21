@@ -17,6 +17,17 @@ namespace sapHowmuch.Base
 
 		#endregion setting services
 
+		#region master code setting
+
+		public const string MasterCodeTableName = "AD0020L";
+		public const string MasterCodeTableDescription = "master code settings line";
+		public const string MasterCodeFieldName = "Minor";
+		public const string MasterCodeFieldDescription = "values for master code";
+		public const string MasterCodeNameFieldName = "CdName";
+		public const string MasterCodeNameFieldDescription = "name for master code value";
+
+		#endregion
+
 		#region menu attribute constants
 
 		public const string MenuFormTypeAttr = "FormType";

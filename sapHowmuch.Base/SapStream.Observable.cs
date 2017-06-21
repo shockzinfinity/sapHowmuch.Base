@@ -40,8 +40,6 @@ namespace sapHowmuch.Base
 			{
 				if (_application != null)
 				{
-					// app event 등록
-
 					AppEventStream = Observable.FromEvent<_IApplicationEvents_AppEventEventHandler, SapAppEventArgs>(
 						handler =>
 						{
@@ -300,6 +298,48 @@ namespace sapHowmuch.Base
 			MenuEventStream.Subscribe(ev =>
 			{
 				sapHowmuchLogger.Trace($"MenuEvent: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")} | {ev.BubbleEvent} | {ev.DetailArg.MenuUID} | {ev.DetailArg.BeforeAction} | {ev.DetailArg.InnerEvent}");
+			});
+
+			UDOEventStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace($"UDOEvent: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")} | {ev.BubbleEvent} | {ev.DetailArg.EventType} | {ev.DetailArg.ObjectKey} | {ev.DetailArg.ObjectType} | {ev.DetailArg.TableDefinitionSchema}");
+
+				// TODO: FormSrf, UDOCode 확인 필요
+			});
+
+			FormDataEventStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace($"FormDataEvent: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")} | {ev.BubbleEvent} | {ev.DetailArg.EventType} | {ev.DetailArg.BeforeAction} | {ev.DetailArg.ActionSuccess} | {ev.DetailArg.FormUID} | {ev.DetailArg.FormTypeEx} | {ev.DetailArg.Type} | {ev.DetailArg.ObjectKey}");
+			});
+
+			LayoutKeyInfoStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace($"LayoutKeyInfo: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")} | {ev.BubbleEvent} | {ev.DetailArg.EventType} | {ev.DetailArg.BeforeAction} | {ev.DetailArg.ActionSuccess} | {ev.DetailArg.FormUID} | {ev.DetailArg.ItemUID} | {ev.DetailArg.ColUID} | {ev.DetailArg.Row} | {ev.DetailArg.LayoutKey} | {ev.DetailArg.ReportCode} | {ev.DetailArg.ReportTemplate}");
+			});
+
+			PrintEventStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace($"PrintEvent: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")} | {ev.BubbleEvent} | {ev.DetailArg.EventType} | {ev.DetailArg.BeforeAction} | {ev.DetailArg.ActionSuccess} | {ev.DetailArg.FormUID} | {ev.DetailArg.ItemUID} | {ev.DetailArg.ColUID} | {ev.DetailArg.Row} | {ev.DetailArg.NumberOfCopies} | {ev.DetailArg.Printed} | {ev.DetailArg.PrintEventType} | {ev.DetailArg.ReportCode} | {ev.DetailArg.ReportTemplate} | {ev.DetailArg.WithPrinterPreferences}");
+			});
+
+			RightClickEventStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace($"RightClick: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")} | {ev.BubbleEvent} | {ev.DetailArg.EventType} | {ev.DetailArg.FormUID} | {ev.DetailArg.ItemUID} | {ev.DetailArg.ColUID} | {ev.DetailArg.Row}");
+			});
+
+			ServerInvokeCompletedEventStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace($"ServerInvoke: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")} | {ev.BubbleEvent} | {ev.DetailArg.EventType} | {ev.DetailArg.ResultStr}");
+			});
+
+			StatusBarEventStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace($"StatusEvent: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")} | {ev.Message}");
+			});
+
+			WidgetEventStream.Subscribe(ev =>
+			{
+				sapHowmuchLogger.Trace($"WidgetEvent: {ev.EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")} | {ev.BubbleEvent} | {ev.DetailArg.EventType} | {ev.DetailArg.Form} | {ev.DetailArg.WidgetUID} | {ev.DetailArg.WidgetType} | {ev.DetailArg.Top} | {ev.DetailArg.Bottom} | {ev.DetailArg.Left} | {ev.DetailArg.Right}");
 			});
 		}
 

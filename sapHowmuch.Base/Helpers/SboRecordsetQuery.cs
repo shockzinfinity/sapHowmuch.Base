@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace sapHowmuch.Base.Helpers
@@ -145,7 +146,16 @@ namespace sapHowmuch.Base.Helpers
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			if (_sqlConnection != null && _sqlConnection.State == ConnectionState.Open)
+			{
+				_sqlConnection.Close();
+				_sqlConnection.Dispose();
+			}
+
+			if (_reader != null && !_reader.IsClosed)
+			{
+				_reader.Close();
+			}
 		}
 	}
 }

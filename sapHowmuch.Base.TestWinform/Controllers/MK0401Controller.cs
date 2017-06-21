@@ -16,8 +16,6 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 
 		protected override void OnFormCreate()
 		{
-			// 초기화 로직
-
 			using (Form.FreezeEx())
 			{
 				Form.DataBrowser.BrowseBy = _txtDocEntry.Item.UniqueID;
