@@ -73,6 +73,10 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 
 				Form.Mode = SAPbouiCOM.BoFormMode.fm_OK_MODE;
 
+				//string tempKey = "<?xml version=\"1.0\" encoding=\"UTF-16\" ?><DocumentParams><DocEntry>20</DocEntry></DocumentParams>";
+				//SapStream.UiApp.OpenForm(SAPbouiCOM.BoFormObjectEnum.fo_Order, string.Empty, "20");
+				SapStream.UiApp.OpenForm(SAPbouiCOM.BoFormObjectEnum.fo_UserDefinedObject, "AD0001", "2");
+
 				//ItemEventStream.Where(x =>x.DetailArg.EventType == SAPbouiCOM.BoEventTypes.da)
 
 				Form.VisibleEx = true;
