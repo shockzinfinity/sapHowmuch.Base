@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		Documents\NLogReferenceConfig.xml = Documents\NLogReferenceConfig.xml
 		Documents\NLogTableSetting.sql = Documents\NLogTableSetting.sql
 		Documents\SharedAssembly.cs = Documents\SharedAssembly.cs
+		Documents\User Object.txt = Documents\User Object.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.VSExtension", "sapHowmuch.VSExtension\sapHowmuch.VSExtension.csproj", "{0129C1C6-E948-4BEB-9085-798C0657C244}"

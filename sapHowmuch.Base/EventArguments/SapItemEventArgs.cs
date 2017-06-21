@@ -16,9 +16,9 @@ namespace sapHowmuch.Base.EventArguments
 			StringBuilder sb = new StringBuilder();
 			sb.Append(EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")).Append(" | ")
 			.Append(BubbleEvent).Append(" | ")
+			.Append(DetailArg.EventType).Append(" | ")
 			.Append(DetailArg.BeforeAction).Append(" | ")
 			.Append(DetailArg.ActionSuccess).Append(" | ")
-			.Append(DetailArg.EventType).Append(" | ")
 			.Append((BoFormMode)Enum.Parse(typeof(BoFormMode), DetailArg.FormMode.ToString())).Append(" | ")
 			.Append(DetailArg.FormUID).Append(" | ")
 			.Append(DetailArg.FormTypeEx).Append(" | ")

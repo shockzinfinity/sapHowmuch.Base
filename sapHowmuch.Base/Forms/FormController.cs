@@ -80,7 +80,7 @@ namespace sapHowmuch.Base.Forms
 			{
 				var assembly = GetType().Assembly;
 				Form = FormHelper.CreateFormFromResource(FormResource, FormType, null, assembly);
-				sapHowmuchLogger.Debug($"Form created: Type = {Form.TypeEx}, UID = {Form.UniqueID}");
+				sapHowmuchLogger.Debug($"Form created: Type = {Form.TypeEx}, UID = {Form.UniqueID}, ObjectType = {Form.BusinessObject.Type}");
 
 				try
 				{

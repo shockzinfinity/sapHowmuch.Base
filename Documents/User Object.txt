@@ -1,0 +1,9 @@
+﻿[OUDO] -- User Object
+[UDO1] -- User Object child tables
+[UDO2] -- User Object fields for find
+[UDO3] -- User Object default fields
+[OUTB] -- User Table
+[CUFD] -- User fields
+[OUKD] -- User Keys
+[UKD1] -- User Keys Column
+[UFD1] -- User Fields
