@@ -31,10 +31,7 @@ namespace sapHowmuch.Base.Helpers
 
 					return form;
 				}
-				catch
-				{
-					// ignored
-				}
+				catch { /* ignored */ }
 			}
 
 			try
@@ -64,6 +61,7 @@ namespace sapHowmuch.Base.Helpers
 				creationPackage.XmlData = formXml;
 
 				// TODO: 폼 초기화 정책에 대한 결정 필요
+				// TODO: 폼 위치 조정
 				// TODO: 유저필드 창에 대한 정책 결정 필요
 				// TODO: 모달 테스트
 				// TODO: 시스템 및 UDO 화면 정책 필요

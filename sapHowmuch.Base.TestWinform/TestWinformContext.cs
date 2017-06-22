@@ -1,4 +1,5 @@
 ﻿using sapHowmuch.Base.ChangeTracker;
+using sapHowmuch.Base.Forms;
 using sapHowmuch.Base.Helpers;
 using sapHowmuch.Base.Setup;
 using System;
@@ -13,6 +14,7 @@ namespace sapHowmuch.Base.TestWinform
 		{
 			try
 			{
+				Splasher.Status = "TestWinform addon starting...";
 				sapHowmuchLogger.Trace("TestWinformContext loading...");
 
 				if (!SapStream.IsUiConnected)
@@ -24,12 +26,15 @@ namespace sapHowmuch.Base.TestWinform
 
 				// 메뉴로딩
 				MenuHelper.LoadFromXML(addonAssembly);
+				Splasher.Status = "loading menus...";
 				sapHowmuchLogger.Trace("TestWinformContext loaded.");
 
 				// setting
+				Splasher.Status = "check settings...";
 				SetupManager.RunSetup(new TestSetup());
 				sapHowmuchLogger.Trace("setup completed");
 
+				Splasher.Status = "check change tracker...";
 				// change tracker
 				// required SBO_SP_PostTransactionNotice.sql
 				ChangeTrackerManager.RunSetup();
@@ -40,6 +45,9 @@ namespace sapHowmuch.Base.TestWinform
 					SapStream.UiApp.MetadataAutoRefresh = false;
 					sapHowmuchLogger.Trace("Metadata auto refresh off");
 				}
+
+				Splasher.Status = "Completed loading.";
+				Splasher.Close();
 			}
 			catch (Exception ex)
 			{

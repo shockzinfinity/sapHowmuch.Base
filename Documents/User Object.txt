@@ -7,3 +7,4 @@
 [OUKD] -- User Keys
 [UKD1] -- User Keys Column
 [UFD1] -- User Fields
+[OUQR] -- User Query

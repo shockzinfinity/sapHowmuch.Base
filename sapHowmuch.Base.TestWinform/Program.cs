@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sapHowmuch.Base.Forms;
+using System;
 using System.Windows.Forms;
 
 namespace sapHowmuch.Base.TestWinform
@@ -16,6 +17,8 @@ namespace sapHowmuch.Base.TestWinform
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+
+			Splasher.Show(typeof(frmSplash));
 			Application.Run(new TestWinformContext());
 		}
 

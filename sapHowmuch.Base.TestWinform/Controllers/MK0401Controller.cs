@@ -73,6 +73,7 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 
 				Form.Mode = SAPbouiCOM.BoFormMode.fm_OK_MODE;
 
+				// NOTE: UDO 폼의 경우, 해당 폼의 srf 내용이 서버에 존재할 경우에만 띄울 수 있다.
 				//string tempKey = "<?xml version=\"1.0\" encoding=\"UTF-16\" ?><DocumentParams><DocEntry>20</DocEntry></DocumentParams>";
 				//SapStream.UiApp.OpenForm(SAPbouiCOM.BoFormObjectEnum.fo_Order, string.Empty, "20");
 				SapStream.UiApp.OpenForm(SAPbouiCOM.BoFormObjectEnum.fo_UserDefinedObject, "AD0001", "2");
