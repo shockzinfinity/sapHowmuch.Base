@@ -94,6 +94,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\FormControllerExtensions.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
+    <Compile Include="Extensions\LinqToTreeExtensions.cs" />
     <Compile Include="Extensions\SboDIExtensions.cs" />
     <Compile Include="Extensions\SboUIExtensions.cs" />
     <Compile Include="Forms\FormController.Observables.cs">
@@ -101,6 +102,7 @@
     </Compile>
     <Compile Include="Forms\ISplash.cs" />
     <Compile Include="Forms\Splasher.cs" />
+    <Compile Include="Interfaces\ILinqToTree.cs" />
     <Compile Include="Management\User32.cs" />
     <Compile Include="Management\Win32.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

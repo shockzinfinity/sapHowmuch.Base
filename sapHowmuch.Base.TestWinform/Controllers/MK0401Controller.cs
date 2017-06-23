@@ -1,10 +1,13 @@
 ﻿using sapHowmuch.Base.Attributes;
 using sapHowmuch.Base.Constants;
+using sapHowmuch.Base.Dialogs;
 using sapHowmuch.Base.Enums;
 using sapHowmuch.Base.Extensions;
 using sapHowmuch.Base.Forms;
 using sapHowmuch.Base.Helpers;
+using sapHowmuch.Base.Services;
 using System.Reactive.Linq;
+using System.Xml;
 
 namespace sapHowmuch.Base.TestWinform.Controllers
 {
@@ -76,9 +79,28 @@ namespace sapHowmuch.Base.TestWinform.Controllers
 				// NOTE: UDO 폼의 경우, 해당 폼의 srf 내용이 서버에 존재할 경우에만 띄울 수 있다.
 				//string tempKey = "<?xml version=\"1.0\" encoding=\"UTF-16\" ?><DocumentParams><DocEntry>20</DocEntry></DocumentParams>";
 				//SapStream.UiApp.OpenForm(SAPbouiCOM.BoFormObjectEnum.fo_Order, string.Empty, "20");
-				SapStream.UiApp.OpenForm(SAPbouiCOM.BoFormObjectEnum.fo_UserDefinedObject, "AD0001", "2");
+				//SapStream.UiApp.OpenForm(SAPbouiCOM.BoFormObjectEnum.fo_UserDefinedObject, "AD0001", "2");
+
+				// TODO: askIfNotFound = true 로 할 경우, Input Dialog 하는 과정에서 UI Thread 가 잠기는 현상이 있음.
+				// 수정필요
+				//SettingService.Instance.GetSettingByKey<string>("setup.test2", askIfNotFound: true);
 
 				//ItemEventStream.Where(x =>x.DetailArg.EventType == SAPbouiCOM.BoEventTypes.da)
+
+				XmlDocument save = new XmlDocument();
+				save.LoadXml(_matLine.SerializeAsXML(SAPbouiCOM.BoMatrixXmlSelect.mxs_MetaData));
+
+				var filename = FileDialogHelper.SaveFile(filter: "XML file (*.xml)|*.xml", ignoreCancel: true);
+
+				if (!string.IsNullOrWhiteSpace(filename))
+					save.Save(filename);
+
+				XmlDocument schme = new XmlDocument();
+				schme.LoadXml(_matLine.GetSchema());
+				filename = FileDialogHelper.SaveFile(filter: "XML file (*.xml)|*.xml", ignoreCancel: true);
+
+				if (!string.IsNullOrWhiteSpace(filename))
+					schme.Save(filename);
 
 				Form.VisibleEx = true;
 			}

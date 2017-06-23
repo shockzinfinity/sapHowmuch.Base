@@ -1,4 +1,5 @@
 ﻿using sapHowmuch.Base.Dialogs.Inputs;
+using sapHowmuch.Base.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +24,11 @@ namespace sapHowmuch.Base.Dialogs
 			var formCreator = SapStream.UiApp.CreateObject(SAPbouiCOM.BoCreatableObjectType.cot_FormCreationParams) as SAPbouiCOM.FormCreationParams;
 			formCreator.FormType = FormType;
 			formCreator.BorderStyle = SAPbouiCOM.BoFormBorderStyle.fbs_Fixed;
+			formCreator.Modality = SAPbouiCOM.BoFormModality.fm_Modal;
 
 			_form = SapStream.UiApp.Forms.AddEx(formCreator);
 			_form.Title = title;
-			_form.Height = 300;
+			_form.Height = 500;
 			_form.Width = 300;
 			_yPos = 5;
 
@@ -100,14 +102,14 @@ namespace sapHowmuch.Base.Dialogs
 			okButton.Caption = "Ok";
 			okButton.Item.Top = _yPos;
 			okButton.Item.Left = 100;
-
 			_form.DefButton = okButton.Item.UniqueID;
-			_form.VisibleEx = true;
 
-			okButton.PressedAfter += (o, e) =>
+			using (_form.FreezeEx())
 			{
-				_formWait.Set();
-			};
+				_form.VisibleEx = true;
+			}
+
+			//var resultDictionary = _dialogInputs.ToDictionary(dialogInput => dialogInput.Id, dialoginput => dialoginput.GetValue());
 
 			var itemEventSubscribes = SapStream.ItemEventStream.Where(e => e.DetailArg.FormUID == _form.UniqueID && e.DetailArg.FormTypeEx == FormType && !e.DetailArg.BeforeAction && e.DetailArg.EventType == SAPbouiCOM.BoEventTypes.et_FORM_UNLOAD).Subscribe(x =>
 		   {
@@ -129,8 +131,8 @@ namespace sapHowmuch.Base.Dialogs
 
 					SapStream.UiApp.StatusBar.SetText(invalidInputMessage);
 
-					_formWait.WaitOne();
-					_formWait.Reset();
+					//_formWait.WaitOne();
+					//_formWait.Reset();
 
 					if (_canceled)
 						throw new DialogCanceledException();

@@ -44,6 +44,14 @@ namespace sapHowmuch.Base.Extensions
 			}
 		}
 
+		public static IEnumerable<SAPbouiCOM.ChooseFromList> AsEnumerable(this SAPbouiCOM.ChooseFromListCollection cfls)
+		{
+			foreach (var item in cfls)
+			{
+				yield return item as SAPbouiCOM.ChooseFromList;
+			}
+		}
+
 		/// <summary>
 		/// Return IEnumerable for LINQ support
 		/// </summary>
@@ -62,6 +70,35 @@ namespace sapHowmuch.Base.Extensions
 			foreach (SAPbouiCOM.Item item in items)
 			{
 				yield return item;
+			}
+		}
+
+		public static void SetBindTo(this SAPbouiCOM.Matrix matrix, SAPbouiCOM.DataTable dataTable, bool removePrefix = false)
+		{
+			Dictionary<string, SAPbouiCOM.Column> columnDictionary = new Dictionary<string, SAPbouiCOM.Column>();
+			int matColCount = matrix.Columns.Count;
+			for (int colIdx = 0; colIdx < matColCount; colIdx++)
+			{
+				var column = matrix.Columns.Item(colIdx);
+				var colUid = column.UniqueID;
+				if (columnDictionary.ContainsKey(colUid) == false)
+					columnDictionary.Add(colUid, column);
+			}
+
+			int dtColCount = dataTable.Columns.Count;
+			for (int colIdx = 0; colIdx < dtColCount; colIdx++)
+			{
+				var column = dataTable.Columns.Item(colIdx);
+				var columnName = column.Name;
+
+				if (removePrefix && columnName.StartsWith("U_"))
+					columnName = columnName.Substring(2);
+
+				if (columnDictionary.ContainsKey(columnName))
+				{
+					var matrixColumn = columnDictionary[column.Name];
+					matrixColumn.DataBind.Bind(dataTable.UniqueID, column.Name);
+				}
 			}
 		}
 
@@ -86,6 +123,9 @@ namespace sapHowmuch.Base.Extensions
 		{
 			try
 			{
+				if (values.Count > 0)
+					values.Clear();
+
 				if (addWhole)
 					values.Add(wholeValue, sapHowmuchConstants.ComboboxWholeDescription);
 

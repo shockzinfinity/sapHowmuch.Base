@@ -7,7 +7,7 @@ namespace sapHowmuch.Base.Dialogs
 {
 	public static class FileDialogHelper
 	{
-		public static string SaveFile(string filter = null, string defaultFileName = null)
+		public static string SaveFile(string filter = null, string defaultFileName = null, bool ignoreCancel = false)
 		{
 			var fileSelector = new SaveFileDialog();
 
@@ -16,20 +16,20 @@ namespace sapHowmuch.Base.Dialogs
 				fileSelector.FileName = defaultFileName;
 			}
 
-			if (string.IsNullOrWhiteSpace(filter))
+			if (!string.IsNullOrWhiteSpace(filter))
 			{
 				fileSelector.Filter = filter;
 			}
 
 			var result = new STAInvoker<SaveFileDialog, DialogResult>(fileSelector, (x) => x.ShowDialog(ForegroundWindowWrapper.GetWindow())).Invoke();
 
-			if (result != DialogResult.OK)
+			if (result != DialogResult.OK && !ignoreCancel)
 				throw new DialogCanceledException();
 
 			return fileSelector.FileName;
 		}
 
-		public static string OpenFile(string filter = null, string defaultFileName = null)
+		public static string OpenFile(string filter = null, string defaultFileName = null, bool ignoreCancel = false)
 		{
 			var fileSelector = new OpenFileDialog();
 
@@ -38,20 +38,20 @@ namespace sapHowmuch.Base.Dialogs
 				fileSelector.FileName = defaultFileName;
 			}
 
-			if (string.IsNullOrWhiteSpace(filter))
+			if (!string.IsNullOrWhiteSpace(filter))
 			{
 				fileSelector.Filter = filter;
 			}
 
 			var result = new STAInvoker<OpenFileDialog, DialogResult>(fileSelector, (x) => x.ShowDialog(ForegroundWindowWrapper.GetWindow())).Invoke();
 
-			if (result != DialogResult.OK)
+			if (result != DialogResult.OK && !ignoreCancel)
 				throw new DialogCanceledException();
 
 			return fileSelector.FileName;
 		}
 
-		public static string FolderBrowser(string defaultFolder = null)
+		public static string FolderBrowser(string defaultFolder = null, bool ignoreCancel = false)
 		{
 			var folderBrowserDialog = new FolderBrowserDialog();
 
@@ -62,7 +62,7 @@ namespace sapHowmuch.Base.Dialogs
 
 			var result = new STAInvoker<FolderBrowserDialog, DialogResult>(folderBrowserDialog, (x) => x.ShowDialog(ForegroundWindowWrapper.GetWindow())).Invoke();
 
-			if (result != DialogResult.OK)
+			if (result != DialogResult.OK && !ignoreCancel)
 				throw new DialogCanceledException();
 
 			return folderBrowserDialog.SelectedPath;

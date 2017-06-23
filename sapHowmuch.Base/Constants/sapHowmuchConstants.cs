@@ -19,12 +19,13 @@ namespace sapHowmuch.Base
 
 		#region master code setting
 
-		public const string MasterCodeTableName = "AD0020L";
-		public const string MasterCodeTableDescription = "master code settings line";
-		public const string MasterCodeFieldName = "Minor";
-		public const string MasterCodeFieldDescription = "values for master code";
-		public const string MasterCodeNameFieldName = "CdName";
-		public const string MasterCodeNameFieldDescription = "name for master code value";
+		public const string MasterHeaderTable = "AD1000H";
+		public const string MasterHeaderTableDescription = "Master Code Table (Header)";
+		public const string MasterLineTable = "AD1000L";
+		public const string MasterLineTableDescription = "Master Code Table (Line)";
+		public const string MasterLineCodeField = "DetailCode";
+		public const string MasterLineNameField = "DetailName";
+		public const string MasterLineValueField = "Value";
 
 		#endregion
 
@@ -43,9 +44,9 @@ namespace sapHowmuch.Base
 
 		#region change Tracker constants
 
-		public const string CT_UdtName = "SHM_CHANGETRACKER";
-		public const string CT_UdfKey = "SHM_CT_Key";
-		public const string CT_UdfObj = "SHM_CT_Obj";
+		public const string CT_UdtName = "CHANGETRACKER";
+		public const string CT_UdfKey = "CT_Key";
+		public const string CT_UdfObj = "CT_Obj";
 
 		#endregion change Tracker constants
 

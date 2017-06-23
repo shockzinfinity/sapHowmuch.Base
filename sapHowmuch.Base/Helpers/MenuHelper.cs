@@ -222,9 +222,15 @@ namespace sapHowmuch.Base.Helpers
 
 					string menuXmlString = xmlDoc.InnerXml;
 
-					RemoveMenuItems(_toRemoveMenuIds);
+					//RemoveMenuItems(_toRemoveMenuIds);
 
 					SapStream.UiApp.LoadBatchActions(ref menuXmlString);
+
+					using (SapStream.UiApp.Forms.GetFormByTypeAndCount(169, 1).FreezeEx())
+					{
+						SapStream.UiApp.Forms.GetFormByTypeAndCount(169, 1).Update();
+					}
+
 					sapHowmuchLogger.Debug(SapStream.UiApp.GetLastBatchResults());
 
 					AddTerminateAppMenu(assembly);
