@@ -25,7 +25,7 @@ namespace sapHowmuch.Base
 			{
 				if (_company == null || !_company.Connected)
 				{
-					ConnectByDIWithConfig();
+					ConnectByDIWithConfig(false);
 				}
 
 				return _company;
@@ -58,19 +58,19 @@ namespace sapHowmuch.Base
 				// DEBUG mode
 				connectionString = sapHowmuchConstants.SapUiDebugConnectionString;
 			}
-			else
-			{
-				// info log
-				sapHowmuchLogger.Info($"current connection string: {connectionString}");
-			}
 
-			var sbGuiApi = new SAPbouiCOM.SboGuiApi();
-			_company = new SAPbobsCOM.Company();
+			sapHowmuchLogger.Info($"current connection string: {connectionString}");
 
 			try
 			{
+				//var app = new SAPbouiCOM.Framework.Application();
+				//_application = SAPbouiCOM.Framework.Application.SBO_Application;
+				//_company = (SAPbobsCOM.Company)_application.Company.GetDICompany();
+
+				var sbGuiApi = new SAPbouiCOM.SboGuiApi();
 				sbGuiApi.Connect(connectionString);
 				_application = sbGuiApi.GetApplication();
+				_company = new SAPbobsCOM.Company();
 
 				var contextCookie = _company.GetContextCookie();
 				var diCompanyConnectionString = _application.Company.GetConnectionContext(contextCookie);
@@ -84,6 +84,8 @@ namespace sapHowmuch.Base
 				sapHowmuchLogger.Info($"{assemblyName} connected");
 
 				InitializeSboApplication();
+
+				// TODO: sap client 종료 이벤트 캐치 및 자체 스트림 구현
 			}
 			catch (Exception ex)
 			{
@@ -162,7 +164,7 @@ namespace sapHowmuch.Base
 			}
 		}
 
-		public static void ConnectByDIWithConfig()
+		public static void ConnectByDIWithConfig(bool connectWithUi)
 		{
 			var server = ConfigurationManager.AppSettings["sapServer"];
 			var dbServerType = (SAPbobsCOM.BoDataServerTypes)Enum.Parse(typeof(SAPbobsCOM.BoDataServerTypes), ConfigurationManager.AppSettings["sapDBType"]);
@@ -173,7 +175,7 @@ namespace sapHowmuch.Base
 			var dbUserName = ConfigurationManager.AppSettings["sapDbUserName"];
 			var dbPassword = ConfigurationManager.AppSettings["sapDbPassword"];
 
-			ConnectByDI(server, dbServerType, companyDb, dbUserName, dbPassword, userName, password, licenseServer);
+			ConnectByDI(server, dbServerType, companyDb, dbUserName, dbPassword, userName, password, licenseServer, connectWithUi);
 		}
 
 		// deriving a connection
