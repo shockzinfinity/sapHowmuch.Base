@@ -4,6 +4,10 @@ namespace sapHowmuch.Base.Constants
 {
 	public static class SboForm
 	{
+		// Batch, Serial
+		public const string BatchSerial = "41";
+		public const string BatchSerialSearch = "45";
+
 		// Financials
 		public const string JournalEntry = "392";
 
