@@ -79,11 +79,12 @@ namespace sapHowmuch.Base.Forms
 			try
 			{
 				var assembly = GetType().Assembly;
-				Form = FormHelper.CreateFormFromResource(FormResource, FormType, null, assembly);
-				sapHowmuchLogger.Debug($"Form created: Type = {Form.TypeEx}, UID = {Form.UniqueID}, ObjectType = {Form.BusinessObject.Type}");
 
 				try
 				{
+					Form = FormHelper.CreateFormFromResource(FormResource, FormType, null, assembly);
+					sapHowmuchLogger.Debug($"Form created: Type = {Form.TypeEx}, UID = {Form.UniqueID}, ObjectType = {Form.BusinessObject.Type}");
+
 					// srf 컨트롤 할당
 					this.AssignSrfControlTo();
 					// event stream
@@ -92,6 +93,7 @@ namespace sapHowmuch.Base.Forms
 				catch (Exception ex)
 				{
 					SapStream.UiApp.MessageBox($"Form initializing Error: {ex.Message}");
+					sapHowmuchLogger.Error($"Form initializing Error: {ex.Message}");
 				}
 
 				try
@@ -101,11 +103,13 @@ namespace sapHowmuch.Base.Forms
 				catch (Exception ex)
 				{
 					SapStream.UiApp.MessageBox($"FormCreated Error: {ex.Message}");
+					sapHowmuchLogger.Error($"FormCreated Error: {ex.Message}");
 				}
 			}
 			catch (Exception ex)
 			{
 				SapStream.UiApp.MessageBox($"Failed to open form {FormType}: {ex.Message}");
+				sapHowmuchLogger.Error($"Failed to open form {FormType}: {ex.Message}");
 			}
 		}
 

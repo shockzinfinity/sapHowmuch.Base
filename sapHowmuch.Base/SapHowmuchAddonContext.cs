@@ -3,7 +3,6 @@ using sapHowmuch.Base.Management;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Principal;
 using System.Windows.Forms;
 
 namespace sapHowmuch.Base
