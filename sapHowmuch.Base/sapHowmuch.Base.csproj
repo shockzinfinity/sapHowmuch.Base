@@ -104,6 +104,7 @@
     <Compile Include="Forms\ISplash.cs" />
     <Compile Include="Forms\Splasher.cs" />
     <Compile Include="Interfaces\ILinqToTree.cs" />
+    <Compile Include="Management\UacHelper.cs" />
     <Compile Include="Management\User32.cs" />
     <Compile Include="Management\Win32.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
