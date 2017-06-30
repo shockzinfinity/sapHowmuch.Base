@@ -1,5 +1,6 @@
 ﻿using SAPbouiCOM;
 using System;
+using System.Text;
 
 namespace sapHowmuch.Base.EventArguments
 {
@@ -14,6 +15,16 @@ namespace sapHowmuch.Base.EventArguments
 			this.EventFiredTime = firedTime;
 			this.DetailArg = pval;
 			this.Message = message;
+		}
+
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.Append(EventFiredTime.ToString("yyyy-MM-dd HH:mm:ss.fff")).Append(" | ")
+				.Append(DetailArg.ToString()).Append(" | ")
+				.Append(Message);
+
+			return sb.ToString();
 		}
 	}
 }
