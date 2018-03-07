@@ -1,20 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.Base", "sapHowmuch.Base\sapHowmuch.Base.csproj", "{E3389FCC-3064-4FAF-8E6B-51391ED4CF03}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.Base.TestConsole", "sapHowmuch.Base.TestConsole\sapHowmuch.Base.TestConsole.csproj", "{8EB93940-46D1-42FE-9398-C4DC9BE29BA9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.Base.TestWinform", "sapHowmuch.Base.TestWinform\sapHowmuch.Base.TestWinform.csproj", "{2F944400-34D7-49EE-B259-3E430F25A926}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{F879A765-B232-42E1-BBC2-55CECCDBA454}"
 	ProjectSection(SolutionItems) = preProject
 		Documents\NLogReferenceConfig.xml = Documents\NLogReferenceConfig.xml
 		Documents\NLogTableSetting.sql = Documents\NLogTableSetting.sql
 		Documents\SharedAssembly.cs = Documents\SharedAssembly.cs
+		Documents\User Object.txt = Documents\User Object.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.Base", "sapHowmuch.Base\sapHowmuch.Base.csproj", "{E3389FCC-3064-4FAF-8E6B-51391ED4CF03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.Base.TestConsole", "sapHowmuch.Base.TestConsole\sapHowmuch.Base.TestConsole.csproj", "{8EB93940-46D1-42FE-9398-C4DC9BE29BA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.Base.TestWinform", "sapHowmuch.Base.TestWinform\sapHowmuch.Base.TestWinform.csproj", "{2F944400-34D7-49EE-B259-3E430F25A926}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sapHowmuch.VSExtension", "sapHowmuch.VSExtension\sapHowmuch.VSExtension.csproj", "{0129C1C6-E948-4BEB-9085-798C0657C244}"
 EndProject
@@ -43,5 +44,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7AC01221-33BA-4AFA-A0D5-091528509142}
 	EndGlobalSection
 EndGlobal

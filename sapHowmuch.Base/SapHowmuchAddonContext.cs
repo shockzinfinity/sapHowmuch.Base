@@ -30,7 +30,7 @@ namespace sapHowmuch.Base
 				sapHowmuchLogger.Trace($"BitMapPath: {SapStream.DICompany.BitMapPath}");
 				sapHowmuchLogger.Trace($"ExcelDocsPath: {SapStream.DICompany.ExcelDocsPath}");
 				sapHowmuchLogger.Trace($"WordDocsPath: {SapStream.DICompany.WordDocsPath}");
-				sapHowmuchLogger.Trace($"SecurityCode: {SapStream.DICompany.SecurityCode}");
+				//sapHowmuchLogger.Trace($"SecurityCode: {SapStream.DICompany.SecurityCode}");
 				sapHowmuchLogger.Trace($"UserSignature: {SapStream.DICompany.UserSignature.ToString()}");
 				sapHowmuchLogger.Trace($"Version: {SapStream.DICompany.Version.ToString()}");
 
